@@ -1,0 +1,298 @@
+.page-container {
+  margin-top: 20px;
+  text-align: center;
+  position: relative;
+  background-color: rgb(192, 220, 241);
+}
+.title {
+  margin-bottom: 20px;
+}
+  
+.parent-container {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+  background-color: blanchedalmond;
+  margin-top: 20px;
+  padding: 4px;
+  display: flex;
+}
+  
+.child-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: 1px solid rgb(89, 85, 85);
+}
+  
+.menu-container {
+  flex-basis: 50%;
+  background-color: rgb(112, 111, 109);
+  padding: 4px;
+}
+  
+.empty-container {
+  flex-basis: 60%;
+  padding: 10px;
+  position: relative;
+}
+
+.listmenu-container {
+  flex-basis: 80%;
+  background-color: rgb(112, 111, 109);
+  padding: 10px;
+}
+
+.left-aligned-table {
+  text-align: left;
+}
+
+.side-by-side-container {
+  display: flex;
+  gap: 20px; /* Adjust the gap between the two components */
+}
+  
+.empty-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/lake-am.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: 0.8;
+}
+  
+.bottom-container {
+  display: flex;
+  justify-content: space-between;
+  background-image: url("../images/Wolf.gif");
+  border: 4px solid black;
+  margin-top: 20px;
+  padding: 10px;
+}
+  
+.sub-container {
+  flex: 1;
+  border: 2px solid black;
+  background-color: lightgray;
+  padding: 10px;
+  text-align: center;
+  flex: 1;
+}
+  
+.random-image {
+  margin-top: 8px;
+}
+
+.sub-container-group {
+  display: flex;
+  flex-direction: row; /* Display addresses horizontally */
+}
+  
+.rotating-image {
+  position: fixed;
+  top: 10px;
+  right: -70px; /* Adjust this value to move the image further to the right */
+  animation: rotateImage 10s linear infinite;
+  transform-origin: center center; /* Set the transform origin to center for rotation */
+  z-index: 999;
+}
+
+@keyframes rotateImage {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.menu-list {
+  display: flex;
+  flex-direction: column;
+}
+.menu-button {
+  text-align: left;
+  /* Add other button styles as needed */
+}
+  
+.empty-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(10, 10, 10);
+  font-size: 40px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.center-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register-button-container {
+  margin-bottom: 20px;
+}
+
+.rotating-image-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.menu-list-container {
+  display: flex;
+  gap: 20px;
+}
+
+/* Stylesheet */
+.model-item-quantity {
+  background-color: rgb(140, 135, 235);
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.model-item-label, .quantity-label {
+  font-weight: bold;
+}
+
+.model-item-value, .quantity-value {
+  font-weight: bold;
+  color: rgb(235, 234, 236);
+}
+
+.form-container {
+  background-color: rgb(128, 142, 175);
+  border: 5px solid black;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+  
+.table-row {
+  border: 4px solid rgb(141, 157, 169);
+}
+
+.title {
+  margin-bottom: 20px;
+  align-items: center;
+  text-align: center;
+}
+
+.sub-title {
+  margin-bottom: 20px;
+  align-items: left;
+  text-align: left;
+}
+
+.employee-pic {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.table-header {
+  background-color: rgb(73, 50, 87);
+  text-shadow: 0cqmax;
+  text-decoration: dotted;
+}
+
+.input-field {
+  width: 50ch;
+}
+
+.label-container {
+  flex: 0 0 auto;
+  width: 150px; /* Adjust the width as desired */
+  margin-left: 5px; /* Adjust the margin as desired */
+  margin-right: 5px; /* Adjust the margin as desired */
+  white-space: nowrap; /* Prevent label text from wrapping */
+  overflow: hidden; /* Hide any overflow of label text */
+  text-overflow: ellipsis; /* Display ellipsis (...) for truncated label text */
+  text-align: left;
+}
+
+.form-row {
+  display: flex;
+}
+
+.custom-file-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-heading {
+  text-align: start;
+}
+
+/* styles.css (or any other CSS file you're using) */
+.right-side-form-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+/* Add this CSS to your existing styles */
+.permissions-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.permission-row {
+  display: flex;
+  flex-direction: column;
+  width: calc(20% - 10px); /* Adjust the percentage or use a fixed width value */
+  margin-bottom: 10px;
+}
+
+.permission-row .form-group {
+  margin-bottom: 5px;
+}
+
+.permission-row .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.right-side-form-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+
+.permission-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-message {
+  margin-top: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  color: #333;
+  font-size: 14px;
+  text-align: center;
+}
+
+
+.results-container {
+  border: 4px solid #cf84cc; /* Border style and color */
+  padding: 10px; /* Optional padding for spacing */
+  max-height: 400px; /* Set the maximum height to limit the container's size */
+  overflow: auto; /* Add a scrollbar when content exceeds container's height */
+}
