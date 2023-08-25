@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import useButtonBehavior from "../../utilities/button/behavior";
-import behaviorOptions from "../../utilities/button/config";
-import ButtonComponent from "../../utilities/ButtonComponent"; // Import the new ButtonComponent
+import useButtonBehavior from "../../../utilities/button/behavior";
+import behaviorOptions from "../../../utilities/button/config";
+import ButtonComponent from "../../../utilities/ButtonComponent"; // Import the new ButtonComponent
 import "../../../utilities/css/appcss.css";
 
-export default function ViewCommonPageMenuItems() {
+export default function ViewCurrenciesMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
 
@@ -18,11 +18,7 @@ export default function ViewCommonPageMenuItems() {
   };
 
   const menuItems = [
-    { path: "/list-uoms", text: "Unit of Measures" },
-    { path: "/list-currencies", text: "Currencies" },
-    { path: "/list-tax-codes", text: "Tax Codes" },
-    { path: "/list-exchange-rates", text: "Exchange Rates" },
-    { path: "/bom-explosion", text: "Explode BOM" },
+    { path: "/list-currencies", text: "View Currencies" },
     // ... add more menu items here
   ];
 

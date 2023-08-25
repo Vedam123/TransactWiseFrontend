@@ -23,16 +23,23 @@ import GrantPermissions from "./modulepermissions/GrantPermissions";
 import AssignUserModules from "./modulepermissions/AssignUserModules";
 import LoadModulestoDB from "./modulepermissions/LoadModulestoDB";
 import PurchasePage from "../purchase/PurchasePage";
-import ViewBOMExplodePage from "../common/ViewBOMExplodePage";
+import ViewBOMExplodePage from "../common/bom/ViewBOMExplodePage";
 import ProductsPage from "../products/ProductsPage";
 import ViewAllProductsPage from "../products/ViewAllProductsPage";
 import CommonPage from "../common/CommonPage";
-import ViewAllUOMsPage from "../common/ViewAllUOMsPage";
-import ViewAllCurrenciesPage from "../common/ViewAllCurrenciesPage";
-import ViewAllExchangeRatesPage from "../common/ViewAllExchangeRatesPage";
-import ViewAllTaxCodesPage from "../common/ViewAllTaxCodesPage";
+import ViewAllUOMsPage from "../common/uoms/ViewAllUOMsPage";
+import ViewAllCurrenciesPage from "../common/currencies/ViewAllCurrenciesPage";
+import ViewAllExchangeRatesPage from "../common/exchangerates/ViewAllExchangeRatesPage";
+import ViewAllTaxCodesPage from "../common/taxcodes/ViewAllTaxCodesPage";
 import ViewAllProdCatPage from "../products/ViewAllProdCatPage";
 import PermissionsContext from "./modulepermissions/PermissionsContext";
+
+import CurrenciesPage from "../common/currencies/CurrenciesPage";
+import TaxCodesPage from "../common/taxcodes/TaxCodesPage";
+import ExchangeRatesPage from "../common/exchangerates/ExchangeRatesPage";
+import UOMPage from "../common/uoms/UOMPage";
+import BOMPage from "../common/bom/BOMPage";
+
 
 function AuthenticationPage() {
   const { token, removeToken, setToken } = useToken();
@@ -161,6 +168,13 @@ function AuthenticationPage() {
 
                   {/* Common Routes */}
                   <Route path="/common-module" element={<CommonPage />} />
+
+                  <Route path="/currencies-page" element={<CurrenciesPage />} />
+                  <Route path="/taxcodes-page" element={<TaxCodesPage />} />
+                  <Route path="/exchangerates-page" element={<ExchangeRatesPage />} />
+                  <Route path="/uom-page" element={<UOMPage />} />
+                  <Route path="/bom-page" element={<BOMPage />} />
+
                   {/* Views */}
                   <Route
                     path="/bom-explosion"

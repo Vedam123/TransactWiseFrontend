@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 //import ExplodeBOMContainer from "./ExplodeBOMContainer";
-import RotatingImage from "../utilities/RotatingImage";
-import BottomContainer from "../utilities/BottomContainer";
+import RotatingImage from "../../utilities/RotatingImage";
+import BottomContainer from "../../utilities/BottomContainer";
 import ViewExplodeBOMForm from "./forms/ViewExplodeBOMForm";
 import ViewBOMResultsPage from "./extras/ViewBOMResultsPage";
 import ViewBOMResultsPageNone from "./extras/ViewBOMResultsPageNone";
-import "../utilities/css/appcss.css";
+import "../../utilities/css/appcss.css";
 
 function ViewBOMExplodePage() {
   const [explodedBOM, setExplodedBOM] = useState([]); // State to store the exploded BOM data

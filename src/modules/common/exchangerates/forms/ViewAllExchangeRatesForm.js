@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { API_URL } from "../../admin/setups/ConstDecl";
+import { API_URL } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
-import "../../utilities/css/appcss.css";
+import "../../../utilities/css/appcss.css";
 
 function ViewAllExchangeRatesForm() {
   const [exchangeRates, setExchangeRates] = useState([]);

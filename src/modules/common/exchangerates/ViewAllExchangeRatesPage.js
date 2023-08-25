@@ -1,7 +1,7 @@
 import React from "react";
 import ViewAllExchangeRatesForm from "./forms/ViewAllExchangeRatesForm";
-import RotatingImage from "../utilities/RotatingImage";
-import BottomContainer from "../utilities/BottomContainer";
+import RotatingImage from "../../utilities/RotatingImage";
+import BottomContainer from "../../utilities/BottomContainer";
 
 function ViewAllExchangeRatesPage() {
   return (

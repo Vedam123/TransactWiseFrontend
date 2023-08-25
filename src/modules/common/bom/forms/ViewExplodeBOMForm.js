@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL } from "../../admin/setups/ConstDecl";
-import "../../utilities/css/appcss.css";
+import { API_URL } from "../../../admin/setups/ConstDecl";
+import "../../../utilities/css/appcss.css";
 
 function ViewExplodeBOMForm({ updateExplodedBOM }) {
   const [itemCode, setItemCode] = useState("");

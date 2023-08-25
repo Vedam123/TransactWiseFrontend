@@ -1,7 +1,7 @@
 import React from "react";
 import ViewAllTaxCodesForm from "./forms/ViewAllTaxCodesForm";
-import RotatingImage from "../utilities/RotatingImage";
-import BottomContainer from "../utilities/BottomContainer";
+import RotatingImage from "../../utilities/RotatingImage";
+import BottomContainer from "../../utilities/BottomContainer";
 
 function ViewAllTaxCodesPage() {
   return (

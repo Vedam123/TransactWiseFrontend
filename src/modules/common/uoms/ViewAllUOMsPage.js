@@ -1,7 +1,7 @@
 import React from "react";
 import ViewAllUOMsForm from "./forms/ViewAllUOMsForm";
-import RotatingImage from "../utilities/RotatingImage";
-import BottomContainer from "../utilities/BottomContainer";
+import RotatingImage from "../../utilities/RotatingImage";
+import BottomContainer from "../../utilities/BottomContainer";
 
 function ViewAllUOMsPage() {
   return (

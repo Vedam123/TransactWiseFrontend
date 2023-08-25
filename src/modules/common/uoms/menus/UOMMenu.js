@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import useButtonBehavior from "../../utilities/button/behavior";
-import behaviorOptions from "../../utilities/button/config";
-import ButtonComponent from "../../utilities/ButtonComponent"; // Import the new ButtonComponent
-import "../../utilities/css/appcss.css";
+import useButtonBehavior from "../../../utilities/button/behavior";
+import behaviorOptions from "../../../utilities/button/config";
+import ButtonComponent from "../../../utilities/ButtonComponent"; // Import the new ButtonComponent
+import "../../../utilities/css/appcss.css";
 
-export default function CurrenciesMenu() {
+export default function UOMMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
 
@@ -18,8 +18,8 @@ export default function CurrenciesMenu() {
   };
 
   const menuItems = [
-    { path: "/list-currencies", text: "Currencies" },
-    // ... add more menu items here
+    { path: "/list-uoms", text: "View UOMs" },
+       // ... add more menu items here
   ];
 
   return (
