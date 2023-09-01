@@ -5,7 +5,7 @@ import behaviorOptions from "../../../utilities/button/config";
 import ButtonComponent from "../../../utilities/ButtonComponent"; // Import the new ButtonComponent
 import "../../../utilities/css/appcss.css";
 
-export default function UOMMenu() {
+export default function ViewProdCatMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
 
@@ -17,23 +17,11 @@ export default function UOMMenu() {
     }
   };
 
-  const menuItems = [
-    { path: "/list-uoms", text: "View UOMs" },
-       // ... add more menu items here
-  ];
-
   return (
-    <div className="child-container form-container">
-      <div className="menu-list">
-        {menuItems.map((item) => (
-          <ButtonComponent
-            key={item.path}
-            path={item.path}
-            buttonText={item.text}
-            onClick={() => handleMenuItemClick(item.path)}
-          />          
-        ))}
-        </div>
-    </div>
+    <ButtonComponent
+      path="/create-item-category"
+      buttonText="Create Product Categories"
+      onClick={() => handleMenuItemClick("/create-item-category")}
+    />
   );
 }

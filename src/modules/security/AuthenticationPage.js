@@ -25,13 +25,13 @@ import LoadModulestoDB from "./modulepermissions/LoadModulestoDB";
 import PurchasePage from "../purchase/PurchasePage";
 import ViewBOMExplodePage from "../common/bom/ViewBOMExplodePage";
 import ProductsPage from "../products/ProductsPage";
-import ViewAllProductsPage from "../products/ViewAllProductsPage";
+import ViewAllProductsPage from "../products/product/ViewAllProductsPage";
 import CommonPage from "../common/CommonPage";
 import ViewAllUOMsPage from "../common/uoms/ViewAllUOMsPage";
 import ViewAllCurrenciesPage from "../common/currencies/ViewAllCurrenciesPage";
 import ViewAllExchangeRatesPage from "../common/exchangerates/ViewAllExchangeRatesPage";
 import ViewAllTaxCodesPage from "../common/taxcodes/ViewAllTaxCodesPage";
-import ViewAllProdCatPage from "../products/ViewAllProdCatPage";
+import ViewAllProdCatPage from "../products/productcategories/ViewAllProdCatPage";
 import PermissionsContext from "./modulepermissions/PermissionsContext";
 
 import CurrenciesPage from "../common/currencies/CurrenciesPage";
@@ -39,7 +39,10 @@ import TaxCodesPage from "../common/taxcodes/TaxCodesPage";
 import ExchangeRatesPage from "../common/exchangerates/ExchangeRatesPage";
 import UOMPage from "../common/uoms/UOMPage";
 import BOMPage from "../common/bom/BOMPage";
-
+import CreateProdCatPage from "../products/productcategories/CreateProdCatPage";
+import PartnerResults from "../common/businesspartner/forms/PartnerResults";
+import PartnerSearchPage from "../common/businesspartner/PartnerSearchPage";
+import CreatePartnerPage from "../common/businesspartner/CreatePartnerPage";
 
 function AuthenticationPage() {
   const { token, removeToken, setToken } = useToken();
@@ -126,34 +129,24 @@ function AuthenticationPage() {
                 <Header token={removeToken} />
                 <Routes>
                   <Route path="/" element={<HomePage />} />
-
-                  {/* Employee Routes */}
                   <Route
                     path="/employee-functions"
                     element={<EmployeePage />}
                   />
-                  {/* Views */}
                   <Route
                     path="/list-employees"
                     element={<ViewAllEmployeesPage />}
                   />
-                  {/* Create */}
                   <Route
                     path="/create-employee"
                     element={<CreateEmployeePage />}
                   />
-                  {/* Update */}
-                  {/* Delete */}
-
-                  {/* User Routes */}
                   <Route path="/user-functions" element={<UserRolesPage />} />
-                  {/* Views */}
                   <Route path="/list-users" element={<UsersList />} />
                   <Route
                     path="/list-user-permissions"
                     element={<ListUserPermissions />}
                   />
-                  {/* Create */}
                   <Route path="/register-user" element={<RegisterUser />} />
                   <Route
                     path="/create-permissions"
@@ -163,19 +156,17 @@ function AuthenticationPage() {
                     path="/assign-user-modules"
                     element={<AssignUserModules />}
                   />
-                  {/* Update */}
-                  {/* Delete */}
-
-                  {/* Common Routes */}
                   <Route path="/common-module" element={<CommonPage />} />
 
                   <Route path="/currencies-page" element={<CurrenciesPage />} />
                   <Route path="/taxcodes-page" element={<TaxCodesPage />} />
-                  <Route path="/exchangerates-page" element={<ExchangeRatesPage />} />
+                  <Route
+                    path="/exchangerates-page"
+                    element={<ExchangeRatesPage />}
+                  />
                   <Route path="/uom-page" element={<UOMPage />} />
                   <Route path="/bom-page" element={<BOMPage />} />
 
-                  {/* Views */}
                   <Route
                     path="/bom-explosion"
                     element={<ViewBOMExplodePage />}
@@ -197,48 +188,36 @@ function AuthenticationPage() {
                     path="/list-product-categories"
                     element={<ViewAllProdCatPage />}
                   />
-                  {/* Create */}
-                  {/* Update */}
-                  {/* Delete */}
-
-                  {/* Admin Routes */}
                   <Route path="/admin-module" element={<AdminPage />} />
-                  {/* Views */}
-                  {/* Create */}
+
                   <Route
                     path="/load-all-modules"
                     element={<LoadModulestoDB />}
                   />
-                  {/* Update */}
-                  {/* Delete */}
-
-                  {/* Mis Routes */}
-                  {/* Views */}
                   <Route
                     path="/view-emails-function"
                     element={<ViewEmailsPage />}
                   />
-                  {/* Create */}
-                  {/* Update */}
-                  {/* Delete */}
-
-                  {/* Product Routes */}
-                  {/* Views */}
                   <Route
                     path="/list-products"
                     element={<ViewAllProductsPage />}
                   />
-                  {/* Create */}
-                  <Route path="/products-module" element={<ProductsPage />} />
-                  {/* Update */}
-                  {/* Delete */}
 
-                  {/* Purchase Routes */}
+                  <Route
+                    path="/create-item-category"
+                    element={<CreateProdCatPage />}
+                  />
+                  <Route path="/products-module" element={<ProductsPage />} />
                   <Route path="/purchase-module" element={<PurchasePage />} />
-                  {/* Views */}
-                  {/* Create */}
-                  {/* Update */}
-                  {/* Delete */}
+
+                  <Route path="/partner-results/:searchType/:searchInput" element={<PartnerResults/>} />
+                  <Route path="/partner-results" element={<PartnerResults/>} />
+                  <Route path="/list-businesspartners" element={<PartnerSearchPage/>} />
+
+                  <Route path="/create-businesspartner" element={<CreatePartnerPage/>} />
+
+                  
+
                 </Routes>
               </>
             </PermissionsContext.Provider>

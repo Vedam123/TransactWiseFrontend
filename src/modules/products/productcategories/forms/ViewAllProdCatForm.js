@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { API_URL } from "../../admin/setups/ConstDecl";
+import { API_URL } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
-import "../../utilities/css/appcss.css";
+import "../../../utilities/css/appcss.css";
 
 function ViewAllProdCatForm() {
   const [itemCategories, setItemCategories] = useState([]);
@@ -29,7 +29,8 @@ function ViewAllProdCatForm() {
             <th>Category Name</th>
             <th>Default UOM</th>
             <th>Description</th>
-            <th>Tax Information</th>
+            <th>Tax %</th>
+            <th>Picture</th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +41,15 @@ function ViewAllProdCatForm() {
               <td>{category.default_uom}</td>
               <td>{category.description}</td>
               <td>{category.tax_information}</td>
+              <td>
+                  {category.image && (
+                    <img
+                      src={`data:image/png;base64,${category.image}`}
+                      alt="Category Info"
+                      className="employee-pic"
+                    />
+                  )}
+                </td>
             </tr>
           ))}
         </tbody>

@@ -18,7 +18,7 @@ export default function ViewExchangeRatesMenu() {
   };
 
   const menuItems = [
-    { path: "/list-exchange-rates", text: "View Exchange Rates" },
+    { path: "/list-exchange-rates", text: "View Rates" },
     // ... add more menu items here
   ];
 

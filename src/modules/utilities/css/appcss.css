@@ -298,3 +298,41 @@
   max-height: 400px; /* Set the maximum height to limit the container's size */
   overflow: auto; /* Add a scrollbar when content exceeds container's height */
 }
+
+/* Add appropriate styling for checkboxes */
+.checkbox-label {
+  margin-left: 5px;
+}
+
+/* CSS for Address Fieldset */
+.address-fieldset {
+  border: 2px solid #ccc; /* Add a border around the fieldset */
+  padding: 10px;
+  margin: 10px 0;
+  display: table; /* Use table layout to ensure full width */
+  width: 50%; /* Make the fieldset full width */
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+}
+
+.address-fieldset legend {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px; /* Add spacing below the legend */
+}
+
+.address-fields .form-row {
+  margin-bottom: 10px; /* Add spacing between each field */
+}
+
+.contact-fieldset {
+  border: 2px solid #ccc; /* Add a border around the fieldset */
+  padding: 10px;
+  margin: 10px 0;
+  display: table; /* Use table layout to ensure full width */
+  width: 100%; /* Make the fieldset full width */
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+}
+
+/* Additional custom styling if needed */
+
+
