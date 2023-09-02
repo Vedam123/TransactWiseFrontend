@@ -7,6 +7,7 @@ import RotatingImage from "../../../utilities/RotatingImage";
 function Header(props) {
   function logMeOut() {
     //alert("log out callled");
+    console.log("Logout user",props)
     axios({
       method: "POST",
       url: `${API_URL}/logout_user`

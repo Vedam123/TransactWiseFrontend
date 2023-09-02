@@ -4,10 +4,15 @@ import useButtonBehavior from "../../../utilities/button/behavior";
 import behaviorOptions from "../../../utilities/button/config";
 import ButtonComponent from "../../../utilities/ButtonComponent"; // Import the new ButtonComponent
 import "../../../utilities/css/appcss.css";
+import ModulePermissions from "../../../security/modulepermissions/ModulePermissions"; // Import the ModulePermissions hook
 
 export default function ViewTaxCodesMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
+  //  const { canViewModule, canCreateModule, canDeleteModule, canUpdateModule } =
+  const { canViewModule } = ModulePermissions({
+    moduleName: "common", // Set the module name as needed
+  });
 
   const handleMenuItemClick = (path) => {
     if (behaviorOptions.DEFAULT === "_blank") {
@@ -18,7 +23,7 @@ export default function ViewTaxCodesMenu() {
   };
 
   const menuItems = [
-    { path: "/list-tax-codes", text: "View Tax Codes" },
+    { path: "/list-tax-codes", text: "View Tax Codes", canRender: canViewModule }, // Add the "canRender" property
     // ... add more menu items here
   ];
 
@@ -26,12 +31,14 @@ export default function ViewTaxCodesMenu() {
     <div className="child-container form-container">
       <div className="menu-list">
         {menuItems.map((item) => (
-          <ButtonComponent
-            key={item.path}
-            path={item.path}
-            buttonText={item.text}
-            onClick={() => handleMenuItemClick(item.path)}
-          />
+          item.canRender && (
+            <ButtonComponent
+              key={item.path}
+              path={item.path}
+              buttonText={item.text}
+              onClick={() => handleMenuItemClick(item.path)}
+            />
+          )
         ))}
       </div>
     </div>

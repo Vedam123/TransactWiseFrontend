@@ -27,8 +27,6 @@ export default function HomePageMenu() {
     { path: "/purchase-module", text: "Purchase", moduleName: "purchase" },
     { path: "/sales-module", text: "Sales", moduleName: "sales" },
     { path: "/finance-module", text: "Finance", moduleName: "finance" },
-    { path: "/projects-module", text: "Projects", moduleName: "projects" },
-    { path: "/service-module", text: "Service", moduleName: "service" },
     { path: "/cash-management-module", text: "Cash Management", moduleName: "cmg" },
     // ... add more menu items here
   ];

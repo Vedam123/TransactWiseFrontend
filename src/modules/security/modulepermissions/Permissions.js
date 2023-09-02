@@ -3,5 +3,5 @@ export const hasPermission = (userPermissions, module, permissionType) => {
     (perm) => perm.module === module && perm[permissionType]
   );
   console.log("hasPermission:", permissionType, "Permission:", permission);
-  return !!permission;
+  return !!permission;  
 };  

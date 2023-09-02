@@ -18,6 +18,7 @@ export default function Login(props) {
         const response = await axios.post(`${API_URL}/login_user`, formData);
         const { userid,username, access_token } = response.data;
         props.onLoginSuccess(userid,username, access_token);
+        console.log("User successfully Logged in -->",username,userid)
         setFormData({ username: "", password: "" });
         setError("");
       } catch (error) {

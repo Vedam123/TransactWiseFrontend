@@ -2,18 +2,21 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import useButtonBehavior from "../../../utilities/button/behavior";
 import behaviorOptions from "../../../utilities/button/config";
-import ButtonComponent from "../../../utilities/ButtonComponent"; // Import the new ButtonComponent
-import "../../../utilities/css/appcss.css";
-import ModulePermissions from "../../../security/modulepermissions/ModulePermissions"; // Import the ModulePermissions hook
+import ButtonComponent from "../../../utilities/ButtonComponent";
+import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
 
-export default function ViewCurrenciesMenu() {
+export default function ProductsCatMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
-  
-  //const { canViewModule, canCreateModule, canDeleteModule, canUpdateModule } =
-  const { canViewModule } = ModulePermissions({
-    moduleName: "common", // Set the module name as needed
-  });
+  const ProductPermissions = ModulePermissions({ moduleName: "products" });
+  const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } = ProductPermissions;
+
+  const menuItems = [
+    { path: "/create-item-category", text: "Create Product Cat", canRender: canCreateModule },
+    { path: "/delete-item", text: "Delete Product Cat", canRender: canDeleteModule },
+    { path: "/update-item", text: "Update Product Cat", canRender: canUpdateModule },
+    { path: "/list-product-categories", text: "List Products Cats", canRender: canViewModule },
+  ];
 
   const handleMenuItemClick = (path) => {
     if (behaviorOptions.DEFAULT === "_blank") {
@@ -23,15 +26,10 @@ export default function ViewCurrenciesMenu() {
     }
   };
 
-  const menuItems = [
-    { path: "/list-currencies", text: "View Currencies", canRender: canViewModule }, // Add the "canRender" property
-    // ... add more menu items here
-  ];
-
   return (
     <div className="child-container form-container">
       <div className="menu-list">
-        {menuItems.map((item) => (
+        {menuItems.map((item) =>
           item.canRender && (
             <ButtonComponent
               key={item.path}
@@ -40,7 +38,7 @@ export default function ViewCurrenciesMenu() {
               onClick={() => handleMenuItemClick(item.path)}
             />
           )
-        ))}
+        )}
       </div>
     </div>
   );

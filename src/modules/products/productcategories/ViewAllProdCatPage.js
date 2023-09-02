@@ -7,9 +7,7 @@ function ViewAllProdCatPage() {
   return (
     <div className="page-container">
       <h1 className="title">Product Categories</h1>
-      
-        <ViewAllProdCatForm />
-
+      <ViewAllProdCatForm />
       <RotatingImage />
       <BottomContainer />
     </div>

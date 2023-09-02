@@ -12,13 +12,9 @@ import DisplayCard from "../utilities/DisplayCard";
 
 
 export default function AdminPage() {
-
-
-
   return (
     <div className="page-container">
       <h1 className="title">Admin & Setups</h1>
-
       <div className="parent-container">
         <div className="child-container menu-container">
           <DisplayCard title="Admin Functions" color="#FFD799">
