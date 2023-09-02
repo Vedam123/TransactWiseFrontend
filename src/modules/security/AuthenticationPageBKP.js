@@ -130,38 +130,95 @@ function AuthenticationPage() {
                 <Header token={removeToken} />
                 <Routes>
                   <Route path="/" element={<HomePage />} />
-                  <Route path="/employee-functions" element={<EmployeePage />} />
-                  <Route path="/list-employees" element={<ViewAllEmployeesPage />} />
-                  <Route path="/create-employee" element={<CreateEmployeePage />} />
+                  <Route
+                    path="/employee-functions"
+                    element={<EmployeePage />}
+                  />
+                  <Route
+                    path="/list-employees"
+                    element={<ViewAllEmployeesPage />}
+                  />
+                  <Route
+                    path="/create-employee"
+                    element={<CreateEmployeePage />}
+                  />
                   <Route path="/user-functions" element={<UserRolesPage />} />
                   <Route path="/list-users" element={<UsersList />} />
-                  <Route path="/list-user-permissions" element={<ListUserPermissions />} />
+                  <Route
+                    path="/list-user-permissions"
+                    element={<ListUserPermissions />}
+                  />
                   <Route path="/register-user" element={<RegisterUser />} />
-                  <Route path="/create-permissions" element={<GrantPermissions />} />
-                  <Route path="/assign-user-modules" element={<AssignUserModules />} />
+                  <Route
+                    path="/create-permissions"
+                    element={<GrantPermissions />}
+                  />
+                  <Route
+                    path="/assign-user-modules"
+                    element={<AssignUserModules />}
+                  />
                   <Route path="/common-module" element={<CommonPage />} />
+
                   <Route path="/currencies-page" element={<CurrenciesPage />} />
                   <Route path="/taxcodes-page" element={<TaxCodesPage />} />
-                  <Route path="/exchangerates-page" element={<ExchangeRatesPage />} />
+                  <Route
+                    path="/exchangerates-page"
+                    element={<ExchangeRatesPage />}
+                  />
                   <Route path="/uom-page" element={<UOMPage />} />
                   <Route path="/bom-page" element={<BOMPage />} />
-                  <Route path="/bom-explosion" element={<ViewBOMExplodePage />} />
+
+                  <Route
+                    path="/bom-explosion"
+                    element={<ViewBOMExplodePage />}
+                  />
                   <Route path="/list-uoms" element={<ViewAllUOMsPage />} />
-                  <Route path="/list-currencies" element={<ViewAllCurrenciesPage />} />
-                  <Route path="/list-tax-codes" element={<ViewAllTaxCodesPage />} />
-                  <Route path="/list-exchange-rates" element={<ViewAllExchangeRatesPage />} />
-                  <Route path="/list-product-categories" element={<ViewAllProdCatPage />} />
+                  <Route
+                    path="/list-currencies"
+                    element={<ViewAllCurrenciesPage />}
+                  />
+                  <Route
+                    path="/list-tax-codes"
+                    element={<ViewAllTaxCodesPage />}
+                  />
+                  <Route
+                    path="/list-exchange-rates"
+                    element={<ViewAllExchangeRatesPage />}
+                  />
+                  <Route
+                    path="/list-product-categories"
+                    element={<ViewAllProdCatPage />}
+                  />
                   <Route path="/admin-module" element={<AdminPage />} />
-                  <Route path="/load-all-modules" element={<LoadModulestoDB />} />
-                  <Route path="/view-emails-function" element={<ViewEmailsPage />} />
-                  <Route path="/list-products" element={<ViewAllProductsPage />} />
-                  <Route path="/create-item-category" element={<CreateProdCatPage />} />
+
+                  <Route
+                    path="/load-all-modules"
+                    element={<LoadModulestoDB />}
+                  />
+                  <Route
+                    path="/view-emails-function"
+                    element={<ViewEmailsPage />}
+                  />
+                  <Route
+                    path="/list-products"
+                    element={<ViewAllProductsPage />}
+                  />
+
+                  <Route
+                    path="/create-item-category"
+                    element={<CreateProdCatPage />}
+                  />
                   <Route path="/products-module" element={<ProductsPage />} />
                   <Route path="/purchase-module" element={<PurchasePage />} />
-                  <Route path="/partner-results/:searchType/:searchInput" element={<PartnerResults />} />
-                  <Route path="/partner-results" element={<PartnerResults />} />
-                  <Route path="/list-businesspartners" element={<PartnerSearchPage />} />
-                  <Route path="/create-businesspartner" element={<CreatePartnerPage />} />
+
+                  <Route path="/partner-results/:searchType/:searchInput" element={<PartnerResults/>} />
+                  <Route path="/partner-results" element={<PartnerResults/>} />
+                  <Route path="/list-businesspartners" element={<PartnerSearchPage/>} />
+
+                  <Route path="/create-businesspartner" element={<CreatePartnerPage/>} />
+
+                  
+
                 </Routes>
               </>
             </PermissionsContext.Provider>
@@ -170,7 +227,6 @@ function AuthenticationPage() {
       )}
     </BrowserRouter>
   );
-  
 }
 
 export default AuthenticationPage;
