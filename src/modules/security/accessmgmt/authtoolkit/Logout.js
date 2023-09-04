@@ -1,10 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { API_URL } from "../../../admin/setups/ConstDecl";
-
 import RotatingImage from "../../../utilities/RotatingImage";
 
-function Header(props) {
+function Logout(props) {
   function logMeOut() {
     //alert("log out callled");
     console.log("Logout user",props)
@@ -15,6 +14,21 @@ function Header(props) {
       .then((response) => {
         //props.token();
         props.token(props.username);
+   
+        const userToken = localStorage.getItem("token");
+        const refreshToken = localStorage.getItem("refresh_token");
+        if (userToken) { 
+          console.log("Logout is pressed so the userToken will be deleted from LocalStorage");
+          localStorage.removeItem("token");
+        }
+        if (refreshToken) { 
+          console.log("Logout is pressed so the refresh_token will be deleted from LocalStorage");
+          localStorage.removeItem("refresh_token");
+        }
+
+
+        
+        
       })
       .catch((error) => {
         if (error.response) {
@@ -35,4 +49,4 @@ function Header(props) {
   );
 }
 
-export default Header;
+export default Logout;

@@ -15,7 +15,7 @@ export default function ModulePermissions({ moduleName }) {
 
   const userPermissions = usePermissions(); // Fetch user permissions from context
 
-  console.log("PRINT WHAT IS THERE IN ",userPermissions)
+  //console.log("PRINT WHAT IS THERE IN ",userPermissions)
   
   if (parseInt(userPermissions && userPermissions.length > 0 && userPermissions[0].loggedInUserid) < SUPER_USERS_COUNT) {
     // If loggedInUserid is less than 100, set all permissions to true
@@ -27,7 +27,7 @@ export default function ModulePermissions({ moduleName }) {
     };
   }
 
-  console.log("Check User permissions ",userPermissions)
+  //console.log("Check User permissions ",userPermissions)
 
   const canViewModule = hasPermission(
     userPermissions,
@@ -50,10 +50,11 @@ export default function ModulePermissions({ moduleName }) {
     ModulePermission.UPDATE_EMPLOYEES
   );
 
-console.log("Before returning from Module permissions ",   canViewModule,
+/*console.log("Before returning from Module permissions ",   canViewModule,
 canCreateModule,
 canDeleteModule,
-canUpdateModule);
+canUpdateModule);*/
+
   return {
     canViewModule,
     canCreateModule,

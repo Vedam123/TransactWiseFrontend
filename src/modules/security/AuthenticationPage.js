@@ -5,16 +5,16 @@ import axios from "axios";
 import { API_URL } from "../admin/setups/ConstDecl";
 import { SUPER_USERS_COUNT } from "../admin/setups/ConstDecl";
 
-import RotatingImage from "../../modules/utilities/RotatingImage";
+import RotatingImage from "../utilities/RotatingImage";
 import Login from "./accessmgmt/authtoolkit/Login";
-import Header from "./accessmgmt/authtoolkit/Header";
+import Logout from "./accessmgmt/authtoolkit/Logout";
 import useToken from "./accessmgmt/authtoolkit/useToken";
-import HomePage from "../../modules/application/HomePage";
-import ViewAllEmployeesPage from "../../modules/employee/ViewAllEmployeesPage";
-import AdminPage from "../../modules/admin/AdminPage";
-import ViewEmailsPage from "../../modules/utilities/ViewEmailsPage";
+import HomePage from "../application/HomePage";
+import ViewAllEmployeesPage from "../employee/ViewAllEmployeesPage";
+import AdminPage from "../admin/AdminPage";
+import ViewEmailsPage from "../utilities/ViewEmailsPage";
 import EmployeePage from "../employee/EmployeePage";
-import CreateEmployeePage from "../../modules/employee/CreateEmployeePage";
+import CreateEmployeePage from "../employee/CreateEmployeePage";
 import UserRolesPage from "./UserRolesPage";
 import RegisterUser from "./accessmgmt/authtoolkit/RegisterUser";
 import UsersList from "./modulepermissions/UsersList";
@@ -51,18 +51,30 @@ function AuthenticationPage() {
   const [loggedInUserid, setLoggedInUserid] = useState("");
   const [userPermissions, setUserPermissions] = useState([]);
 
+  /*const handleLogoutOnUnload = () => {
+    console.log("handleLogoutOnUnload called");
+    if (token) {
+      console.log("Token exists, performing logout actions");
+      // Perform the logout actions here, such as removing the token
+      removeToken();
+    }
+  };*/
+
   const handleLoginSuccess = (userid, username, token) => {
     setToken(token);
     setLoggedInUsername(username);
     setLoggedInUserid(userid);
-    console.log("In the HandleLoginSuccess Function -->",username,userid)
+    //console.log("In the HandleLoginSuccess Function -->",username,userid)
   };
+
+
 
   const handleRegisterClick = () => {
     setShowRegister(true);
   };
 
   useEffect(() => {
+  //  window.addEventListener("unload", handleLogoutOnUnload);
     const fetchUserPermissions = async () => {
       if (token) {
         try {
@@ -105,7 +117,16 @@ function AuthenticationPage() {
       }
     };
     fetchUserPermissions();
-  }, [token, loggedInUsername, loggedInUserid]);
+
+    /*return () => {
+      // Clean up the event listener when the component unmounts
+      window.removeEventListener("unload", handleLogoutOnUnload);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps*/
+  }, [token, loggedInUsername, loggedInUserid,showRegister]);
+
+
+
 
   return (
     <BrowserRouter>
@@ -127,41 +148,104 @@ function AuthenticationPage() {
           ) : (
             <PermissionsContext.Provider value={userPermissions}>
               <>
-                <Header token={removeToken} />
+                <Logout token={removeToken} />
                 <Routes>
                   <Route path="/" element={<HomePage />} />
-                  <Route path="/employee-functions" element={<EmployeePage />} />
-                  <Route path="/list-employees" element={<ViewAllEmployeesPage />} />
-                  <Route path="/create-employee" element={<CreateEmployeePage />} />
+                  <Route
+                    path="/employee-functions"
+                    element={<EmployeePage />}
+                  />
+                  <Route
+                    path="/list-employees"
+                    element={<ViewAllEmployeesPage />}
+                  />
+                  <Route
+                    path="/create-employee"
+                    element={<CreateEmployeePage />}
+                  />
                   <Route path="/user-functions" element={<UserRolesPage />} />
                   <Route path="/list-users" element={<UsersList />} />
-                  <Route path="/list-user-permissions" element={<ListUserPermissions />} />
+                  <Route
+                    path="/list-user-permissions"
+                    element={<ListUserPermissions />}
+                  />
                   <Route path="/register-user" element={<RegisterUser />} />
-                  <Route path="/create-permissions" element={<GrantPermissions />} />
-                  <Route path="/assign-user-modules" element={<AssignUserModules />} />
+                  <Route
+                    path="/create-permissions"
+                    element={<GrantPermissions />}
+                  />
+                  <Route
+                    path="/assign-user-modules"
+                    element={<AssignUserModules />}
+                  />
                   <Route path="/common-module" element={<CommonPage />} />
+
                   <Route path="/currencies-page" element={<CurrenciesPage />} />
                   <Route path="/taxcodes-page" element={<TaxCodesPage />} />
-                  <Route path="/exchangerates-page" element={<ExchangeRatesPage />} />
+                  <Route
+                    path="/exchangerates-page"
+                    element={<ExchangeRatesPage />}
+                  />
                   <Route path="/uom-page" element={<UOMPage />} />
                   <Route path="/bom-page" element={<BOMPage />} />
-                  <Route path="/bom-explosion" element={<ViewBOMExplodePage />} />
+
+                  <Route
+                    path="/bom-explosion"
+                    element={<ViewBOMExplodePage />}
+                  />
                   <Route path="/list-uoms" element={<ViewAllUOMsPage />} />
-                  <Route path="/list-currencies" element={<ViewAllCurrenciesPage />} />
-                  <Route path="/list-tax-codes" element={<ViewAllTaxCodesPage />} />
-                  <Route path="/list-exchange-rates" element={<ViewAllExchangeRatesPage />} />
-                  <Route path="/list-product-categories" element={<ViewAllProdCatPage />} />
+                  <Route
+                    path="/list-currencies"
+                    element={<ViewAllCurrenciesPage />}
+                  />
+                  <Route
+                    path="/list-tax-codes"
+                    element={<ViewAllTaxCodesPage />}
+                  />
+                  <Route
+                    path="/list-exchange-rates"
+                    element={<ViewAllExchangeRatesPage />}
+                  />
+                  <Route
+                    path="/list-product-categories"
+                    element={<ViewAllProdCatPage />}
+                  />
                   <Route path="/admin-module" element={<AdminPage />} />
-                  <Route path="/load-all-modules" element={<LoadModulestoDB />} />
-                  <Route path="/view-emails-function" element={<ViewEmailsPage />} />
-                  <Route path="/list-products" element={<ViewAllProductsPage />} />
-                  <Route path="/create-item-category" element={<CreateProdCatPage />} />
+
+                  <Route
+                    path="/load-all-modules"
+                    element={<LoadModulestoDB />}
+                  />
+                  <Route
+                    path="/view-emails-function"
+                    element={<ViewEmailsPage />}
+                  />
+                  <Route
+                    path="/list-products"
+                    element={<ViewAllProductsPage />}
+                  />
+
+                  <Route
+                    path="/create-item-category"
+                    element={<CreateProdCatPage />}
+                  />
                   <Route path="/products-module" element={<ProductsPage />} />
                   <Route path="/purchase-module" element={<PurchasePage />} />
-                  <Route path="/partner-results/:searchType/:searchInput" element={<PartnerResults />} />
+
+                  <Route
+                    path="/partner-results/:searchType/:searchInput"
+                    element={<PartnerResults />}
+                  />
                   <Route path="/partner-results" element={<PartnerResults />} />
-                  <Route path="/list-businesspartners" element={<PartnerSearchPage />} />
-                  <Route path="/create-businesspartner" element={<CreatePartnerPage />} />
+                  <Route
+                    path="/list-businesspartners"
+                    element={<PartnerSearchPage />}
+                  />
+
+                  <Route
+                    path="/create-businesspartner"
+                    element={<CreatePartnerPage />}
+                  />
                 </Routes>
               </>
             </PermissionsContext.Provider>
@@ -170,7 +254,6 @@ function AuthenticationPage() {
       )}
     </BrowserRouter>
   );
-  
 }
 
 export default AuthenticationPage;

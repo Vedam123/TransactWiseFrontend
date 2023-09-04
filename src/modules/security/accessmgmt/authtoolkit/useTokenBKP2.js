@@ -10,13 +10,7 @@ function useToken() {
     if (refreshToken) {
       const payload1 = JSON.parse(atob(refreshToken.split(".")[1]));
       const refreshtokenexpiry = new Date(payload1.exp * 1000);
-      console.log("Refresh Token Expiry time --> ", refreshtokenexpiry);
-      const currentTime = new Date();
-      if (refreshtokenexpiry < currentTime) {
-        console.log("The Refresh Token has expired ", currentTime);
-        localStorage.removeItem("refresh_token");
-        return null; // Return null if refresh token is expired
-      }
+      console.log("Refresh Token Exipry time --> ", refreshtokenexpiry);
     }
     if (userToken) {
       const payload = JSON.parse(atob(userToken.split(".")[1]));
@@ -29,7 +23,6 @@ function useToken() {
       if (expirationTime < currentTime) {
         console.log("The Token is expired ", currentTime);
         localStorage.removeItem("token");
-        return null; // Return null if access token is expired
       }
     }
 
@@ -81,7 +74,7 @@ function useToken() {
     function checkTokenExpiration() {
       const userToken = getToken();
       if (!userToken) {
-        refreshAccessToken(); // Token has expired or refresh token is expired, try to refresh it
+        refreshAccessToken(); // Token has expired, try to refresh it
       }
     }
 
