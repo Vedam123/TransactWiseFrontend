@@ -16,7 +16,7 @@ function PartnerSearchForm() {
     const searchPath = searchInput
       ? `/partner-results/${searchType}/${searchInput}`
       : "/partner-results";
-      console.log(searchPath)
+      //console.log(searchPath)
     navigate(searchPath);
   };
 

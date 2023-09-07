@@ -48,14 +48,12 @@ import CreatePartnerPage from "../common/businesspartner/CreatePartnerPage";
 function AuthenticationPage() {
   const { token, removeToken, setToken } = useToken();
   const [showRegister, setShowRegister] = useState(false);
-  const [loggedInUsername, setLoggedInUsername] = useState("");
   const [loggedInUserid, setLoggedInUserid] = useState("");
   const [userPermissions, setUserPermissions] = useState([]);
   const [name, setName] = useState("");
 
   const handleLoginSuccess = (userid, username, token,refresh_token,name) => {
     setToken(token);
-    setLoggedInUsername(username);
     setLoggedInUserid(userid);
     setName(name);
   };
@@ -65,7 +63,6 @@ function AuthenticationPage() {
   };
 
   useEffect(() => {
-    //  window.addEventListener("unload", handleLogoutOnUnload);
     const fetchUserPermissions = async () => {
       if (token) {
         try {
@@ -81,7 +78,6 @@ function AuthenticationPage() {
               update_permission: true,
               user_id: loggedInUserid,
               write_permission: true,
-              loggedInUsername,
               loggedInUserid,
             }));
           } else {
@@ -97,7 +93,6 @@ function AuthenticationPage() {
               .filter((permission) => permission.user_id === loggedInUserid)
               .map((permission) => ({
                 ...permission,
-                loggedInUsername,
                 loggedInUserid,
               }));
           }
@@ -109,22 +104,12 @@ function AuthenticationPage() {
     };
     fetchUserPermissions();
 
-    const storedUsername = localStorage.getItem("loggedInUsername");
-    if (storedUsername) {
-      setLoggedInUsername(storedUsername);
-    }
 
     const storedEmpname = localStorage.getItem("name");
     if (storedEmpname) {
       setName(storedEmpname);
     }
-
-    /*return () => {
-      // Clean up the event listener when the component unmounts
-      window.removeEventListener("unload", handleLogoutOnUnload);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps*/
-  }, [token, loggedInUsername, loggedInUserid, showRegister,name]);
+  }, [token, loggedInUserid, showRegister,name]);
 
   return (
     <BrowserRouter>
