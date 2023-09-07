@@ -5,29 +5,33 @@ import axios from "axios";
 
 function useToken() {
   function getToken() {
-    const userToken = localStorage.getItem("token");
     const refreshToken = localStorage.getItem("refresh_token");
+    const userln = localStorage.getItem("loggedInUsername");
     if (refreshToken) {
       const payload1 = JSON.parse(atob(refreshToken.split(".")[1]));
       const refreshtokenexpiry = new Date(payload1.exp * 1000);
-      console.log("Refresh Token Expiry time --> ", refreshtokenexpiry);
+
       const currentTime = new Date();
       if (refreshtokenexpiry < currentTime) {
-        console.log("The Refresh Token has expired ", currentTime);
+        const userToken = localStorage.getItem("token");
+        if (userToken) {
+          localStorage.removeItem("token");
+        }
+        if (userln) {
+          localStorage.removeItem("loggedInUsername");
+        }
         localStorage.removeItem("refresh_token");
         return null; // Return null if refresh token is expired
       }
     }
+    const userToken = localStorage.getItem("token");
+
     if (userToken) {
       const payload = JSON.parse(atob(userToken.split(".")[1]));
       const expirationTime = new Date(payload.exp * 1000);
       const currentTime = new Date();
 
-      console.log("TOKEN Expiration Time : ", expirationTime);
-      console.log("Current Time : ", currentTime);
-
       if (expirationTime < currentTime) {
-        console.log("The Token is expired ", currentTime);
         localStorage.removeItem("token");
         return null; // Return null if access token is expired
       }

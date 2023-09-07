@@ -13,10 +13,14 @@ function Logout(props) {
     })
       .then((response) => {
         //props.token();
-        props.token(props.username);
+        props.token();
    
         const userToken = localStorage.getItem("token");
         const refreshToken = localStorage.getItem("refresh_token");
+        const username = localStorage.getItem("loggedInUsername");
+        const userid = localStorage.getItem("loggedInUserid");
+        const empname = localStorage.getItem("name");
+        
         if (userToken) { 
           console.log("Logout is pressed so the userToken will be deleted from LocalStorage");
           localStorage.removeItem("token");
@@ -24,10 +28,19 @@ function Logout(props) {
         if (refreshToken) { 
           console.log("Logout is pressed so the refresh_token will be deleted from LocalStorage");
           localStorage.removeItem("refresh_token");
-        }
-
-
-        
+        }    
+        if (username) { 
+          console.log("Logout is pressed so the loggedInUsername will be deleted from LocalStorage");
+          localStorage.removeItem("loggedInUsername");
+        }    
+        if (userid) { 
+          console.log("Logout is pressed so the loggedInUserid will be deleted from LocalStorage");
+          localStorage.removeItem("loggedInUserid");
+        }      
+        if (empname) { 
+          console.log("Logout is pressed so the name will be deleted from LocalStorage");
+          localStorage.removeItem("name");
+        }                    
         
       })
       .catch((error) => {

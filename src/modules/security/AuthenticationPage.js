@@ -7,6 +7,7 @@ import { SUPER_USERS_COUNT } from "../admin/setups/ConstDecl";
 
 import RotatingImage from "../utilities/RotatingImage";
 import Login from "./accessmgmt/authtoolkit/Login";
+import UserName from "./accessmgmt/authtoolkit/UserName";
 import Logout from "./accessmgmt/authtoolkit/Logout";
 import useToken from "./accessmgmt/authtoolkit/useToken";
 import HomePage from "../application/HomePage";
@@ -50,31 +51,21 @@ function AuthenticationPage() {
   const [loggedInUsername, setLoggedInUsername] = useState("");
   const [loggedInUserid, setLoggedInUserid] = useState("");
   const [userPermissions, setUserPermissions] = useState([]);
+  const [name, setName] = useState("");
 
-  /*const handleLogoutOnUnload = () => {
-    console.log("handleLogoutOnUnload called");
-    if (token) {
-      console.log("Token exists, performing logout actions");
-      // Perform the logout actions here, such as removing the token
-      removeToken();
-    }
-  };*/
-
-  const handleLoginSuccess = (userid, username, token) => {
+  const handleLoginSuccess = (userid, username, token,refresh_token,name) => {
     setToken(token);
     setLoggedInUsername(username);
     setLoggedInUserid(userid);
-    //console.log("In the HandleLoginSuccess Function -->",username,userid)
+    setName(name);
   };
-
-
 
   const handleRegisterClick = () => {
     setShowRegister(true);
   };
 
   useEffect(() => {
-  //  window.addEventListener("unload", handleLogoutOnUnload);
+    //  window.addEventListener("unload", handleLogoutOnUnload);
     const fetchUserPermissions = async () => {
       if (token) {
         try {
@@ -118,15 +109,22 @@ function AuthenticationPage() {
     };
     fetchUserPermissions();
 
+    const storedUsername = localStorage.getItem("loggedInUsername");
+    if (storedUsername) {
+      setLoggedInUsername(storedUsername);
+    }
+
+    const storedEmpname = localStorage.getItem("name");
+    if (storedEmpname) {
+      setName(storedEmpname);
+    }
+
     /*return () => {
       // Clean up the event listener when the component unmounts
       window.removeEventListener("unload", handleLogoutOnUnload);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps*/
-  }, [token, loggedInUsername, loggedInUserid,showRegister]);
-
-
-
+  }, [token, loggedInUsername, loggedInUserid, showRegister,name]);
 
   return (
     <BrowserRouter>
@@ -149,6 +147,7 @@ function AuthenticationPage() {
             <PermissionsContext.Provider value={userPermissions}>
               <>
                 <Logout token={removeToken} />
+                <UserName username={name} />
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route

@@ -15,10 +15,11 @@ export default function ModulePermissions({ moduleName }) {
 
   const userPermissions = usePermissions(); // Fetch user permissions from context
 
-  //console.log("PRINT WHAT IS THERE IN ",userPermissions)
+  const userid = localStorage.getItem("loggedInUserid");  
   
-  if (parseInt(userPermissions && userPermissions.length > 0 && userPermissions[0].loggedInUserid) < SUPER_USERS_COUNT) {
+  //if (parseInt(userPermissions && userPermissions.length > 0 && userPermissions[0].loggedInUserid) < SUPER_USERS_COUNT) {
     // If loggedInUserid is less than 100, set all permissions to true
+   if (parseInt(userid) < SUPER_USERS_COUNT) {
     return {
       canViewModule: true,
       canCreateModule: true,
@@ -27,7 +28,6 @@ export default function ModulePermissions({ moduleName }) {
     };
   }
 
-  //console.log("Check User permissions ",userPermissions)
 
   const canViewModule = hasPermission(
     userPermissions,
@@ -49,11 +49,6 @@ export default function ModulePermissions({ moduleName }) {
     moduleName,
     ModulePermission.UPDATE_EMPLOYEES
   );
-
-/*console.log("Before returning from Module permissions ",   canViewModule,
-canCreateModule,
-canDeleteModule,
-canUpdateModule);*/
 
   return {
     canViewModule,

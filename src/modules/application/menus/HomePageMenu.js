@@ -55,7 +55,15 @@ export default function HomePageMenu() {
             canDeleteModule ||
             canUpdateModule;
 
-          // Check for permission and render the button if allowed
+
+        /* console.log("MenuItem:", item);
+          console.log("Module Permissions:", modulePermissions);
+          console.log("canViewModule:", canViewModule);
+          console.log("canCreateModule:", canCreateModule);
+          console.log("canDeleteModule:", canDeleteModule);
+          console.log("canUpdateModule:", canUpdateModule);
+          // Check for permission and render the button if allowed 
+          */
           return (
             isModulePermissionGranted && (
               <ButtonComponent
