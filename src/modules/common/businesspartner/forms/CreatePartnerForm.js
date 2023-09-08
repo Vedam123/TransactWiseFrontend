@@ -78,20 +78,6 @@ export default function CreatePartnerForm() {
         formDataToSend
       );
 
-      /*if (!formData.partnerimage) {
-        console.error("Partner image is required.");
-        return;
-      }*/
-
-      /*if (formData.partnerimage) {
-        formData.append("partnerimage", formData.partnerimage);
-      }
-
-      const response = await axios.post(
-        `${API_URL}/create_partner_data`,
-        formData
-      );*/
-
       console.log(response.data);
       setFormData({
         partnertype: "",

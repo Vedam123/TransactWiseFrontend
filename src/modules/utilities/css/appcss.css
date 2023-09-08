@@ -206,9 +206,9 @@
 }
 
 .table-header {
-  background-color: rgb(73, 50, 87);
-  text-shadow: 0cqmax;
-  text-decoration: dotted;
+  background-color: rgb(196, 19, 119) !important;
+  text-shadow: 0 0 0 black !important;
+  /* Other styles */
 }
 
 .input-field {
@@ -335,4 +335,26 @@
 
 /* Additional custom styling if needed */
 
+/* Custom CSS for striped table */
+.striped-table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
+.striped-table th,
+.striped-table td {
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.striped-table th {
+  background-color: #f2f2f2; /* Background color for header row */
+}
+
+.striped-table tr:nth-child(odd) {
+  background-color: #f9f9f9; /* Background color for odd rows */
+}
+
+.striped-table tr:nth-child(even) {
+  background-color: #ffffff; /* Background color for even rows */
+}

@@ -1,4 +1,3 @@
-// src/modules/general/var/constdecl.js
 export const API_URL = "http://localhost:8010";
 export const FRONTEND_URL="http://localhost:3001"
 export const SMTP_URL = "http://localhost:5000";
