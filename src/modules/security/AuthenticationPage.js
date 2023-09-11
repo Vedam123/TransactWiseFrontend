@@ -44,11 +44,12 @@ import CreateProdCatPage from "../products/productcategories/CreateProdCatPage";
 import PartnerResults from "../common/businesspartner/forms/PartnerResults";
 import PartnerSearchPage from "../common/businesspartner/PartnerSearchPage";
 import CreatePartnerPage from "../common/businesspartner/CreatePartnerPage";
-import CreateSetupsPage from "../admin/CreateSetupsPage";
-import SetupsSearchPage from "../admin/SetupsSearchPage";
-import ShowAllSetupsForm from "../admin/forms/ShowAllSetupsForm";
-
-
+import CreateUISetupsPage from "../admin/CreateUISetupsPage";
+import UISetupsSearchPage from "../admin/UISetupsSearchPage";
+import ShowAllUISetupsForm from "../admin/forms/ShowAllUISetupsForm";
+import CreateDBSetupsPage from "../admin/CreateDBSetupsPage";
+import DBSetupsSearchPage from "../admin/DBSetupsSearchPage";
+//import ShowAllDBSetupsForm from "../admin/forms/ShowAllDBSetupsForm";
 
 function AuthenticationPage() {
   const { token, removeToken, setToken } = useToken();
@@ -207,24 +208,36 @@ function AuthenticationPage() {
                   />
                   <Route
                     path="/view-emails-function"
-                    element={<ViewEmailsPage />}
+                    element={<ViewEmailsPage />}V
                   />
 
                   <Route
-                    path="/change-setups"
-                    element={<CreateSetupsPage />}
+                    path="/create-ui-setups"
+                    element={<CreateUISetupsPage />}
+                  />
+
+                  
+                  <Route
+                    path="/create-db-setups"
+                    element={<CreateDBSetupsPage />}
                   />
 
                   <Route
                     path="/list_ui_config_data/:searchType/:searchInput"
-                    element={<ShowAllSetupsForm />}
+                    element={<ShowAllUISetupsForm />}
                   />
-                  <Route path="/list_ui_config_data" element={<ShowAllSetupsForm />} />
+                  <Route path="/list_ui_config_data" element={<ShowAllUISetupsForm />} />
 
 
                   <Route
-                    path="/list-setups"
-                    element={<SetupsSearchPage />}
+                    path="/list-ui-setups"
+                    element={<UISetupsSearchPage />}
+                  />
+
+
+                  <Route
+                    path="/list-db-setups"
+                    element={<DBSetupsSearchPage />}
                   />
 
                   <Route

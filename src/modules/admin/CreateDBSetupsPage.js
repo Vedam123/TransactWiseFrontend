@@ -3,17 +3,15 @@ import "../utilities/css/appcss.css";
 import RotatingImage from "../utilities/RotatingImage";
 import BottomContainer from "../utilities/BottomContainer";
 import DocumentationContainer from "../utilities/DocumentationContainer";
-//import SetupsSearchForm from "./forms/SetupsSearchForm";
-import ShowAllSetupsForm from "./forms/ShowAllSetupsForm";
+import CreateDBSetupsForm from "./forms/CreateDBSetupsForm";
 
-function SetupsSearchPage() {
+export default function CreateDBSetupsPage() {
   return (
     <div className="page-container">
-      <h1 className="title">Create React Configurations File</h1>
+      <h1 className="title">Find & Create Configurations</h1>
 
       <div className="parent-container">
-
-        <ShowAllSetupsForm />
+        <CreateDBSetupsForm />
         <DocumentationContainer />
       </div>
       <RotatingImage />
@@ -21,5 +19,3 @@ function SetupsSearchPage() {
     </div>
   );
 }
-
-export default SetupsSearchPage;

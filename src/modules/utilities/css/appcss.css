@@ -325,7 +325,7 @@
 }
 
 .contact-fieldset {
-  border: 2px solid #ccc; /* Add a border around the fieldset */
+  border: 5px solid #4453d7; /* Add a border around the fieldset */
   padding: 10px;
   margin: 10px 0;
   display: table; /* Use table layout to ensure full width */
@@ -358,3 +358,10 @@
 .striped-table tr:nth-child(even) {
   background-color: #ffffff; /* Background color for even rows */
 }
+
+/* Add this CSS to your stylesheet */
+.yellow-box-container {
+  border: 2px solid yellow;
+  padding: 5px; /* Optional: Add padding for spacing */
+}
+

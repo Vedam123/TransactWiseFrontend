@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../setups/ConstDecl"; // Adjust the import path as needed
 
-export default function CreateUIConfigDataForm() {
+export default function CreateUISetupsForm() {
   const [formData, setFormData] = useState({
     config_key: "",
     config_value: "",

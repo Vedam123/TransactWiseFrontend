@@ -76,8 +76,10 @@ export default function AdminPageMenu() {
     { path: "/employee-functions", text: "Employee" },
     { path: "/user-functions", text: "Users&Accesses" },
     { path: "/view-emails-function", text: "View Emails" },
-    { path: "/change-setups", text: "Create Setups" },
-    { path: "/list-setups", text: "Config Setup File" },
+    { path: "/create-ui-setups", text: "Create UI Setups" },
+    { path: "/list-ui-setups", text: "Config UI Setup File" },
+    { path: "/create-db-setups", text: "Create DB Setups" },
+    { path: "/list-db-setups", text: "Config DB Setup File" },
     // ... add more menu items here
   ];
 
@@ -89,8 +91,10 @@ export default function AdminPageMenu() {
           (item.path === "/employee-functions" && isEmployeePermissionGranted) ||
           (item.path === "/user-functions" && isSecurityPermissionGranted) ||
           (item.path === "/view-emails-function" && isAdminPermissionGranted) ||
-          (item.path === "/change-setups" && isAdminPermissionGranted) || 
-          (item.path === "/list-setups" && isAdminPermissionGranted) ? (
+          (item.path === "/create-ui-setups" && isAdminPermissionGranted) || 
+          (item.path === "/list-ui-setups" && isAdminPermissionGranted) ||   
+          (item.path === "/create-db-setups" && isAdminPermissionGranted) || 
+          (item.path === "/list-db-setups" && isAdminPermissionGranted) ? (
             <ButtonComponent
               key={item.path}
               path={item.path}

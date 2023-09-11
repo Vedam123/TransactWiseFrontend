@@ -4,7 +4,7 @@ import "../../utilities/css/appcss.css";
 import ConfigFileGenerator from "../ConfigFileGenerator";
 import { API_URL } from "../setups/ConstDecl";
 
-function ShowAllSetupsForm() {
+function ShowAllUISetupsForm() {
   const [configData, setConfigData] = useState([]);
   const [error, setError] = useState(null);
   const [isGeneratingFile, setIsGeneratingFile] = useState(false);
@@ -12,15 +12,20 @@ function ShowAllSetupsForm() {
   const [apiUrl, setApiUrl] = useState("");
   const [generationMessage, setGenerationMessage] = useState(""); // Added a state for generation message
 
+  const getFinalApiUrl = () => {
+    if (useApiUrlFromFile) {
+      return `${API_URL}/list_ui_config_data`;
+    } else if (apiUrl) {
+      return `${apiUrl}/list_ui_config_data`;
+    }
+    return "";
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let finalApiUrl = useApiUrlFromFile
-          ? `${API_URL}/list_ui_config_data`
-          : `${apiUrl}/list_ui_config_data`;
-
-        // alert(finalApiUrl);
-
+        const finalApiUrl = getFinalApiUrl();
+  
         const response = await axios.get(finalApiUrl);
         setConfigData(response.data);
         setError(null);
@@ -30,44 +35,43 @@ function ShowAllSetupsForm() {
         setError("An error occurred while fetching data.");
       }
     };
-
+  
     if (useApiUrlFromFile || apiUrl) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiUrl, useApiUrlFromFile]);
+  
 
   const handleGenerateFile = async () => {
-    if (useApiUrlFromFile) {
-      setIsGeneratingFile(true);
-      setGenerationMessage("Generating File...");
-      // Perform any file generation logic with API_URL
-      // Simulate file generation with a timeout
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setIsGeneratingFile(false);
-      setGenerationMessage("File Generated!");
-    } else if (apiUrl) {
-      setIsGeneratingFile(true);
-      setGenerationMessage("Generating File...");
-      // Perform any file generation logic with apiUrl
-      // Simulate file generation with a timeout
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setIsGeneratingFile(false);
-      setGenerationMessage("File Generated!");
-    } else {
-      setError(""); // Clear error message when generating the file
+    const finalApiUrl = getFinalApiUrl();
+
+    if (!finalApiUrl) {
+      setError("Please enter a valid API URL or check 'Retrieve Configuration Data by API URL'.");
+      return;
     }
+
+    setIsGeneratingFile(true);
+    setGenerationMessage("Generating File...");
+    // Perform any file generation logic with finalApiUrl
+    // Simulate file generation with a timeout
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsGeneratingFile(false);
+    setGenerationMessage("File Generated!");
   };
 
   const handleApiUrlChange = (event) => {
     setApiUrl(event.target.value);
     setUseApiUrlFromFile(false); // Disable the checkbox when input is entered
     setConfigData([]); // Clear the table data
+    setError(""); // Clear any previous error message
   };
 
   const handleUseApiUrlFromFileChange = (event) => {
     setUseApiUrlFromFile(event.target.checked);
     setApiUrl(""); // Clear the input field when checkbox is selected
     setConfigData([]); // Clear the table data
+    setError(""); // Clear any previous error message
   };
 
   return (
@@ -100,7 +104,7 @@ function ShowAllSetupsForm() {
             disabled={!!apiUrl} // Disable checkbox when input has value
           />
           <label htmlFor="ignoreUrlEntry" className="form-check-label">
-            Ignore URL Entry
+            Retrieve Configuration Data by API URL
           </label>
         </div>
         {error ? (
@@ -133,7 +137,7 @@ function ShowAllSetupsForm() {
               {isGeneratingFile ? "Generating File..." : "Generate File"}
             </button>
             <p>{generationMessage}</p>
-            {isGeneratingFile && <ConfigFileGenerator />}
+            {isGeneratingFile && <ConfigFileGenerator apiUrl={getFinalApiUrl()} />}
           </>
         )}
       </div>
@@ -141,4 +145,4 @@ function ShowAllSetupsForm() {
   );
 }
 
-export default ShowAllSetupsForm;
+export default ShowAllUISetupsForm;
