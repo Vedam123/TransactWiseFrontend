@@ -14,7 +14,11 @@ const UserPermissionsForm = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(`${API_URL}/list_user_permissions`);
-      setUserModulePermissions(response.data.user_module_permissions);
+      const sortedPermissions = response.data.user_module_permissions.sort(
+        (a, b) => a.user_id - b.user_id
+      );
+
+      setUserModulePermissions(sortedPermissions);
 
       // Fetch user details and store them in the userDetails state
       const usersResponse = await axios.get(`${API_URL}/list_users`);

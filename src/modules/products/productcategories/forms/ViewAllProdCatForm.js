@@ -1,10 +1,13 @@
+// ViewAllProdCatForm.js
 import React, { useEffect, useState } from "react";
 import { API_URL } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
+import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
 
 function ViewAllProdCatForm() {
   const [itemCategories, setItemCategories] = useState([]);
+  const userPermissions = ModulePermissions({ moduleName: "products" }); // Fetch user permissions
 
   useEffect(() => {
     fetchData();
@@ -18,6 +21,14 @@ function ViewAllProdCatForm() {
       console.error("Error fetching item categories:", error);
     }
   };
+
+  // Check user permissions before rendering
+  const canViewModule = userPermissions.canViewModule;
+
+  if (!canViewModule) {
+    // User doesn't have permission to view the module
+    return <div>You do not have permission to view this module.</div>;
+  }
 
   return (
     <div className="child-container form-container">

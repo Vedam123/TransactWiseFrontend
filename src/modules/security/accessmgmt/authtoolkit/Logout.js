@@ -1,36 +1,38 @@
 import React from "react";
 import axios from "axios";
 import { API_URL } from "../../../admin/setups/ConstDecl";
-import RotatingImage from "../../../utilities/RotatingImage";
 
 function Logout(props) {
   function logMeOut() {
-       axios({
+    axios({
       method: "POST",
-      url: `${API_URL}/logout_user`
+      url: `${API_URL}/logout_user`,
     })
       .then((response) => {
         props.token();
-   
+
         const userToken = localStorage.getItem("token");
         const refreshToken = localStorage.getItem("refresh_token");
         const userid = localStorage.getItem("loggedInUserid");
         const empname = localStorage.getItem("name");
-        
-        if (userToken) { 
+        const emp_img = localStorage.getItem("emp_img")
+
+        if (userToken) {
           localStorage.removeItem("token");
         }
-        if (refreshToken) { 
+        if (refreshToken) {
           localStorage.removeItem("refresh_token");
-        }    
- 
-        if (userid) { 
+        }
+
+        if (userid) {
           localStorage.removeItem("loggedInUserid");
-        }      
-        if (empname) { 
+        }
+        if (empname) {
           localStorage.removeItem("name");
-        }                    
-        
+        }
+        if (emp_img) {
+          localStorage.removeItem("emp_img");
+        }
       })
       .catch((error) => {
         if (error.response) {
@@ -42,11 +44,10 @@ function Logout(props) {
   }
 
   return (
-    <header className="page-container">
-      <RotatingImage />
+    <div>
       {props.username && <p>Logged in as: {props.username}</p>}
       {props.token && <button onClick={logMeOut}>Logout</button>}
-    </header>
+    </div>
   );
 }
 

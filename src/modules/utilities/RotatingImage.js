@@ -23,7 +23,7 @@ export default function RotatingImage() {
         alt="Rotating"
         style={{
           transform: `rotate(${rotationAngle}deg)`,
-          width: "28%",
+          width: "20%",
           height: "auto",
         }}
       />

@@ -96,9 +96,9 @@
   
 .rotating-image {
   position: fixed;
-  top: 10px;
+  top: 60px;
   right: -70px; /* Adjust this value to move the image further to the right */
-  animation: rotateImage 10s linear infinite;
+  animation: rotateImage 5s linear infinite;
   transform-origin: center center; /* Set the transform origin to center for rotation */
   z-index: 999;
 }
@@ -365,3 +365,18 @@
   padding: 5px; /* Optional: Add padding for spacing */
 }
 
+/* Add these styles to control the header alignment */
+.logout_page-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-header {
+  display: flex;
+  align-items: center;
+}
+
+.right-header {
+  margin-left: auto; /* Push the Logout button to the right */
+}

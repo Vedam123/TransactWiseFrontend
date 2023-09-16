@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { API_URL } from "../admin/setups/ConstDecl";
@@ -8,6 +8,7 @@ import { SUPER_USERS_COUNT } from "../admin/setups/ConstDecl";
 import RotatingImage from "../utilities/RotatingImage";
 import Login from "./accessmgmt/authtoolkit/Login";
 import UserName from "./accessmgmt/authtoolkit/UserName";
+//import Profile from "./accessmgmt/authtoolkit/Profile";
 import Logout from "./accessmgmt/authtoolkit/Logout";
 import useToken from "./accessmgmt/authtoolkit/useToken";
 import HomePage from "../application/HomePage";
@@ -57,11 +58,16 @@ function AuthenticationPage() {
   const [loggedInUserid, setLoggedInUserid] = useState("");
   const [userPermissions, setUserPermissions] = useState([]);
   const [name, setName] = useState("");
+  const [emp_img, setImage] = useState("");
 
-  const handleLoginSuccess = (userid, username, token,refresh_token,name) => {
+  const nameWithSpace = name + "\u00a0";
+  const useridWithSpace = loggedInUserid + "\u00a0";
+
+  const handleLoginSuccess = (userid, username, token, refresh_token, name,emp_img) => {
     setToken(token);
     setLoggedInUserid(userid);
     setName(name);
+    setImage(emp_img);
   };
 
   const handleRegisterClick = () => {
@@ -110,12 +116,17 @@ function AuthenticationPage() {
     };
     fetchUserPermissions();
 
-
     const storedEmpname = localStorage.getItem("name");
     if (storedEmpname) {
       setName(storedEmpname);
     }
-  }, [token, loggedInUserid, showRegister,name]);
+
+    const storedEmppic = localStorage.getItem("emp_img");
+    if (storedEmppic) {
+      setImage(storedEmppic);
+    }
+
+  }, [token, loggedInUserid, showRegister, name, emp_img]);
 
   return (
     <BrowserRouter>
@@ -137,8 +148,15 @@ function AuthenticationPage() {
           ) : (
             <PermissionsContext.Provider value={userPermissions}>
               <>
-                <Logout token={removeToken} />
-                <UserName username={name} />
+                <header className="logout_page-container">
+                  <div className="left-header">
+                    <UserName username={nameWithSpace} userid={useridWithSpace} emp_img={emp_img} />
+                    <Link to="/">Home</Link>
+                  </div>
+                  <div className="right-header">
+                    <Logout token={removeToken} />
+                  </div>
+                </header>
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route
@@ -149,6 +167,7 @@ function AuthenticationPage() {
                     path="/list-employees"
                     element={<ViewAllEmployeesPage />}
                   />
+
                   <Route
                     path="/create-employee"
                     element={<CreateEmployeePage />}
@@ -208,7 +227,8 @@ function AuthenticationPage() {
                   />
                   <Route
                     path="/view-emails-function"
-                    element={<ViewEmailsPage />}V
+                    element={<ViewEmailsPage />}
+                    V
                   />
 
                   <Route
@@ -216,7 +236,6 @@ function AuthenticationPage() {
                     element={<CreateUISetupsPage />}
                   />
 
-                  
                   <Route
                     path="/create-db-setups"
                     element={<CreateDBSetupsPage />}
@@ -226,14 +245,15 @@ function AuthenticationPage() {
                     path="/list_ui_config_data/:searchType/:searchInput"
                     element={<ShowAllUISetupsForm />}
                   />
-                  <Route path="/list_ui_config_data" element={<ShowAllUISetupsForm />} />
-
+                  <Route
+                    path="/list_ui_config_data"
+                    element={<ShowAllUISetupsForm />}
+                  />
 
                   <Route
                     path="/list-ui-setups"
                     element={<UISetupsSearchPage />}
                   />
-
 
                   <Route
                     path="/list-db-setups"
