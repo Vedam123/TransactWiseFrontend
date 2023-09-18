@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  TOKEN_EXPIRATION_CHECK_FREQUENCY,
-  API_URL,
-} from "../../../admin/setups/ConstDecl";
+import { TOKEN_EXPIRATION_CHECK_FREQUENCY } from "../../../admin/setups/ConstDecl";
+import { API_URL } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
 
 function useToken() {

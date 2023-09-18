@@ -6,18 +6,32 @@ import "../../../utilities/css/appcss.css";
 function ViewAllTaxCodesForm() {
   const [taxCodes, setTaxCodes] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const generateHeaders = () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userid");
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/list_tax_codes`);
-      setTaxCodes(response.data.taxes);
-    } catch (error) {
-      console.error("Error fetching tax codes:", error);
-    }
+    return {
+      'Authorization': `Bearer ${token}`,
+      'UserId': userId,
+      // Add other headers if needed
+    };
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/list_tax_codes`, {
+          headers: generateHeaders(),
+        });
+        setTaxCodes(response.data.taxes);
+      } catch (error) {
+        console.error("Error fetching tax codes:", error);
+      }
+    };
+
+    fetchData();
+
+  }, []);
 
   return (
     <div className="child-container form-container">

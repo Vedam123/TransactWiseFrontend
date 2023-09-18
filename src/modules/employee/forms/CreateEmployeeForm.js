@@ -22,7 +22,15 @@ export default function CreateEmployeeForm() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get(`${API_URL}/employee`);
+        const authToken = localStorage.getItem('token');
+        const userid = localStorage.getItem('loggedInUserid');
+
+        const headers = {
+          'Authorization': `Bearer ${authToken}`,
+          'UserId': userid,
+        };
+
+        const response = await axios.get(`${API_URL}/employee`, { headers });
         const employees = response.data;
         setManagerOptions(employees);
         setSupervisorOptions(employees);
@@ -33,7 +41,15 @@ export default function CreateEmployeeForm() {
 
     const fetchDesignations = async () => {
       try {
-        const response = await axios.get(`${API_URL}/designations`);
+        const authToken = localStorage.getItem('token');
+        const userid = localStorage.getItem('loggedInUserid');
+
+        const headers = {
+          'Authorization': `Bearer ${authToken}`,
+          'UserId': userid,
+        };
+
+        const response = await axios.get(`${API_URL}/designations`, { headers });
         const designations = response.data;
         const designationNames = designations.map(
           (designation) => designation.designation_name
@@ -59,6 +75,14 @@ export default function CreateEmployeeForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const authToken = localStorage.getItem('token');
+      const userid = localStorage.getItem('loggedInUserid');
+
+      const headers = {
+        'Authorization': `Bearer ${authToken}`,
+        'UserId': userid,
+      };
+
       const formDataToSend = new FormData();
       formDataToSend.append("name", formData.name);
       formDataToSend.append("dob", formData.dob);
@@ -71,7 +95,8 @@ export default function CreateEmployeeForm() {
 
       const response = await axios.post(
         `${API_URL}/create_employee`,
-        formDataToSend
+        formDataToSend,
+        { headers }
       );
       console.log(response.data);
       setFormData({

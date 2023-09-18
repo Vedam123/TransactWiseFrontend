@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { API_URL } from "../../../admin/setups/ConstDecl"; // Adjust path to your API_URL
+import { API_URL } from "../../../admin/setups/ConstDecl";
 
 function PartnerResults() {
   const { searchType, searchInput } = useParams();
   const [partnerData, setPartnerData] = useState([]);
   const [error, setError] = useState(null);
+
+  const generateHeaders = () => {
+    const token = localStorage.getItem("token");
+    const userid = localStorage.getItem("userid");
+
+    return {
+      'Authorization': `Bearer ${token}`,
+      'UserId': userid,
+      // Add other headers if needed
+    };
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +30,10 @@ function PartnerResults() {
           apiUrl += `?${queryParams.toString()}`;
         }
 
-        const response = await axios.get(apiUrl);
+        const response = await axios.get(apiUrl, {
+          headers: generateHeaders(),
+        });
+
         setPartnerData(response.data);
         setError(null); // Clear any previous errors
       } catch (error) {
@@ -30,7 +44,7 @@ function PartnerResults() {
 
     fetchData();
   }, [searchType, searchInput]);
-
+  
   return (
     <div>
       <h2>Partner Search Results</h2>

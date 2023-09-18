@@ -59,18 +59,22 @@ function AuthenticationPage() {
   const [userPermissions, setUserPermissions] = useState([]);
   const [name, setName] = useState("");
   const [emp_img, setImage] = useState("");
-  // eslint-disable-next-line 
-  const [refresh_token, setRefreshToken] = useState("");
 
   const nameWithSpace = name + "\u00a0";
   const useridWithSpace = loggedInUserid + "\u00a0";
 
-  const handleLoginSuccess = (userid, username, token, refresh_token, name,emp_img) => {
+  const handleLoginSuccess = (
+    userid,
+    username,
+    token,
+    refresh_token,
+    name,
+    emp_img
+  ) => {
     setToken(token);
     setLoggedInUserid(userid);
     setName(name);
     setImage(emp_img);
-    setRefreshToken(refresh_token);
   };
 
   const handleRegisterClick = () => {
@@ -79,14 +83,17 @@ function AuthenticationPage() {
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("loggedInUserid");
-    //console.log("Stored user id ",storedUserId);
-    //console.log("Super user count ",SUPER_USERS_COUNT);
-    //console.log("Loggedin user id vs stored user id ",loggedInUserid, storedUserId);
+    console.log("Stored user id ",storedUserId);
+    if (storedUserId) {
+      setLoggedInUserid(storedUserId);
+    }
+
     const fetchUserPermissions = async () => {
-      if (token) {
+        if (token) {
         try {
           let filteredPermissions;
-          if (parseInt(storedUserId) < parseInt(SUPER_USERS_COUNT)) {
+          if (loggedInUserid < SUPER_USERS_COUNT) {
+            console.log("He is a super user");
             const modulesResponse = await axios.get(`${API_URL}/list_modules`);
             const allModules = modulesResponse.data.modules;
             filteredPermissions = allModules.flatMap((module) => ({
@@ -95,12 +102,12 @@ function AuthenticationPage() {
               module: module.folder_name,
               read_permission: true,
               update_permission: true,
-              user_id: storedUserId,
+              user_id: loggedInUserid,
               write_permission: true,
-              loggedInUserid : storedUserId,
+              loggedInUserid : loggedInUserid
             }));
-            //console.log("UseEffect Super User fetch userPermissions ", filteredPermissions);
           } else {
+            console.log("He is NOT a super user");
             const response = await axios.get(
               `${API_URL}/list_user_permissions`,
               {
@@ -109,15 +116,15 @@ function AuthenticationPage() {
                 },
               }
             );
-            //console.log("UseEffect FETCHED ", response.data.user_module_permissions,"Logged in Userid ",loggedInUserid);
+            console.log("Database list user permissions called and stored local storage loggedinuserid ", loggedInUserid);
+            console.log("Fetched User permissions ",response.data.user_module_permissions);
             filteredPermissions = response.data.user_module_permissions
-              .filter((permission) => parseInt(permission.user_id) === parseInt(storedUserId))
+              .filter((permission) => permission.user_id === loggedInUserid)
               .map((permission) => ({
                 ...permission,
-                loggedInUserid : storedUserId,
+                loggedInUserid,
               }));
           }
-          //console.log("UseEffect DB Filtered userPermissions ", filteredPermissions);
           setUserPermissions(filteredPermissions);
         } catch (error) {
           console.error("Error fetching user permissions:", error);
@@ -134,20 +141,9 @@ function AuthenticationPage() {
     if (storedEmppic) {
       setImage(storedEmppic);
     }
-
-    const storedRefreshToken = localStorage.getItem("refresh_token");
-    if (storedRefreshToken) {
-      setRefreshToken(storedRefreshToken);
-    }
-
     fetchUserPermissions();
+  }, [token, loggedInUserid, showRegister, name, emp_img]);
 
-    console.log()
-  /* Do not delete the commented code below */
-  }, [token, loggedInUserid, showRegister, name, emp_img,refresh_token]); 
-  
-  //eslint-disable-next-line
-  //}, [loggedInUserid]); 
   return (
     <BrowserRouter>
       {showRegister ? (
@@ -170,7 +166,11 @@ function AuthenticationPage() {
               <>
                 <header className="logout_page-container">
                   <div className="left-header">
-                    <UserName username={nameWithSpace} userid={useridWithSpace} emp_img={emp_img} />
+                    <UserName
+                      username={nameWithSpace}
+                      userid={useridWithSpace}
+                      emp_img={emp_img}
+                    />
                     <Link to="/">Home</Link>
                   </div>
                   <div className="right-header">

@@ -8,48 +8,65 @@ function ViewAllProductsForm() {
   const [categoryMap, setCategoryMap] = useState({});
   const [uomAbbreviations, setUomAbbreviations] = useState({});
 
+  const generateHeaders = () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userid");
+
+    return {
+      'Authorization': `Bearer ${token}`,
+      'UserId': userId,
+      // Add other headers if needed
+    };
+  };
+
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/list_items`, {
+          headers: generateHeaders(),
+        });
+        setItems(response.data.items);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
+
+    const fetchUomAbbreviations = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/list_uoms`, {
+          headers: generateHeaders(),
+        });
+        const uomList = response.data.uom;
+        const uomAbbreviationMap = {};
+        uomList.forEach((uom) => {
+          uomAbbreviationMap[uom.uom_id] = uom.abbreviation;
+        });
+        setUomAbbreviations(uomAbbreviationMap);
+      } catch (error) {
+        console.error("Error fetching UOM abbreviations:", error);
+      }
+    };
+
+    const fetchCategoryNames = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/list_item_categories`, {
+          headers: generateHeaders(),
+        });
+        const categories = response.data.item_categories;
+        const categoryMapData = {};
+        categories.forEach((category) => {
+          categoryMapData[category.category_id] = category.category_name;
+        });
+        setCategoryMap(categoryMapData);
+      } catch (error) {
+        console.error("Error fetching category names:", error);
+      }
+    };
+
     fetchData();
-    fetchCategoryNames();
     fetchUomAbbreviations();
+    fetchCategoryNames();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/list_items`);
-      setItems(response.data.items);
-    } catch (error) {
-      console.error("Error fetching items:", error);
-    }
-  };
-
-  const fetchUomAbbreviations = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/list_uoms`);
-      const uomList = response.data.uom;
-      const uomAbbreviationMap = {};
-      uomList.forEach((uom) => {
-        uomAbbreviationMap[uom.uom_id] = uom.abbreviation;
-      });
-      setUomAbbreviations(uomAbbreviationMap);
-    } catch (error) {
-      console.error("Error fetching UOM abbreviations:", error);
-    }
-  };
-
-  const fetchCategoryNames = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/list_item_categories`);
-      const categories = response.data.item_categories;
-      const categoryMapData = {};
-      categories.forEach((category) => {
-        categoryMapData[category.category_id] = category.category_name;
-      });
-      setCategoryMap(categoryMapData);
-    } catch (error) {
-      console.error("Error fetching category names:", error);
-    }
-  };
 
   return (
     <div className="child-container form-container">

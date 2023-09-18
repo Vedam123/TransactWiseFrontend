@@ -15,7 +15,15 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
 
   const fetchItemList = async () => {
     try {
-      const response = await axios.get(`${API_URL}/list_items`);
+      const authToken = localStorage.getItem('token');
+      const userid = localStorage.getItem('loggedInUserid');
+
+      const headers = {
+        'Authorization': `Bearer ${authToken}`,
+        'UserId': userid,
+      };
+
+      const response = await axios.get(`${API_URL}/list_items`, { headers });
       setItemList(response.data.items);
     } catch (error) {
       alert("Error fetching item lists");

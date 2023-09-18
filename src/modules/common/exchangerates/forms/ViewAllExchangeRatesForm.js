@@ -6,18 +6,32 @@ import "../../../utilities/css/appcss.css";
 function ViewAllExchangeRatesForm() {
   const [exchangeRates, setExchangeRates] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const generateHeaders = () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userid");
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/list_exchange_rates`);
-      setExchangeRates(response.data.exchangerates);
-    } catch (error) {
-      console.error("Error fetching exchange rates:", error);
-    }
+    return {
+      'Authorization': `Bearer ${token}`,
+      'UserId': userId,
+      // Add other headers if needed
+    };
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/list_exchange_rates`, {
+          headers: generateHeaders(),
+        });
+        setExchangeRates(response.data.exchangerates);
+      } catch (error) {
+        console.error("Error fetching exchange rates:", error);
+      }
+    };
+
+    fetchData();
+
+  }, []);
 
   return (
     <div className="child-container form-container">

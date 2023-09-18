@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
+import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
 
 export default function CreateProdCatForm() {
   const [formData, setFormData] = useState({
@@ -12,13 +13,16 @@ export default function CreateProdCatForm() {
     is_active: true,
     tax_information: "",
   });
+  const userPermissions = ModulePermissions({ moduleName: "products" }); // Fetch user permissions
 
   const [uoms, setUOMs] = useState([]);
 
   useEffect(() => {
     async function fetchUOMs() {
       try {
-        const response = await axios.get(`${API_URL}/list_uoms`);
+        const response = await axios.get(`${API_URL}/list_uoms`, {
+          headers: generateHeaders(),
+        });
         setUOMs(response.data.uom);
       } catch (error) {
         console.error("Error fetching UOMs:", error);
@@ -27,6 +31,17 @@ export default function CreateProdCatForm() {
 
     fetchUOMs();
   }, []);
+
+  const generateHeaders = () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userid");
+
+    return {
+      'Authorization': `Bearer ${token}`,
+      'UserId': userId,
+      // Add other headers if needed
+    };
+  };
 
   const handleChange = (e) => {
     if (e.target.name === "image") {
@@ -47,11 +62,6 @@ export default function CreateProdCatForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
-      /*const headers = {
-        'Content-Type': 'multipart/form-data',
-      };*/
-      
       const formDataToSend = new FormData();
       formDataToSend.append("category_name", formData.category_name);
       formDataToSend.append("uom_id", formData.uom_id);
@@ -60,16 +70,12 @@ export default function CreateProdCatForm() {
       formDataToSend.append("is_active", formData.is_active ? 1 : 0);
       formDataToSend.append("tax_information", formData.tax_information);
 
-      console.log(formData.category_name);
-      console.log(formData.uom_id);
-      console.log(formData.description);
-      //console.log(formData.image);
-      console.log(formData.is_active);
-      console.log(formData.tax_information);
-
       const response = await axios.post(
         `${API_URL}/create_item_category`,
-        formDataToSend
+        formDataToSend,
+        {
+          headers: generateHeaders(),
+        }
       );
       console.log(response.data);
       setFormData({
@@ -84,6 +90,14 @@ export default function CreateProdCatForm() {
       console.error("Error creating item category:", error);
     }
   };
+
+  // Check user permissions before rendering
+  const canViewModule = userPermissions.canViewModule;
+
+  if (!canViewModule) {
+    // User doesn't have permission to view the module
+    return <div>You do not have permission to view this module.</div>;
+  }
 
   return (
     <div className="child-container menu-container">

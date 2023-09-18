@@ -59,8 +59,6 @@ function AuthenticationPage() {
   const [userPermissions, setUserPermissions] = useState([]);
   const [name, setName] = useState("");
   const [emp_img, setImage] = useState("");
-  // eslint-disable-next-line 
-  const [refresh_token, setRefreshToken] = useState("");
 
   const nameWithSpace = name + "\u00a0";
   const useridWithSpace = loggedInUserid + "\u00a0";
@@ -70,7 +68,6 @@ function AuthenticationPage() {
     setLoggedInUserid(userid);
     setName(name);
     setImage(emp_img);
-    setRefreshToken(refresh_token);
   };
 
   const handleRegisterClick = () => {
@@ -78,15 +75,12 @@ function AuthenticationPage() {
   };
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("loggedInUserid");
-    //console.log("Stored user id ",storedUserId);
-    //console.log("Super user count ",SUPER_USERS_COUNT);
-    //console.log("Loggedin user id vs stored user id ",loggedInUserid, storedUserId);
     const fetchUserPermissions = async () => {
+      console.log("Fetch Permission is called ",loggedInUserid);
       if (token) {
         try {
           let filteredPermissions;
-          if (parseInt(storedUserId) < parseInt(SUPER_USERS_COUNT)) {
+          if (loggedInUserid < SUPER_USERS_COUNT) {
             const modulesResponse = await axios.get(`${API_URL}/list_modules`);
             const allModules = modulesResponse.data.modules;
             filteredPermissions = allModules.flatMap((module) => ({
@@ -95,11 +89,10 @@ function AuthenticationPage() {
               module: module.folder_name,
               read_permission: true,
               update_permission: true,
-              user_id: storedUserId,
+              user_id: loggedInUserid,
               write_permission: true,
-              loggedInUserid : storedUserId,
+              loggedInUserid,
             }));
-            //console.log("UseEffect Super User fetch userPermissions ", filteredPermissions);
           } else {
             const response = await axios.get(
               `${API_URL}/list_user_permissions`,
@@ -109,15 +102,13 @@ function AuthenticationPage() {
                 },
               }
             );
-            //console.log("UseEffect FETCHED ", response.data.user_module_permissions,"Logged in Userid ",loggedInUserid);
             filteredPermissions = response.data.user_module_permissions
-              .filter((permission) => parseInt(permission.user_id) === parseInt(storedUserId))
+              .filter((permission) => permission.user_id === loggedInUserid)
               .map((permission) => ({
                 ...permission,
-                loggedInUserid : storedUserId,
+                loggedInUserid,
               }));
           }
-          //console.log("UseEffect DB Filtered userPermissions ", filteredPermissions);
           setUserPermissions(filteredPermissions);
         } catch (error) {
           console.error("Error fetching user permissions:", error);
@@ -134,20 +125,10 @@ function AuthenticationPage() {
     if (storedEmppic) {
       setImage(storedEmppic);
     }
-
-    const storedRefreshToken = localStorage.getItem("refresh_token");
-    if (storedRefreshToken) {
-      setRefreshToken(storedRefreshToken);
-    }
-
     fetchUserPermissions();
 
-    console.log()
-  /* Do not delete the commented code below */
-  }, [token, loggedInUserid, showRegister, name, emp_img,refresh_token]); 
-  
-  //eslint-disable-next-line
-  //}, [loggedInUserid]); 
+  }, [token, loggedInUserid, showRegister, name, emp_img]);
+
   return (
     <BrowserRouter>
       {showRegister ? (

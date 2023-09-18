@@ -1,20 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../general/var/constdecl";
 
-function Profile(props) {
+function Profile() {
   const [profileData, setProfileData] = useState(null);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   function getData() {
+    // You can set your token here
+    const token = "YOUR_ACCESS_TOKEN";
+
+    // Define your headers with the Authorization header
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
     axios({
       method: "GET",
-      url: `${API_URL}/my_profile`, // Use the desired URL hert
-      headers: {
-        Authorization: "Bearer " + props.token,
-      },
+      url: `${API_URL}/my_profile`, // Use the desired URL here
+      headers: headers,
     })
       .then((response) => {
         const res = response.data;
-        res.access_token && props.setToken(res.access_token);
         setProfileData({
           profile_name: res.name,
           about_me: res.about,

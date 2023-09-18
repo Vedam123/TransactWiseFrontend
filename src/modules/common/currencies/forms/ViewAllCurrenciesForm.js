@@ -6,18 +6,32 @@ import "../../../utilities/css/appcss.css";
 function ViewAllCurrenciesForm() {
   const [currencies, setCurrencies] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const generateHeaders = () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userid");
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/list_currencies`);
-      setCurrencies(response.data.currencies);
-    } catch (error) {
-      console.error("Error fetching currencies:", error);
-    }
+    return {
+      'Authorization': `Bearer ${token}`,
+      'UserId': userId,
+      // Add other headers if needed
+    };
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/list_currencies`, {
+          headers: generateHeaders(),
+        });
+        setCurrencies(response.data.currencies);
+      } catch (error) {
+        console.error("Error fetching currencies:", error);
+      }
+    };
+
+    fetchData(); // Include fetchData in the dependency array
+
+  }, []); // Empty dependency array since fetchData doesn't have any dependencies
 
   return (
     <div className="child-container form-container">

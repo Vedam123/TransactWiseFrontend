@@ -18,7 +18,15 @@ export default function CreateUISetupsForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/create_ui_config_data`, formData);
+      const authToken = localStorage.getItem('token');
+      const userid = localStorage.getItem('loggedInUserid');
+
+      const headers = {
+        'Authorization': `Bearer ${authToken}`,
+        'UserId': userid,
+      };
+
+      const response = await axios.post(`${API_URL}/create_ui_config_data`, formData, { headers });
       console.log(response.data);
       setFormData({
         config_key: "",

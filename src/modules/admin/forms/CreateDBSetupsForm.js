@@ -21,10 +21,18 @@ export default function CreateDBSetupsForm() {
 
   const handlePasswordGeneration = async () => {
     try {
+      const authToken = localStorage.getItem('token');
+      const userid = localStorage.getItem('loggedInUserid');
+
+      const headers = {
+        'Authorization': `Bearer ${authToken}`,
+        'UserId': userid,
+      };
+
       const response = await axios.post(`${API_URL}/generate_password_hash`, {
         username: formData.username,
         plaintext_password: formData.password,
-      });
+      }, { headers });
       setHashedPassword(response.data.hashed_password);
     } catch (error) {
       console.error("Error generating hashed password:", error);
@@ -43,18 +51,26 @@ export default function CreateDBSetupsForm() {
       try {
         // Generate the hashed password
         await handlePasswordGeneration();
-        //alert("Hashed password ",hashedPassword);
+
         // Update the form data with the generated password
         const updatedFormData = {
           ...formData,
           password: hashedPassword,
         };
-        //alert(updatedFormData);
 
         // Insert data into two tables using create_db_config_data API
+        const authToken = localStorage.getItem('token');
+        const userid = localStorage.getItem('loggedInUserid');
+
+        const headers = {
+          'Authorization': `Bearer ${authToken}`,
+          'UserId': userid,
+        };
+
         const response = await axios.post(
           `${API_URL}/create_db_config_data`,
-          updatedFormData
+          updatedFormData,
+          { headers }
         );
         console.log(response.data);
         setSubmitStatus("success"); // Set success status

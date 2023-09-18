@@ -1,5 +1,4 @@
-// ViewAllProdCatForm.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { API_URL } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
@@ -9,18 +8,28 @@ function ViewAllProdCatForm() {
   const [itemCategories, setItemCategories] = useState([]);
   const userPermissions = ModulePermissions({ moduleName: "products" }); // Fetch user permissions
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/list_item_categories`);
+      const headers = {
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'UserId': localStorage.getItem("userid"),
+        // Add other headers if needed
+      };
+
+      const response = await axios.get(`${API_URL}/list_item_categories`, {
+        headers: headers,
+      });
+
       setItemCategories(response.data.item_categories);
     } catch (error) {
       console.error("Error fetching item categories:", error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Check user permissions before rendering
   const canViewModule = userPermissions.canViewModule;

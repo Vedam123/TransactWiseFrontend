@@ -38,23 +38,38 @@ export default function RegisterUserForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/register_user`, formData);
+      const headers = {
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'UserId': localStorage.getItem("userid"),
+        // Add other headers if needed
+      };
+
+      const response = await axios.post(`${API_URL}/register_user`, formData, {
+        headers: headers,
+      });
+      
       console.log(response.data);
       setRegistrationSuccess(true); // Set the registrationSuccess state to true
+
       // Sending email data to SMTP endpoint
       const emailData = {
-        sender_email:SMTP_EML ,
+        sender_email: SMTP_EML,
         recipient_email: formData.emailid, // Replace with the appropriate recipient email address
         subject: "Test email by Vedam",
         message: "Being an employee with an id "+formData.empid+" Your Registrtion is successful with the user id  "+formData.username + "and password  "+formData.password,
       };
+
       setFormData({
         username: "",
         password: "",
         empid: "",
         emailid: "",
       });
-      const response2 = await axios.post(`${SMTP_URL}/send_email`, emailData);
+
+      const response2 = await axios.post(`${SMTP_URL}/send_email`, emailData, {
+        headers: headers,
+      });
+
       console.log(response2.data);
     } catch (error) {
       console.error("Error registering user:", error);

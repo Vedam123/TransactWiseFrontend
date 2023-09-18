@@ -29,7 +29,9 @@ export default function CreatePartnerForm() {
   useEffect(() => {
     const fetchCurrencies = async () => {
       try {
-        const response = await axios.get(`${API_URL}/list_currencies`);
+        const response = await axios.get(`${API_URL}/list_currencies`, {
+          headers: generateHeaders(),
+        });
         const currencies = response.data.currencies;
         const currencyCodes = currencies.map(
           (currency) => currency.currencycode
@@ -42,6 +44,17 @@ export default function CreatePartnerForm() {
 
     fetchCurrencies();
   }, []);
+
+  const generateHeaders = () => {
+    const token = localStorage.getItem("token");
+    const userid = localStorage.getItem("userid");
+
+    return {
+      'Authorization': `Bearer ${token}`,
+      'UserId': userid,
+      // Add other headers if needed
+    };
+  };
 
   const handleChange = (e) => {
     if (e.target.name === "partnerimage") {
@@ -75,8 +88,12 @@ export default function CreatePartnerForm() {
 
       const response = await axios.post(
         `${API_URL}/create_partner_data`,
-        formDataToSend
+        formDataToSend,
+        {
+          headers: generateHeaders(),
+        }
       );
+
 
       console.log(response.data);
       setFormData({

@@ -25,17 +25,25 @@ function ShowAllUISetupsForm() {
     const fetchData = async () => {
       try {
         const finalApiUrl = getFinalApiUrl();
-  
-        const response = await axios.get(finalApiUrl);
+
+        const authToken = localStorage.getItem('token');
+        const userid = localStorage.getItem('loggedInUserid');
+
+        const headers = {
+          'Authorization': `Bearer ${authToken}`,
+          'UserId': userid,
+        };
+
+        const response = await axios.get(finalApiUrl, { headers });
         setConfigData(response.data);
         setError(null);
-        setGenerationMessage(""); // Clear the generation message when data is fetched
+        setGenerationMessage("");
       } catch (error) {
         console.error("Error fetching config data:", error);
         setError("An error occurred while fetching data.");
       }
     };
-  
+
     if (useApiUrlFromFile || apiUrl) {
       fetchData();
     }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../utilities/css/appcss.css";
-//import DBConfigFileGenerator from "../DBConfigFileGenerator";
 import { API_URL } from "../setups/ConstDecl";
 
 function ShowAllDBSetupsForm() {
@@ -27,7 +26,15 @@ function ShowAllDBSetupsForm() {
       try {
         const finalApiUrl = getFinalApiUrl();
 
-        const response = await axios.get(finalApiUrl);
+        const authToken = localStorage.getItem('token');
+        const userid = localStorage.getItem('loggedInUserid');
+
+        const headers = {
+          'Authorization': `Bearer ${authToken}`,
+          'UserId': userid,
+        };
+
+        const response = await axios.get(finalApiUrl, { headers });
         const { config_data, user_data } = response.data;
 
         setConfigData(config_data);

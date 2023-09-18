@@ -7,20 +7,29 @@ function EmployeeListForm() {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchData = async () => {
+      const authToken = localStorage.getItem('token');
+      const userid = localStorage.getItem('loggedInUserid');
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/employee`);
-      setEmployees(response.data);
-    } catch (error) {
-      console.error("Error fetching employees:", error);
-    }
-  };
+      const headers = {
+        'Authorization': `Bearer ${authToken}`,
+        'UserId': userid,
+      };
+
+      try {
+        const response = await axios.get(`${API_URL}/employee`, { headers });
+        setEmployees(response.data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
+
+    fetchData(); // Call the fetchData function here
+
+  }, []); 
 
   return (
-          <div className="child-container form-container">
+        <div className="child-container form-container">
         <h1 className="title">List of Employees</h1>
         <table className="table table-striped table-bordered">
           <thead>

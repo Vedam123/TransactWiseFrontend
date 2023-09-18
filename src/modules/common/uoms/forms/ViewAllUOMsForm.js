@@ -6,18 +6,32 @@ import "../../../utilities/css/appcss.css";
 function ViewAllUOMsForm() {
   const [uoms, setUOMs] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const generateHeaders = () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userid");
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/list_uoms`);
-      setUOMs(response.data.uom);
-    } catch (error) {
-      console.error("Error fetching UOMs:", error);
-    }
+    return {
+      'Authorization': `Bearer ${token}`,
+      'UserId': userId,
+      // Add other headers if needed
+    };
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/list_uoms`, {
+          headers: generateHeaders(),
+        });
+        setUOMs(response.data.uom);
+      } catch (error) {
+        console.error("Error fetching UOMs:", error);
+      }
+    };
+
+    fetchData();
+
+  }, []);
 
   return (
     <div className="child-container form-container">
