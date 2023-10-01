@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { API_URL, SMTP_URL, SMTP_EML } from "../../../../admin/setups/ConstDecl";
+import { API_URL, SMTP_URL, SMTP_EML, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS } from "../../../../admin/setups/ConstDecl";
 import axios from "axios";
 import "../../../../utilities/css/appcss.css";
 import useToken from "../useToken";
+import CheckModuleAccess from "../../../modulepermissions/CheckModuleAccess";
 
 export default function RegisterUserForm() {
   const { token } = useToken();
@@ -13,17 +14,32 @@ export default function RegisterUserForm() {
     empid: "",
     emailid: "",
   });
+  const hasRequiredAccess = CheckModuleAccess(
+    BACKEND_ADMIN_MODULE_NAME, // Replace with your module name constant
+    MODULE_LEVEL_CREATE_ACCESS // Replace with your access level constant
+  );
 
   const [employeeData, setEmployeeData] = useState([]);
   const [registrationSuccess, setRegistrationSuccess] = useState(false); // State variable to track successful registration
 
   useEffect(() => {
+    if (!hasRequiredAccess) {
+      return; // Do not fetch data if access is not granted
+    }
+
     fetchEmployeeData();
-  }, []);
+  }, [hasRequiredAccess]);
 
   const fetchEmployeeData = async () => {
     try {
-      const response = await axios.get(`${API_URL}/employee`);
+      const authToken = localStorage.getItem('token');
+      const userid = localStorage.getItem('loggedInUserid');
+
+      const headers = {
+        'Authorization': `Bearer ${authToken}`,
+        'UserId': userid,
+      };
+      const response = await axios.get(`${API_URL}/employee` , { headers });
       const data = response.data;
       setEmployeeData(data);
     } catch (error) {
@@ -77,9 +93,9 @@ export default function RegisterUserForm() {
   };
 
   return (
-    <div className="child-container menu-container">
+ <div className="child-container menu-container">
       <h2 className="title">Register User</h2>
-      <div className="child-container form-container">
+      { hasRequiredAccess ? ( <div className="child-container form-container">
         {registrationSuccess ? (
           // Show success message after successful registration
           <div className="success-message">
@@ -167,7 +183,7 @@ export default function RegisterUserForm() {
             </button>
           </form>
         )}
-      </div>
-    </div>
+      </div> ) : (<div> You do not have permission to view this module </div>) }
+    </div> 
   );
 }

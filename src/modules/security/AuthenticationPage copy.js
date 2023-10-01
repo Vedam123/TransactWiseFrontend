@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { API_URL } from "../admin/setups/ConstDecl";
-import { SUPER_USERS_COUNT } from "../admin/setups/ConstDecl";
+import { SUPER_USERS_COUNT, APPLICATION_NAME } from "../admin/setups/ConstDecl";
 
 import RotatingImage from "../utilities/RotatingImage";
 import Login from "./accessmgmt/authtoolkit/Login";
@@ -54,33 +54,41 @@ import DBSetupsSearchPage from "../admin/DBSetupsSearchPage";
 
 function AuthenticationPage() {
   const { token, removeToken, setToken } = useToken();
-  const [showRegister, setShowRegister] = useState(false);
   const [loggedInUserid, setLoggedInUserid] = useState("");
   const [userPermissions, setUserPermissions] = useState([]);
   const [name, setName] = useState("");
   const [emp_img, setImage] = useState("");
+  // eslint-disable-next-line
+  const [refresh_token, setRefreshToken] = useState("");
 
   const nameWithSpace = name + "\u00a0";
   const useridWithSpace = loggedInUserid + "\u00a0";
 
-  const handleLoginSuccess = (userid, username, token, refresh_token, name,emp_img) => {
+  const handleLoginSuccess = (
+    userid,
+    username,
+    token,
+    refresh_token,
+    name,
+    emp_img
+  ) => {
     setToken(token);
     setLoggedInUserid(userid);
     setName(name);
     setImage(emp_img);
-  };
-
-  const handleRegisterClick = () => {
-    setShowRegister(true);
+    setRefreshToken(refresh_token);
   };
 
   useEffect(() => {
+    const storedUserId = localStorage.getItem("loggedInUserid");
+    //console.log("Stored user id ",storedUserId);
+    //console.log("Super user count ",SUPER_USERS_COUNT);
+    //console.log("Loggedin user id vs stored user id ",loggedInUserid, storedUserId);
     const fetchUserPermissions = async () => {
-      console.log("Fetch Permission is called ",loggedInUserid);
       if (token) {
         try {
           let filteredPermissions;
-          if (loggedInUserid < SUPER_USERS_COUNT) {
+          if (parseInt(storedUserId) < parseInt(SUPER_USERS_COUNT)) {
             const modulesResponse = await axios.get(`${API_URL}/list_modules`);
             const allModules = modulesResponse.data.modules;
             filteredPermissions = allModules.flatMap((module) => ({
@@ -89,10 +97,11 @@ function AuthenticationPage() {
               module: module.folder_name,
               read_permission: true,
               update_permission: true,
-              user_id: loggedInUserid,
+              user_id: storedUserId,
               write_permission: true,
-              loggedInUserid,
+              loggedInUserid: storedUserId,
             }));
+            //console.log("UseEffect Super User fetch userPermissions ", filteredPermissions);
           } else {
             const response = await axios.get(
               `${API_URL}/list_user_permissions`,
@@ -102,13 +111,18 @@ function AuthenticationPage() {
                 },
               }
             );
+            //console.log("UseEffect FETCHED ", response.data.user_module_permissions,"Logged in Userid ",loggedInUserid);
             filteredPermissions = response.data.user_module_permissions
-              .filter((permission) => permission.user_id === loggedInUserid)
+              .filter(
+                (permission) =>
+                  parseInt(permission.user_id) === parseInt(storedUserId)
+              )
               .map((permission) => ({
                 ...permission,
-                loggedInUserid,
+                loggedInUserid: storedUserId,
               }));
           }
+          //console.log("UseEffect DB Filtered userPermissions ", filteredPermissions);
           setUserPermissions(filteredPermissions);
         } catch (error) {
           console.error("Error fetching user permissions:", error);
@@ -125,173 +139,133 @@ function AuthenticationPage() {
     if (storedEmppic) {
       setImage(storedEmppic);
     }
+
+    const storedRefreshToken = localStorage.getItem("refresh_token");
+    if (storedRefreshToken) {
+      setRefreshToken(storedRefreshToken);
+    }
+
     fetchUserPermissions();
 
-  }, [token, loggedInUserid, showRegister, name, emp_img]);
+    console.log();
+    /* Do not delete the commented code below */
+  }, [token, loggedInUserid, name, emp_img, refresh_token]);
 
+  //eslint-disable-next-line
+  //}, [loggedInUserid]);
   return (
     <BrowserRouter>
-      {showRegister ? (
-        <RegisterUser />
+      {!token ? (
+        <div className="page-container center-container">
+          <h1 className="title">{APPLICATION_NAME}</h1>
+          <Login onLoginSuccess={handleLoginSuccess} />
+          <div className="rotating-image-container">
+            <RotatingImage />
+          </div>
+        </div>
       ) : (
-        <>
-          {!token ? (
-            <div className="page-container center-container ">
-              <h1 className="title">User Authentication Page</h1>
-              <div className="register-button-container">
-                <button onClick={handleRegisterClick}>Register</button>
-              </div>
-              <Login onLoginSuccess={handleLoginSuccess} />
-              <div className="rotating-image-container">
-                <RotatingImage />
-              </div>
+        <PermissionsContext.Provider value={userPermissions}>
+          <header className="logout_page-container">
+            <div className="left-header">
+              <UserName
+                username={nameWithSpace}
+                userid={useridWithSpace}
+                emp_img={emp_img}
+              />
+              <Link to="/">Home</Link>
             </div>
-          ) : (
-            <PermissionsContext.Provider value={userPermissions}>
-              <>
-                <header className="logout_page-container">
-                  <div className="left-header">
-                    <UserName username={nameWithSpace} userid={useridWithSpace} emp_img={emp_img} />
-                    <Link to="/">Home</Link>
-                  </div>
-                  <div className="right-header">
-                    <Logout token={removeToken} />
-                  </div>
-                </header>
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route
-                    path="/employee-functions"
-                    element={<EmployeePage />}
-                  />
-                  <Route
-                    path="/list-employees"
-                    element={<ViewAllEmployeesPage />}
-                  />
+            <div className="right-header">
+              <Logout token={removeToken} />
+            </div>
+          </header>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/employee-functions" element={<EmployeePage />} />
+            <Route path="/list-employees" element={<ViewAllEmployeesPage />} />
 
-                  <Route
-                    path="/create-employee"
-                    element={<CreateEmployeePage />}
-                  />
-                  <Route path="/user-functions" element={<UserRolesPage />} />
-                  <Route path="/list-users" element={<UsersList />} />
-                  <Route
-                    path="/list-user-permissions"
-                    element={<ListUserPermissions />}
-                  />
-                  <Route path="/register-user" element={<RegisterUser />} />
-                  <Route
-                    path="/create-permissions"
-                    element={<GrantPermissions />}
-                  />
-                  <Route
-                    path="/assign-user-modules"
-                    element={<AssignUserModules />}
-                  />
-                  <Route path="/common-module" element={<CommonPage />} />
+            <Route path="/create-employee" element={<CreateEmployeePage />} />
+            <Route path="/user-functions" element={<UserRolesPage />} />
+            <Route path="/list-users" element={<UsersList />} />
+            <Route
+              path="/list-user-permissions"
+              element={<ListUserPermissions />}
+            />
+            <Route path="/register-user" element={<RegisterUser />} />
+            <Route path="/create-permissions" element={<GrantPermissions />} />
+            <Route
+              path="/assign-user-modules"
+              element={<AssignUserModules />}
+            />
+            <Route path="/common-module" element={<CommonPage />} />
 
-                  <Route path="/currencies-page" element={<CurrenciesPage />} />
-                  <Route path="/taxcodes-page" element={<TaxCodesPage />} />
-                  <Route
-                    path="/exchangerates-page"
-                    element={<ExchangeRatesPage />}
-                  />
-                  <Route path="/uom-page" element={<UOMPage />} />
-                  <Route path="/bom-page" element={<BOMPage />} />
+            <Route path="/currencies-page" element={<CurrenciesPage />} />
+            <Route path="/taxcodes-page" element={<TaxCodesPage />} />
+            <Route path="/exchangerates-page" element={<ExchangeRatesPage />} />
+            <Route path="/uom-page" element={<UOMPage />} />
+            <Route path="/bom-page" element={<BOMPage />} />
 
-                  <Route
-                    path="/bom-explosion"
-                    element={<ViewBOMExplodePage />}
-                  />
-                  <Route path="/list-uoms" element={<ViewAllUOMsPage />} />
-                  <Route
-                    path="/list-currencies"
-                    element={<ViewAllCurrenciesPage />}
-                  />
-                  <Route
-                    path="/list-tax-codes"
-                    element={<ViewAllTaxCodesPage />}
-                  />
-                  <Route
-                    path="/list-exchange-rates"
-                    element={<ViewAllExchangeRatesPage />}
-                  />
-                  <Route
-                    path="/list-product-categories"
-                    element={<ViewAllProdCatPage />}
-                  />
-                  <Route path="/admin-module" element={<AdminPage />} />
+            <Route path="/bom-explosion" element={<ViewBOMExplodePage />} />
+            <Route path="/list-uoms" element={<ViewAllUOMsPage />} />
+            <Route
+              path="/list-currencies"
+              element={<ViewAllCurrenciesPage />}
+            />
+            <Route path="/list-tax-codes" element={<ViewAllTaxCodesPage />} />
+            <Route
+              path="/list-exchange-rates"
+              element={<ViewAllExchangeRatesPage />}
+            />
+            <Route
+              path="/list-product-categories"
+              element={<ViewAllProdCatPage />}
+            />
+            <Route path="/admin-module" element={<AdminPage />} />
 
-                  <Route
-                    path="/load-all-modules"
-                    element={<LoadModulestoDB />}
-                  />
-                  <Route
-                    path="/view-emails-function"
-                    element={<ViewEmailsPage />}
-                    V
-                  />
+            <Route path="/load-all-modules" element={<LoadModulestoDB />} />
+            <Route path="/view-emails-function" element={<ViewEmailsPage />} />
 
-                  <Route
-                    path="/create-ui-setups"
-                    element={<CreateUISetupsPage />}
-                  />
+            <Route path="/create-ui-setups" element={<CreateUISetupsPage />} />
 
-                  <Route
-                    path="/create-db-setups"
-                    element={<CreateDBSetupsPage />}
-                  />
+            <Route path="/create-db-setups" element={<CreateDBSetupsPage />} />
 
-                  <Route
-                    path="/list_ui_config_data/:searchType/:searchInput"
-                    element={<ShowAllUISetupsForm />}
-                  />
-                  <Route
-                    path="/list_ui_config_data"
-                    element={<ShowAllUISetupsForm />}
-                  />
+            <Route
+              path="/list_ui_config_data/:searchType/:searchInput"
+              element={<ShowAllUISetupsForm />}
+            />
+            <Route
+              path="/list_ui_config_data"
+              element={<ShowAllUISetupsForm />}
+            />
 
-                  <Route
-                    path="/list-ui-setups"
-                    element={<UISetupsSearchPage />}
-                  />
+            <Route path="/list-ui-setups" element={<UISetupsSearchPage />} />
 
-                  <Route
-                    path="/list-db-setups"
-                    element={<DBSetupsSearchPage />}
-                  />
+            <Route path="/list-db-setups" element={<DBSetupsSearchPage />} />
 
-                  <Route
-                    path="/list-products"
-                    element={<ViewAllProductsPage />}
-                  />
+            <Route path="/list-products" element={<ViewAllProductsPage />} />
 
-                  <Route
-                    path="/create-item-category"
-                    element={<CreateProdCatPage />}
-                  />
-                  <Route path="/products-module" element={<ProductsPage />} />
-                  <Route path="/purchase-module" element={<PurchasePage />} />
+            <Route
+              path="/create-item-category"
+              element={<CreateProdCatPage />}
+            />
+            <Route path="/products-module" element={<ProductsPage />} />
+            <Route path="/purchase-module" element={<PurchasePage />} />
 
-                  <Route
-                    path="/partner-results/:searchType/:searchInput"
-                    element={<PartnerResults />}
-                  />
-                  <Route path="/partner-results" element={<PartnerResults />} />
-                  <Route
-                    path="/list-businesspartners"
-                    element={<PartnerSearchPage />}
-                  />
+            <Route
+              path="/partner-results/:searchType/:searchInput"
+              element={<PartnerResults />}
+            />
+            <Route path="/partner-results" element={<PartnerResults />} />
+            <Route
+              path="/list-businesspartners"
+              element={<PartnerSearchPage />}
+            />
 
-                  <Route
-                    path="/create-businesspartner"
-                    element={<CreatePartnerPage />}
-                  />
-                </Routes>
-              </>
-            </PermissionsContext.Provider>
-          )}
-        </>
+            <Route
+              path="/create-businesspartner"
+              element={<CreatePartnerPage />}
+            />
+          </Routes>
+        </PermissionsContext.Provider>
       )}
     </BrowserRouter>
   );

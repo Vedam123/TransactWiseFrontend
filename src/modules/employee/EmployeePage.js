@@ -7,8 +7,6 @@ import DocumentationContainer from "../utilities/DocumentationContainer";
 import DisplayCard from "../utilities/DisplayCard";
 
 export default function EmployeePage() {
-
-
   return (
     <div className="page-container">
       <h1 className="title">Employee</h1>

@@ -1,19 +1,18 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { API_URL } from "../../../admin/setups/ConstDecl";
+import { API_URL, BACKEND_PRODUCT_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
-import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 
 function ViewAllProdCatForm() {
   const [itemCategories, setItemCategories] = useState([]);
-  const userPermissions = ModulePermissions({ moduleName: "products" }); // Fetch user permissions
+  const hasRequiredAccess = CheckModuleAccess(BACKEND_PRODUCT_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS);
 
   const fetchData = useCallback(async () => {
     try {
       const headers = {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'UserId': localStorage.getItem("userid"),
-        // Add other headers if needed
       };
 
       const response = await axios.get(`${API_URL}/list_item_categories`, {
@@ -27,20 +26,15 @@ function ViewAllProdCatForm() {
   }, []);
 
   useEffect(() => {
-    fetchData();
+    // Only fetch data if the user has required access
+    if (hasRequiredAccess) {
+      fetchData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Check user permissions before rendering
-  const canViewModule = userPermissions.canViewModule;
-
-  if (!canViewModule) {
-    // User doesn't have permission to view the module
-    return <div>You do not have permission to view this module.</div>;
-  }
+  }, [hasRequiredAccess]); // Include hasRequiredAccess as a dependency
 
   return (
-    <div className="child-container form-container">
+    hasRequiredAccess ? (<div className="child-container form-container">
       <h1 className="title">List of Item Categories</h1>
       <table className="table table-striped table-bordered">
         <thead>
@@ -74,7 +68,7 @@ function ViewAllProdCatForm() {
           ))}
         </tbody>
       </table>
-    </div>
+    </div>) : (<div> You do not have permission to view this module </div>)
   );
 }
 

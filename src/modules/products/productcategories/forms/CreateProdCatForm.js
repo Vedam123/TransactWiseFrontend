@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL } from "../../../admin/setups/ConstDecl";
+import { API_URL, BACKEND_PRODUCT_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
-import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 
 export default function CreateProdCatForm() {
   const [formData, setFormData] = useState({
@@ -13,9 +13,9 @@ export default function CreateProdCatForm() {
     is_active: true,
     tax_information: "",
   });
-  const userPermissions = ModulePermissions({ moduleName: "products" }); // Fetch user permissions
 
   const [uoms, setUOMs] = useState([]);
+  const hasRequiredAccess = CheckModuleAccess(BACKEND_PRODUCT_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS);
 
   useEffect(() => {
     async function fetchUOMs() {
@@ -58,7 +58,7 @@ export default function CreateProdCatForm() {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -91,18 +91,10 @@ export default function CreateProdCatForm() {
     }
   };
 
-  // Check user permissions before rendering
-  const canViewModule = userPermissions.canViewModule;
-
-  if (!canViewModule) {
-    // User doesn't have permission to view the module
-    return <div>You do not have permission to view this module.</div>;
-  }
-
   return (
     <div className="child-container menu-container">
       <h2 className="title">Create Item Category</h2>
-      <div className="child-container form-container">
+      { hasRequiredAccess ? ( <div className="child-container form-container">
         <form onSubmit={handleSubmit}>
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
@@ -226,7 +218,7 @@ export default function CreateProdCatForm() {
             </div>
           </div>
         </form>
-      </div>
-    </div>
+      </div> ) : (<div> You do not have permission to view this module </div>) }
+    </div> 
   );
 }

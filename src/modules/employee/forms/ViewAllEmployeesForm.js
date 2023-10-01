@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { API_URL } from "../../admin/setups/ConstDecl";
 import axios from "axios";
+import { API_URL, BACKEND_EMPLOYEE_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../admin/setups/ConstDecl"; // Import your constants
 import "../../utilities/css/appcss.css";
+import CheckModuleAccess from "../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
 function EmployeeListForm() {
   const [employees, setEmployees] = useState([]);
+  const hasRequiredAccess = CheckModuleAccess(BACKEND_EMPLOYEE_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS);
 
   useEffect(() => {
+    if (!hasRequiredAccess) {
+      return; // Do not fetch data if access is not granted
+    }
+
     const fetchData = async () => {
       const authToken = localStorage.getItem('token');
       const userid = localStorage.getItem('loggedInUserid');
@@ -26,10 +32,11 @@ function EmployeeListForm() {
 
     fetchData(); // Call the fetchData function here
 
-  }, []); 
+  }, [hasRequiredAccess]);
 
   return (
-        <div className="child-container form-container">
+    hasRequiredAccess ? (
+      <div className="child-container form-container">
         <h1 className="title">List of Employees</h1>
         <table className="table table-striped table-bordered">
           <thead>
@@ -70,7 +77,9 @@ function EmployeeListForm() {
           </tbody>
         </table>
       </div>
-
+    ) : (
+      <div>You do not have permission to view this module</div>
+    )
   );
 }
 

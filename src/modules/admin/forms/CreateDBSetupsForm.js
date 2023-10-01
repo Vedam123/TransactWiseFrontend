@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { API_URL } from "../setups/ConstDecl"; // Adjust the import path as needed
+import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS } from "../setups/ConstDecl"; // Import your constants
+import "../../utilities/css/appcss.css"; // Adjust the import path as needed
+import CheckModuleAccess from "../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
 export default function CreateDBSetupsForm() {
   const [formData, setFormData] = useState({
@@ -13,11 +15,13 @@ export default function CreateDBSetupsForm() {
 
   const [submitStatus, setSubmitStatus] = useState(null); // Add state for form submission status
   const [hashedPassword, setHashedPassword] = useState("");
+  const hasRequiredAccess = CheckModuleAccess(BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS); // Use your access checking function
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
 
   const handlePasswordGeneration = async () => {
     try {
@@ -99,7 +103,7 @@ export default function CreateDBSetupsForm() {
   return (
     <div className="child-container menu-container">
       <h2>Create UI Configuration Data</h2>
-      <div className="child-container form-container">
+      { hasRequiredAccess ? ( <div className="child-container form-container">
         <form onSubmit={handleSubmit}>
           {/* Display success or failure message */}
           {submitStatus === "success" && (
@@ -201,7 +205,7 @@ export default function CreateDBSetupsForm() {
             </div>
           </div>
         </form>
-      </div>
+      </div>  ) : (<div> You do not have permission to view this module </div>) }
     </div>
   );
 }

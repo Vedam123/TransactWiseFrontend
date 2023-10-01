@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { SMTP_URL } from "../admin/setups/ConstDecl";
 import axios from "axios";
+import { SMTP_URL, BACKEND_EMPLOYEE_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../admin/setups/ConstDecl"; // Import your constants
 import "./css/appcss.css";
+import CheckModuleAccess from "../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
 const ViewEmailsPage = () => {
   const [emails, setEmails] = useState([]);
+  const hasRequiredAccess = CheckModuleAccess(BACKEND_EMPLOYEE_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS);
 
   useEffect(() => {
+    if (!hasRequiredAccess) {
+      return; // Do not fetch data if access is not granted
+    }
     fetchData();
-  }, []);
+  }, [hasRequiredAccess]);
 
   const fetchData = async () => {
     try {
@@ -20,31 +25,35 @@ const ViewEmailsPage = () => {
   };
 
   return (
-    <div className="child-container form-container">
-      <h1 className="title">List of Emails</h1>
-      <table className="table table-striped table-bordered">
-        <thead>
-          <tr className="table-header">
-            <th>Email ID</th>
-            <th>Sender Email</th>
-            <th>Recipient Email</th>
-            <th>Subject</th>
-            <th>Message</th>
-          </tr>
-        </thead>
-        <tbody>
-          {emails.map((email) => (
-            <tr key={email.id} className="table-row">
-              <td>{email.id}</td>
-              <td>{email.sender_email}</td>
-              <td>{email.recipient_email}</td>
-              <td>{email.subject}</td>
-              <td>{email.message}</td>
+    hasRequiredAccess ? (
+      <div className="child-container form-container">
+        <h1 className="title">List of Emails</h1>
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr className="table-header">
+              <th>Email ID</th>
+              <th>Sender Email</th>
+              <th>Recipient Email</th>
+              <th>Subject</th>
+              <th>Message</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {emails.map((email) => (
+              <tr key={email.id} className="table-row">
+                <td>{email.id}</td>
+                <td>{email.sender_email}</td>
+                <td>{email.recipient_email}</td>
+                <td>{email.subject}</td>
+                <td>{email.message}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <div>You do not have permission to view this module</div>
+    )
   );
 };
 

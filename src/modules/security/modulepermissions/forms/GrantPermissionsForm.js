@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL } from "../../../admin/setups/ConstDecl";
+import { API_URL  ,BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 
 const GrantPermissionsForm = () => {
   const [username, setUsername] = useState("");
@@ -9,6 +10,11 @@ const GrantPermissionsForm = () => {
   const [gbuserid, setGbuserid] = useState("");
   const [moduleEntries, setModuleEntries] = useState([]);
   const [statusMessage, setStatusMessage] = useState("");
+
+  const hasRequiredAccess = CheckModuleAccess(
+    BACKEND_ADMIN_MODULE_NAME, // Replace with your module name constant
+    MODULE_LEVEL_VIEW_ACCESS // Replace with your access level constant
+  );
 
   const displayStatusMessage = (message, duration = 3000) => {
     setStatusMessage(message);
@@ -23,9 +29,26 @@ const GrantPermissionsForm = () => {
     setModuleEntries([]);
   };
 
+  const generateHeaders = () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userid");
+
+    return {
+      'Authorization': `Bearer ${token}`,
+      'UserId': userId,
+      // Add other headers if needed
+    };
+  };
+
+
   useEffect(() => {
+    if (!hasRequiredAccess) {
+      return; // Do not fetch data if access is not granted
+    }
+  
+    // Fetch data here if access is granted
     //fetchModules();
-  }, []);
+  }, [hasRequiredAccess]);
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -36,7 +59,9 @@ const GrantPermissionsForm = () => {
 
     try {
       // Check if the user exists in adm.users table
-      const usersResponse = await axios.get(`${API_URL}/list_users`);
+      const usersResponse = await axios.get(`${API_URL}/list_users`, {
+        headers: generateHeaders(), // Include headers here
+      });
       const usersData = usersResponse.data.users;
       if (!Array.isArray(usersData)) {
           console.log("Invalid response from the server. Users data is not in the expected format.")
@@ -59,7 +84,10 @@ const GrantPermissionsForm = () => {
 
       // Check if the user exists in adm.user_module_permissions table
       const permissionsResponse = await axios.get(
-        `${API_URL}/list_user_permissions`
+        `${API_URL}/list_user_permissions`,
+        {
+          headers: generateHeaders(), // Include headers here
+        }
       );
       const userPermissionsData =
         permissionsResponse.data.user_module_permissions;
@@ -135,7 +163,10 @@ const GrantPermissionsForm = () => {
     try {
       const response = await axios.post(
         `${API_URL}/create_permissions`,
-        updatedModuleEntries
+        updatedModuleEntries,
+        {
+          headers: generateHeaders(), // Include headers here
+        }
       );
 
       console.log(response.data);
@@ -158,7 +189,7 @@ const GrantPermissionsForm = () => {
   return (
     <div className="child-container form-container">
       <h1 className="title">Create User Module Permissions</h1>
-      <form onSubmit={handleSubmit}>
+      {hasRequiredAccess ? ( <form onSubmit={handleSubmit}>
         {statusMessage && <div className="status-message">{statusMessage}</div>}
         <div className="form-group col-md-6 mb-2">
           <div className="form-row">
@@ -250,7 +281,9 @@ const GrantPermissionsForm = () => {
             Save Permissions
           </button>
         </div>
-      </form>
+      </form> ) : (
+      <div>You do not have permission to view this module</div>
+    )}
     </div>
   );
 };

@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { API_URL } from "../../../admin/setups/ConstDecl";
+import { API_URL ,BACKEND_COMMON_MODULE_NAME,MODULE_LEVEL_VIEW_ACCESS} from "../../../admin/setups/ConstDecl";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 
 function PartnerResults() {
   const { searchType, searchInput } = useParams();
   const [partnerData, setPartnerData] = useState([]);
   const [error, setError] = useState(null);
 
+  const hasRequiredAccess = CheckModuleAccess(
+    BACKEND_COMMON_MODULE_NAME, // Replace with your module name constant
+    MODULE_LEVEL_VIEW_ACCESS // Replace with your access level constant
+  );
+
   const generateHeaders = () => {
     const token = localStorage.getItem("token");
-    const userid = localStorage.getItem("userid");
+    const userId = localStorage.getItem("userid");
 
     return {
       'Authorization': `Bearer ${token}`,
-      'UserId': userid,
+      'UserId': userId,
       // Add other headers if needed
     };
   };
 
   useEffect(() => {
+    if (!hasRequiredAccess) {
+      return; // Do not fetch data if access is not granted
+    }
+
     const fetchData = async () => {
       try {
         let apiUrl = `${API_URL}/get_partner_data`;
@@ -43,10 +53,10 @@ function PartnerResults() {
     };
 
     fetchData();
-  }, [searchType, searchInput]);
+  }, [searchType, searchInput, hasRequiredAccess]); // Include hasRequiredAccess as a dependency
   
   return (
-    <div>
+    hasRequiredAccess ? ( <div>
       <h2>Partner Search Results</h2>
       {error ? (
         <p>{error}</p>
@@ -109,7 +119,9 @@ function PartnerResults() {
           </tbody>
         </table>
       )}
-    </div>
+    </div>  ) : (
+      <div>You do not have permission to view this module</div>
+    )
   );
 }
 

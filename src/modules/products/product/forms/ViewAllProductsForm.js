@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { API_URL } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
+import { API_URL, BACKEND_PRODUCT_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl"; // Import your constants
 import "../../../utilities/css/appcss.css";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 
 function ViewAllProductsForm() {
   const [items, setItems] = useState([]);
   const [categoryMap, setCategoryMap] = useState({});
   const [uomAbbreviations, setUomAbbreviations] = useState({});
+  const hasRequiredAccess = CheckModuleAccess(
+    BACKEND_PRODUCT_MODULE_NAME, // Replace with your module name constant
+    MODULE_LEVEL_VIEW_ACCESS // Replace with your access level constant
+  );
 
   const generateHeaders = () => {
     const token = localStorage.getItem("token");
@@ -20,6 +25,10 @@ function ViewAllProductsForm() {
   };
 
   useEffect(() => {
+    if (!hasRequiredAccess) {
+      return; // Do not fetch data if access is not granted
+    }
+
     const fetchData = async () => {
       try {
         const response = await axios.get(`${API_URL}/list_items`, {
@@ -66,10 +75,10 @@ function ViewAllProductsForm() {
     fetchData();
     fetchUomAbbreviations();
     fetchCategoryNames();
-  }, []);
-
+  }, [hasRequiredAccess]); // Include hasRequiredAccess as a dependency
+  console.log("hasRequiredAccess:", hasRequiredAccess);
   return (
-    <div className="child-container form-container">
+    hasRequiredAccess ? (<div className="child-container form-container">
       <table className="table table-striped table-bordered">
         <thead>
           <tr className="table-header">
@@ -108,7 +117,7 @@ function ViewAllProductsForm() {
           ))}
         </tbody>
       </table>
-    </div>
+    </div> ) : (<div> You do not have permission to view this module </div>)
   );
 }
 

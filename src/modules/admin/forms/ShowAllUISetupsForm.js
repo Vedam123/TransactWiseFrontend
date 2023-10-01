@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../utilities/css/appcss.css";
 import ConfigFileGenerator from "../ConfigFileGenerator";
-import { API_URL } from "../setups/ConstDecl";
+import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../setups/ConstDecl"; // Import your constants
+import CheckModuleAccess from "../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
 function ShowAllUISetupsForm() {
   const [configData, setConfigData] = useState([]);
@@ -11,6 +12,8 @@ function ShowAllUISetupsForm() {
   const [useApiUrlFromFile, setUseApiUrlFromFile] = useState(false);
   const [apiUrl, setApiUrl] = useState("");
   const [generationMessage, setGenerationMessage] = useState(""); // Added a state for generation message
+
+  const hasRequiredAccess = CheckModuleAccess(BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS); // Use your access checking function
 
   const getFinalApiUrl = () => {
     if (useApiUrlFromFile) {
@@ -49,7 +52,6 @@ function ShowAllUISetupsForm() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiUrl, useApiUrlFromFile]);
-  
 
   const handleGenerateFile = async () => {
     const finalApiUrl = getFinalApiUrl();
@@ -85,70 +87,74 @@ function ShowAllUISetupsForm() {
   return (
     <div className="child-container menu-container">
       <h2>Configurations from DB and File Generation</h2>
-      <div className="child-container form-container">
-        <div className="form-group col-md-6 mb-2">
-          <div className="form-row">
-            <label htmlFor="serverUrl" className="label-container">
-              Server URL:
-            </label>
-            <input
-              type="text"
-              id="serverUrl"
-              placeholder="Enter API URL"
-              value={apiUrl}
-              onChange={handleApiUrlChange}
-              className="form-control input-field"
-              disabled={useApiUrlFromFile} // Disable input when checkbox is selected
-            />
+      {hasRequiredAccess ? (
+        <div className="child-container form-container">
+          <div className="form-group col-md-6 mb-2">
+            <div className="form-row">
+              <label htmlFor="serverUrl" className="label-container">
+                Server URL:
+              </label>
+              <input
+                type="text"
+                id="serverUrl"
+                placeholder="Enter API URL"
+                value={apiUrl}
+                onChange={handleApiUrlChange}
+                className="form-control input-field"
+                disabled={useApiUrlFromFile} // Disable input when checkbox is selected
+              />
+            </div>
           </div>
-        </div>
-        <div className="form-check">
-          <input
-            type="checkbox"
-            id="ignoreUrlEntry"
-            checked={useApiUrlFromFile}
-            onChange={handleUseApiUrlFromFileChange}
-            className="form-check-input"
-            disabled={!!apiUrl} // Disable checkbox when input has value
-          />
-          <label htmlFor="ignoreUrlEntry" className="form-check-label">
-            Retrieve Configuration Data by API URL
-          </label>
-        </div>
-        {error ? (
-          <p>{error}</p>
-        ) : (
-          <>
-            {configData.length > 0 && (
-              <table className="striped-table">
-                <thead>
-                  <tr className="table-header">
-                    <th>Config Key</th>
-                    <th>Config Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {configData.map((config) => (
-                    <tr key={config.config_key}>
-                      <td>{config.config_key}</td>
-                      <td>{config.config_value}</td>
+          <div className="form-check">
+            <input
+              type="checkbox"
+              id="ignoreUrlEntry"
+              checked={useApiUrlFromFile}
+              onChange={handleUseApiUrlFromFileChange}
+              className="form-check-input"
+              disabled={!!apiUrl} // Disable checkbox when input has a value
+            />
+            <label htmlFor="ignoreUrlEntry" className="form-check-label">
+              Retrieve Configuration Data by API URL
+            </label>
+          </div>
+          {error ? (
+            <p>{error}</p>
+          ) : (
+            <>
+              {configData.length > 0 && (
+                <table className="striped-table">
+                  <thead>
+                    <tr className="table-header">
+                      <th>Config Key</th>
+                      <th>Config Value</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-            <button
-              onClick={handleGenerateFile}
-              className="btn btn-primary"
-              disabled={isGeneratingFile}
-            >
-              {isGeneratingFile ? "Generating File..." : "Generate File"}
-            </button>
-            <p>{generationMessage}</p>
-            {isGeneratingFile && <ConfigFileGenerator apiUrl={getFinalApiUrl()} />}
-          </>
-        )}
-      </div>
+                  </thead>
+                  <tbody>
+                    {configData.map((config) => (
+                      <tr key={config.config_key}>
+                        <td>{config.config_key}</td>
+                        <td>{config.config_value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+              <button
+                onClick={handleGenerateFile}
+                className="btn btn-primary"
+                disabled={isGeneratingFile}
+              >
+                {isGeneratingFile ? "Generating File..." : "Generate File"}
+              </button>
+              <p>{generationMessage}</p>
+              {isGeneratingFile && <ConfigFileGenerator apiUrl={getFinalApiUrl()} />}
+            </>
+          )}
+        </div>
+      ) : (
+        <div>You do not have permission to view this module</div>
+      )}
     </div>
   );
 }

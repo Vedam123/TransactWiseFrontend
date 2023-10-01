@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../utilities/css/appcss.css";
-import { API_URL } from "../setups/ConstDecl";
+import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../setups/ConstDecl"; // Import your constants
+import CheckModuleAccess from "../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
 function ShowAllDBSetupsForm() {
   const [configData, setConfigData] = useState([]);
@@ -11,6 +12,8 @@ function ShowAllDBSetupsForm() {
   const [useApiUrlFromFile, setUseApiUrlFromFile] = useState(false);
   const [apiUrl, setApiUrl] = useState("");
   const [generationMessage, setGenerationMessage] = useState("");
+
+  const hasRequiredAccess = CheckModuleAccess(BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS); // Use your access checking function
 
   const getFinalApiUrl = () => {
     if (useApiUrlFromFile) {
@@ -53,34 +56,32 @@ function ShowAllDBSetupsForm() {
     // eslint-disable-next-line
   }, [apiUrl, useApiUrlFromFile]);
 
- 
-  
   const handleGenerateFile = async () => {
     const finalApiUrl = getFinalApiUrl();
-  
+
     if (!finalApiUrl) {
       setError("Please enter a valid API URL or check 'Retrieve Configuration Data by API URL'.");
       return;
     }
-  
+
     setIsGeneratingFile(true);
     setGenerationMessage("Generating File...");
-  
+
     try {
       const response = await axios.get(finalApiUrl);
-  
+
       // Extract config_data from the response
       const { config_data, user_data } = response.data;
-  
+
       // Create a mapping of config_key to config_value
       const configMapping = {};
       config_data.forEach((config) => {
         configMapping[config.config_key] = config.config_value;
       });
-  
+
       // Define the content for config.py
       let fileContent = `from datetime import timedelta\n`;
-  
+
       Object.keys(configMapping).forEach((key) => {
         const value = configMapping[key];
         if (value === "True" || value === "False") {
@@ -93,18 +94,18 @@ function ShowAllDBSetupsForm() {
           fileContent += `${key} = "${value}"\n`;
         }
       });
-  
+
       // Generate APPLICATION_CREDENTIALS based on config_data
       fileContent += `APPLICATION_CREDENTIALS = [\n`;
       user_data.forEach((user, index) => {
         fileContent += `    {"userid": "${user.userid}", "username": "${user.username}", "name": "${user.name}", "password": "${user.password}"},\n`;
       });
       fileContent += `]\n`;
-  
+
       // Create a Blob with the file content
       const blob = new Blob([fileContent], { type: "text/plain" });
       const url = window.URL.createObjectURL(blob);
-  
+
       // Create a download link and trigger the download
       const a = document.createElement("a");
       a.href = url;
@@ -112,7 +113,7 @@ function ShowAllDBSetupsForm() {
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
-  
+
       setIsGeneratingFile(false);
       setGenerationMessage("File Generated!");
       setError("");
@@ -123,7 +124,6 @@ function ShowAllDBSetupsForm() {
       setError("An error occurred while generating the file.");
     }
   };
-  
 
   const handleApiUrlChange = (event) => {
     setApiUrl(event.target.value);
@@ -144,97 +144,101 @@ function ShowAllDBSetupsForm() {
   return (
     <div className="child-container menu-container">
       <h2>Configurations and User Data from DB</h2>
-      <div className="child-container form-container">
-        <div className="form-group col-md-6 mb-2">
-          <div className="form-row">
-            <label htmlFor="serverUrl" className="label-container">
-              Server URL:
-            </label>
-            <input
-              type="text"
-              id="serverUrl"
-              placeholder="Enter API URL"
-              value={apiUrl}
-              onChange={handleApiUrlChange}
-              className="form-control input-field"
-              disabled={useApiUrlFromFile}
-            />
+      {hasRequiredAccess ? (
+        <div className="child-container form-container">
+          <div className="form-group col-md-6 mb-2">
+            <div className="form-row">
+              <label htmlFor="serverUrl" className="label-container">
+                Server URL:
+              </label>
+              <input
+                type="text"
+                id="serverUrl"
+                placeholder="Enter API URL"
+                value={apiUrl}
+                onChange={handleApiUrlChange}
+                className="form-control input-field"
+                disabled={useApiUrlFromFile}
+              />
+            </div>
           </div>
-        </div>
-        <div className="form-check">
-          <input
-            type="checkbox"
-            id="ignoreUrlEntry"
-            checked={useApiUrlFromFile}
-            onChange={handleUseApiUrlFromFileChange}
-            className="form-check-input"
-            disabled={!!apiUrl}
-          />
-          <label htmlFor="ignoreUrlEntry" className="form-check-label">
-            Retrieve Configuration Data by API URL
-          </label>
-        </div>
-        {error ? (
-          <p>{error}</p>
-        ) : (
-          <>
-            {configData && configData.length > 0 && (
-              <div>
-                <h3>Configuration Data</h3>
-                <table className="striped-table">
-                  <thead>
-                    <tr className="table-header">
-                      <th>Config Key</th>
-                      <th>Config Value</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {configData.map((config, index) => (
-                      <tr key={index}>
-                        <td>{config.config_key}</td>
-                        <td>{config.config_value}</td>
+          <div className="form-check">
+            <input
+              type="checkbox"
+              id="ignoreUrlEntry"
+              checked={useApiUrlFromFile}
+              onChange={handleUseApiUrlFromFileChange}
+              className="form-check-input"
+              disabled={!!apiUrl}
+            />
+            <label htmlFor="ignoreUrlEntry" className="form-check-label">
+              Retrieve Configuration Data by API URL
+            </label>
+          </div>
+          {error ? (
+            <p>{error}</p>
+          ) : (
+            <>
+              {configData && configData.length > 0 && (
+                <div>
+                  <h3>Configuration Data</h3>
+                  <table className="striped-table">
+                    <thead>
+                      <tr className="table-header">
+                        <th>Config Key</th>
+                        <th>Config Value</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-            {userData && userData.length > 0 && (
-              <div>
-                <h3>User Data</h3>
-                <table className="striped-table">
-                  <thead>
-                    <tr className="table-header">
-                      <th>User ID</th>
-                      <th>Username</th>
-                      <th>Name</th>
-                      <th>Password</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userData.map((user, index) => (
-                      <tr key={index}>
-                        <td>{user.userid}</td>
-                        <td>{user.username}</td>
-                        <td>{user.name}</td>
-                        <td>{user.password}</td>
+                    </thead>
+                    <tbody>
+                      {configData.map((config, index) => (
+                        <tr key={index}>
+                          <td>{config.config_key}</td>
+                          <td>{config.config_value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {userData && userData.length > 0 && (
+                <div>
+                  <h3>User Data</h3>
+                  <table className="striped-table">
+                    <thead>
+                      <tr className="table-header">
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Password</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-            <button
-              onClick={handleGenerateFile}
-              className="btn btn-primary"
-              disabled={isGeneratingFile}
-            >
-              {isGeneratingFile ? "Generating File..." : "Generate File"}
-            </button>
-            <p>{generationMessage}</p>
-          </>
-        )}
-      </div>
+                    </thead>
+                    <tbody>
+                      {userData.map((user, index) => (
+                        <tr key={index}>
+                          <td>{user.userid}</td>
+                          <td>{user.username}</td>
+                          <td>{user.name}</td>
+                          <td>{user.password}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              <button
+                onClick={handleGenerateFile}
+                className="btn btn-primary"
+                disabled={isGeneratingFile}
+              >
+                {isGeneratingFile ? "Generating File..." : "Generate File"}
+              </button>
+              <p>{generationMessage}</p>
+            </>
+          )}
+        </div>
+      ) : (
+        <div>You do not have permission to view this module</div>
+      )}
     </div>
   );
 }

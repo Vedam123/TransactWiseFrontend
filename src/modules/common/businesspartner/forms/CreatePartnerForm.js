@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { API_URL } from "../../../admin/setups/ConstDecl";
+import { API_URL , BACKEND_COMMON_MODULE_NAME , MODULE_LEVEL_CREATE_ACCESS } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
 export default function CreatePartnerForm() {
   const [formData, setFormData] = useState({
@@ -26,7 +27,16 @@ export default function CreatePartnerForm() {
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const statusOptions = ["Active", "Inactive", "Dormant"];
 
+  const hasRequiredAccess = CheckModuleAccess(
+    BACKEND_COMMON_MODULE_NAME, // Replace with your module name constant
+    MODULE_LEVEL_CREATE_ACCESS // Replace with your access level constant
+  );
+
   useEffect(() => {
+    if (!hasRequiredAccess) {
+      return; // Do not fetch data if access is not granted
+    }
+
     const fetchCurrencies = async () => {
       try {
         const response = await axios.get(`${API_URL}/list_currencies`, {
@@ -43,7 +53,7 @@ export default function CreatePartnerForm() {
     };
 
     fetchCurrencies();
-  }, []);
+  }, [hasRequiredAccess]);
 
   const generateHeaders = () => {
     const token = localStorage.getItem("token");
@@ -79,8 +89,8 @@ export default function CreatePartnerForm() {
       formDataToSend.append("state", formData.state);
       formDataToSend.append("postalcode", formData.postalcode);
       formDataToSend.append("country", formData.country);
-      formDataToSend.append("taxid", formData.taxid); // Add this line
-      formDataToSend.append("registrationnumber", formData.registrationnumber); // Add this line
+      formDataToSend.append("taxid", formData.taxid);
+      formDataToSend.append("registrationnumber", formData.registrationnumber);
       formDataToSend.append("additionalinfo", formData.additionalinfo);
       formDataToSend.append("currencycode", formData.currencycode);
       formDataToSend.append("status", formData.status);
@@ -93,7 +103,6 @@ export default function CreatePartnerForm() {
           headers: generateHeaders(),
         }
       );
-
 
       console.log(response.data);
       setFormData({
@@ -123,7 +132,7 @@ export default function CreatePartnerForm() {
     <div className="child-container menu-container">
       <h2 className="title">Create Partner</h2>
       <div className="child-container form-container">
-        <form onSubmit={handleSubmit}>
+      {hasRequiredAccess ? ( <form onSubmit={handleSubmit}>
           {/* Partner Type */}
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
@@ -423,7 +432,9 @@ export default function CreatePartnerForm() {
               </button>
             </div>
           </div>
-        </form>
+        </form>  ) : (
+          <div> You do not have permission to view this module </div>
+        )}
       </div>
     </div>
   );

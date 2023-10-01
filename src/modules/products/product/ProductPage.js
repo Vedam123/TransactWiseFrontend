@@ -7,8 +7,6 @@ import DisplayCard from "../../utilities/DisplayCard";
 
 export default function ProductPage() {
 
-
-
   return (
     <DisplayCard title="Products" color="#FFD799">
       <div className="child-container form-container">

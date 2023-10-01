@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-//import { useHistory } from "react-router-dom";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import {BACKEND_COMMON_MODULE_NAME,MODULE_LEVEL_VIEW_ACCESS} from "../../../admin/setups/ConstDecl";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your permission checker
 
 function PartnerSearchForm() {
   const [searchType, setSearchType] = useState("partnerid");
   const [searchInput, setSearchInput] = useState("");
-  //const history = useHistory();
   const navigate = useNavigate();
 
-  
+  const hasRequiredAccess = CheckModuleAccess(
+    BACKEND_COMMON_MODULE_NAME, // Replace with your module name constant
+    MODULE_LEVEL_VIEW_ACCESS // Replace with your access level constant
+  );
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -16,7 +19,12 @@ function PartnerSearchForm() {
     const searchPath = searchInput
       ? `/partner-results/${searchType}/${searchInput}`
       : "/partner-results";
-      //console.log(searchPath)
+
+    if (!hasRequiredAccess) {
+      alert("You do not have permission to perform this action.");
+      return;
+    }
+
     navigate(searchPath);
   };
 
@@ -24,7 +32,7 @@ function PartnerSearchForm() {
     <div className="child-container menu-container">
       <h2 className="title">Partner Search</h2>
       <div className="child-container form-container">
-        <form onSubmit={handleSearch}>
+      {hasRequiredAccess ? ( <form onSubmit={handleSearch}>
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
               <div className="label-container">
@@ -64,7 +72,9 @@ function PartnerSearchForm() {
               </button>
             </div>
           </div>
-        </form>
+        </form> ) : (
+          <div>You do not have permission to view this module</div>
+        )}
       </div>
     </div>
   );

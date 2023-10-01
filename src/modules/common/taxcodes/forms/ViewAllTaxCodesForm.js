@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { API_URL } from "../../../admin/setups/ConstDecl";
+import { API_URL, BACKEND_COMMON_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
 function ViewAllTaxCodesForm() {
   const [taxCodes, setTaxCodes] = useState([]);
+
+  const hasRequiredAccess = CheckModuleAccess(
+    BACKEND_COMMON_MODULE_NAME, // Replace with your module name constant
+    MODULE_LEVEL_VIEW_ACCESS // Replace with your access level constant
+  );
 
   const generateHeaders = () => {
     const token = localStorage.getItem("token");
@@ -18,6 +24,10 @@ function ViewAllTaxCodesForm() {
   };
 
   useEffect(() => {
+    if (!hasRequiredAccess) {
+      return; // Do not fetch data if access is not granted
+    }
+
     const fetchData = async () => {
       try {
         const response = await axios.get(`${API_URL}/list_tax_codes`, {
@@ -31,35 +41,39 @@ function ViewAllTaxCodesForm() {
 
     fetchData();
 
-  }, []);
+  }, [hasRequiredAccess]); // Include hasRequiredAccess in the dependency array
 
   return (
     <div className="child-container form-container">
       <h1 className="title">List of Tax Codes</h1>
-      <table className="table table-striped table-bordered">
-        <thead>
-          <tr className="table-header">
-            <th className="table-header">Tax Code</th>
-            <th>Tax Description</th>
-            <th>Tax Type</th>
-            <th>Tax Rate (%)</th>
-            <th>Tax Applicability</th>
-            <th>Tax Authority</th>
-          </tr>
-        </thead>
-        <tbody>
-          {taxCodes.map((tax) => (
-            <tr key={tax.tax_id} className="table-row">
-              <td>{tax.tax_code}</td>
-              <td>{tax.tax_description}</td>
-              <td>{tax.tax_type}</td>
-              <td>{tax.tax_rate}</td>
-              <td>{tax.tax_applicability}</td>
-              <td>{tax.tax_authority}</td>
+      {hasRequiredAccess ? (
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr className="table-header">
+              <th className="table-header">Tax Code</th>
+              <th>Tax Description</th>
+              <th>Tax Type</th>
+              <th>Tax Rate (%)</th>
+              <th>Tax Applicability</th>
+              <th>Tax Authority</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {taxCodes.map((tax) => (
+              <tr key={tax.tax_id} className="table-row">
+                <td>{tax.tax_code}</td>
+                <td>{tax.tax_description}</td>
+                <td>{tax.tax_type}</td>
+                <td>{tax.tax_rate}</td>
+                <td>{tax.tax_applicability}</td>
+                <td>{tax.tax_authority}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div> You do not have permission to view this module </div>
+      )}
     </div>
   );
 }

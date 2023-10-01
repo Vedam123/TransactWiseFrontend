@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { API_URL } from "../../../admin/setups/ConstDecl";
+import { API_URL  ,BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
 
@@ -7,13 +8,35 @@ const UserPermissionsForm = () => {
   const [userModulePermissions, setUserModulePermissions] = useState([]);
   const [userDetails, setUserDetails] = useState({});
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const hasRequiredAccess = CheckModuleAccess(
+    BACKEND_ADMIN_MODULE_NAME, // Replace with your module name constant
+    MODULE_LEVEL_VIEW_ACCESS // Replace with your access level constant
+  );
 
+  useEffect(() => {
+    if (!hasRequiredAccess) {
+      return; // Do not fetch data if access is not granted
+    }
+    fetchData();
+    // eslint-disable-next-line
+  }, [hasRequiredAccess]);
+
+  // eslint-disable-next-line 
+  const generateHeaders = () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userid");
+
+    return {
+      Authorization: `Bearer ${token}`,
+      UserId: userId,
+      // Add other headers if needed
+    };
+  };
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${API_URL}/list_user_permissions`);
+      const response = await axios.get(`${API_URL}/list_user_permissions`, {
+        headers: generateHeaders(), // Include headers here
+      });
       const sortedPermissions = response.data.user_module_permissions.sort(
         (a, b) => a.user_id - b.user_id
       );
@@ -21,7 +44,9 @@ const UserPermissionsForm = () => {
       setUserModulePermissions(sortedPermissions);
 
       // Fetch user details and store them in the userDetails state
-      const usersResponse = await axios.get(`${API_URL}/list_users`);
+      const usersResponse = await axios.get(`${API_URL}/list_users`, {
+        headers: generateHeaders(), // Include headers here
+      });
       const users = usersResponse.data.users.reduce(
         (acc, user) => ({ ...acc, [user.id]: user.username }),
         {}
@@ -35,7 +60,7 @@ const UserPermissionsForm = () => {
   return (
     <div className="child-container form-container">
       <h1 className="title">List of User Module Permissions</h1>
-      <table className="table table-striped table-bordered">
+      {hasRequiredAccess ? ( <table className="table table-striped table-bordered">
         <thead>
           <tr className="table-header">
             <th>ID</th>
@@ -62,7 +87,9 @@ const UserPermissionsForm = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> ) : (
+      <div>You do not have permission to view this module</div>
+    )}
     </div>
   );
 };

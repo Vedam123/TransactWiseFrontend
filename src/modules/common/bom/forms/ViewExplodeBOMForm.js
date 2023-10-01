@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL } from "../../../admin/setups/ConstDecl";
+import { API_URL, BACKEND_COMMON_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your permission checker
 
 function ViewExplodeBOMForm({ updateExplodedBOM }) {
   const [itemCode, setItemCode] = useState("");
@@ -9,9 +10,18 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
   const [explodedBOM, setExplodedBOM] = useState([]);
   const [itemList, setItemList] = useState([]); // State to store the list of items
 
+  const hasRequiredAccess = CheckModuleAccess(
+    BACKEND_COMMON_MODULE_NAME,
+    MODULE_LEVEL_VIEW_ACCESS
+  );
+
   useEffect(() => {
-    fetchItemList(); // Fetch the item list when the component mounts
-  }, []);
+    if (!hasRequiredAccess) {
+      // Optionally, handle the case where access is not granted
+      return;
+    }
+    fetchItemList();
+  }, [hasRequiredAccess]);
 
   const fetchItemList = async () => {
     try {
@@ -46,19 +56,25 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
 
   const handleExplodeBOM = async () => {
     if (!itemCode) {
-      alert("Please select an item.");
+      //alert("Please select an item.");
       return;
     }
-
+    
     if (!requiredQuantity) {
       alert("Please select quanity as positive number.");
       return;
     }
 
     try {
-      //alert(itemCode);
-      //alert(requiredQuantity);
+      const authToken = localStorage.getItem('token');
+      const userid = localStorage.getItem('loggedInUserid');
+  
+      const headers = {
+        'Authorization': `Bearer ${authToken}`,
+        'UserId': userid,
+      };
       const response = await axios.get(`${API_URL}/process_exploded_bom`, {
+        headers, // Include the headers here
         params: {
           item_code: itemCode,
           required_quantity: requiredQuantity,
@@ -77,10 +93,10 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
       alert("Error exploding BOM");
     }
   };
-
+  console.log("hasRequiredAccess:", hasRequiredAccess);
   return (
-    <div className="child-container menu-container">
-      <div className="child-container form-container">
+   <div className="child-container menu-container">
+      {  hasRequiredAccess ? ( <div className="child-container form-container">
         <div className="form-group  col-md-6 mb-2">
           <div className="form-row">
             <div className="label-container">
@@ -134,8 +150,10 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
             ))}
           </tbody>
         </table>
-      </div>
-    </div>
+      </div> ) : (
+      <div>You do not have permission to view this module</div>
+    )}
+    </div> 
   );
 }
 
