@@ -32,7 +32,6 @@ export default function CreateEmployeeForm() {
     if (!hasRequiredAccess) {
       return; // Do not fetch data if access is not granted
     }
-
     const fetchEmployees = async () => {
       try {
         const authToken = localStorage.getItem("token");
