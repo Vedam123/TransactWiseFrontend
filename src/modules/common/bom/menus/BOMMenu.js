@@ -5,6 +5,7 @@ import behaviorOptions from "../../../utilities/button/config";
 import ButtonComponent from "../../../utilities/ButtonComponent"; // Import the new ButtonComponent
 import "../../../utilities/css/appcss.css";
 import ModulePermissions from "../../../security/modulepermissions/ModulePermissions"; // Import the ModulePermissions hook
+import { BACKEND_COMMON_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants// Import your constants
 
 export default function BOMMenu() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function BOMMenu() {
 
   //  const { canViewModule, canCreateModule, canDeleteModule, canUpdateModule } =
   const { canViewModule } = ModulePermissions({
-    moduleName: "common", // Set the module name as needed
+    moduleName: BACKEND_COMMON_MODULE_NAME, // Set the module name as needed
   });
 
   const handleMenuItemClick = (path) => {

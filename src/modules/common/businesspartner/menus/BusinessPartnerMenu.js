@@ -5,10 +5,11 @@ import behaviorOptions from "../../../utilities/button/config";
 import ButtonComponent from "../../../utilities/ButtonComponent";
 import "../../../utilities/css/appcss.css";
 import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
+import { BACKEND_COMMON_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants// Import your constants
 
 export default function BusinessPartnerMenu() {
   const { canViewModule, canCreateModule } = ModulePermissions({
-    moduleName: "common",
+    moduleName: BACKEND_COMMON_MODULE_NAME,
   });
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();

@@ -4,11 +4,12 @@ import useButtonBehavior from "../../utilities/button/behavior";
 import behaviorOptions from "../../utilities/button/config";
 import ButtonComponent from "../../utilities/ButtonComponent";
 import ModulePermissions from "../../security/modulepermissions/ModulePermissions";
+import { BACKEND_EMPLOYEE_MODULE_NAME } from "../../admin/setups/ConstDecl"; // Import your constants// Import your constants
 
 export default function EmployeeMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
-  const employeePermissions = ModulePermissions({ moduleName: "employee" });
+  const employeePermissions = ModulePermissions({ moduleName: BACKEND_EMPLOYEE_MODULE_NAME });
   const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } = employeePermissions;
 
   const menuItems = [

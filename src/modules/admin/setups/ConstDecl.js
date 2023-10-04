@@ -17,3 +17,7 @@ export const BACKEND_EMPLOYEE_MODULE_NAME = "employee";
 export const BACKEND_SECURITY_MODULE_NAME = "security";
 export const BACKEND_ADMIN_MODULE_NAME = "admin";
 export const BACKEND_COMMON_MODULE_NAME = "common";
+export const BACKEND_INVENTORY_MODULE_NAME = "Inventory";
+export const BACKEND_PURCHASE_MODULE_NAME = "purchase";
+export const BACKEND_SALES_MODULE_NAME = "sales";
+export const BACKEND_FINANCE_MODULE_NAME = "finance";

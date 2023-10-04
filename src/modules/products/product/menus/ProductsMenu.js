@@ -4,11 +4,12 @@ import useButtonBehavior from "../../../utilities/button/behavior";
 import behaviorOptions from "../../../utilities/button/config";
 import ButtonComponent from "../../../utilities/ButtonComponent";
 import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
+import { BACKEND_PRODUCT_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants// Import your constants
 
 export default function ProductMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
-  const ProductPermissions = ModulePermissions({ moduleName: "products" });
+  const ProductPermissions = ModulePermissions({ moduleName: BACKEND_PRODUCT_MODULE_NAME});
   const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } = ProductPermissions;
 
   const menuItems = [

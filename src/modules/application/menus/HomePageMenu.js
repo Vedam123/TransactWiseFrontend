@@ -4,6 +4,13 @@ import useButtonBehavior from "../../utilities/button/behavior";
 import behaviorOptions from "../../utilities/button/config";
 import ButtonComponent from "../../utilities/ButtonComponent";
 import ModulePermissions from "../../security/modulepermissions/ModulePermissions";
+import { BACKEND_PRODUCT_MODULE_NAME, 
+        BACKEND_ADMIN_MODULE_NAME, 
+        BACKEND_COMMON_MODULE_NAME, 
+        BACKEND_INVENTORY_MODULE_NAME, 
+        BACKEND_PURCHASE_MODULE_NAME, 
+        BACKEND_SALES_MODULE_NAME, 
+        BACKEND_FINANCE_MODULE_NAME } from "../../admin/setups/ConstDecl"; // Import your constants// Import your constants
 
 
 export default function HomePageMenu() {
@@ -20,14 +27,13 @@ export default function HomePageMenu() {
 
   // Define the menu items with their module names
   const menuItems = [
-    { path: "/admin-module", text: "Admin & Setups", moduleName: "admin" },
-    { path: "/common-module", text: "Common", moduleName: "common" },
-    { path: "/products-module", text: "Products", moduleName: "products" },
-    { path: "/inventory-module", text: "Inventory", moduleName: "inventory" },
-    { path: "/purchase-module", text: "Purchase", moduleName: "purchase" },
-    { path: "/sales-module", text: "Sales", moduleName: "sales" },
-    { path: "/finance-module", text: "Finance", moduleName: "finance" },
-    { path: "/cash-management-module", text: "Cash Management", moduleName: "cmg" },
+    { path: "/admin-module", text: "Admin & Setups", moduleName: BACKEND_ADMIN_MODULE_NAME },
+    { path: "/common-module", text: "Common", moduleName: BACKEND_COMMON_MODULE_NAME },
+    { path: "/products-module", text: "Products", moduleName: BACKEND_PRODUCT_MODULE_NAME },
+    { path: "/inventory-module", text: "Inventory", moduleName: BACKEND_INVENTORY_MODULE_NAME },
+    { path: "/purchase-module", text: "Purchase", moduleName: BACKEND_PURCHASE_MODULE_NAME },
+    { path: "/sales-module", text: "Sales", moduleName: BACKEND_SALES_MODULE_NAME },
+    { path: "/finance-module", text: "Finance", moduleName: BACKEND_FINANCE_MODULE_NAME },
     // ... add more menu items here
   ];
 
@@ -54,16 +60,6 @@ export default function HomePageMenu() {
             canCreateModule ||
             canDeleteModule ||
             canUpdateModule;
-
-
-        /* console.log("MenuItem:", item);
-          console.log("Module Permissions:", modulePermissions);
-          console.log("canViewModule:", canViewModule);
-          console.log("canCreateModule:", canCreateModule);
-          console.log("canDeleteModule:", canDeleteModule);
-          console.log("canUpdateModule:", canUpdateModule);
-          // Check for permission and render the button if allowed 
-          */
           return (
             isModulePermissionGranted && (
               <ButtonComponent

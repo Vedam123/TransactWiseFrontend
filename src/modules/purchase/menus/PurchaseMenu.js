@@ -4,11 +4,12 @@ import useButtonBehavior from "../../utilities/button/behavior";
 import behaviorOptions from "../../utilities/button/config";
 import ButtonComponent from "../../utilities/ButtonComponent";
 import ModulePermissions from "../../security/modulepermissions/ModulePermissions";
+import { BACKEND_PURCHASE_MODULE_NAME } from "../../admin/setups/ConstDecl"; // Import your constants// Import your constants
 
 export default function PurchaseMenu({ group }) {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
-  const ProductPermissions = ModulePermissions({ moduleName: "purchase" });
+  const ProductPermissions = ModulePermissions({ moduleName: BACKEND_PURCHASE_MODULE_NAME });
   const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } = ProductPermissions;
 
   const menuItems = [

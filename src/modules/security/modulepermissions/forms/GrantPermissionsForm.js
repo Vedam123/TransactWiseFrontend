@@ -232,7 +232,7 @@ const GrantPermissionsForm = () => {
                   <input
                     type="checkbox"
                     name={`read_permission`}
-                    defaultChecked={entry.read_permission}
+                    checked={entry.read_permission} 
                     onChange={(event) => handleModuleEntryChange(index, event)}
                   />
                   Read
@@ -241,7 +241,7 @@ const GrantPermissionsForm = () => {
                   <input
                     type="checkbox"
                     name={`write_permission`}
-                    defaultChecked={entry.write_permission}
+                    checked={entry.write_permission}
                     onChange={(event) => handleModuleEntryChange(index, event)}
                   />
                   Write
@@ -250,7 +250,7 @@ const GrantPermissionsForm = () => {
                   <input
                     type="checkbox"
                     name={`update_permission`}
-                    defaultChecked={entry.update_permission}
+                    checked={entry.update_permission}
                     onChange={(event) => handleModuleEntryChange(index, event)}
                   />
                   Update
@@ -259,7 +259,7 @@ const GrantPermissionsForm = () => {
                   <input
                     type="checkbox"
                     name={`delete_permission`}
-                    defaultChecked={entry.delete_permission}
+                    checked={entry.delete_permission}
                     onChange={(event) => handleModuleEntryChange(index, event)}
                   />
                   Delete

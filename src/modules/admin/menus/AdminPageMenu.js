@@ -5,6 +5,9 @@ import behaviorOptions from "../../utilities/button/config";
 import ButtonComponent from "../../utilities/ButtonComponent";
 import "../../utilities/css/appcss.css";
 import ModulePermissions from "../../security/modulepermissions/ModulePermissions";
+import { BACKEND_EMPLOYEE_MODULE_NAME, 
+    BACKEND_SECURITY_MODULE_NAME, 
+    BACKEND_ADMIN_MODULE_NAME } from "../setups/ConstDecl"; // Import your constants// Import your constants
 
 export default function AdminPageMenu() {
   const navigate = useNavigate();
@@ -20,15 +23,15 @@ export default function AdminPageMenu() {
 
   // Retrieve employee and security permissions
   const employeePermissions = ModulePermissions({
-    moduleName: "employee",
+    moduleName: BACKEND_EMPLOYEE_MODULE_NAME,
   });
 
   const securityPermissions = ModulePermissions({
-    moduleName: "security",
+    moduleName: BACKEND_SECURITY_MODULE_NAME,
   });
 
   const adminPermissions = ModulePermissions({
-    moduleName: "admin",
+    moduleName: BACKEND_ADMIN_MODULE_NAME,
   });
 
   // Destructure permissions for better readability
