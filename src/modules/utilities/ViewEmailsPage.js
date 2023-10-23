@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import logger from "../utilities/Logs/logger"; // Import your logger module here
 import { SMTP_URL, BACKEND_EMPLOYEE_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../admin/setups/ConstDecl"; // Import your constants
 import "./css/appcss.css";
 import CheckModuleAccess from "../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
@@ -17,10 +18,14 @@ const ViewEmailsPage = () => {
 
   const fetchData = async () => {
     try {
+      logger.info(`[${new Date().toLocaleTimeString()}] Fetching emails from the server...`);
+
       const response = await axios.get(`${SMTP_URL}/view_emails`);
       setEmails(response.data);
+
+      logger.info(`[${new Date().toLocaleTimeString()}] Emails fetched successfully.`);
     } catch (error) {
-      console.error("Error fetching emails:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error fetching emails:`, error);
     }
   };
 

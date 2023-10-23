@@ -3,6 +3,7 @@ import { API_URL, BACKEND_COMMON_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from ".
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
+import logger from "../../../utilities/Logs/logger"; // Import your logger utility here
 
 function ViewAllTaxCodesForm() {
   const [taxCodes, setTaxCodes] = useState([]);
@@ -35,7 +36,12 @@ function ViewAllTaxCodesForm() {
         });
         setTaxCodes(response.data.taxes);
       } catch (error) {
-        console.error("Error fetching tax codes:", error);
+        console.error(`[${new Date().toLocaleTimeString()}] Error fetching tax codes:`, error);
+
+        // Log the module name, token, and user ID in case of an error
+        logger.error(`[${new Date().toLocaleTimeString()}] Module Name: ${BACKEND_COMMON_MODULE_NAME}`);
+        logger.error(`[${new Date().toLocaleTimeString()}] Token: ${localStorage.getItem("token")}`);
+        logger.error(`[${new Date().toLocaleTimeString()}] User ID: ${localStorage.getItem("userid")}`);
       }
     };
 

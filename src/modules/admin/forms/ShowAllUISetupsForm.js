@@ -5,6 +5,9 @@ import ConfigFileGenerator from "../ConfigFileGenerator";
 import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../setups/ConstDecl"; // Import your constants
 import CheckModuleAccess from "../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
+// Import your logger utility here
+import logger from "../../utilities/Logs/logger";
+
 function ShowAllUISetupsForm() {
   const [configData, setConfigData] = useState([]);
   const [error, setError] = useState(null);
@@ -37,12 +40,14 @@ function ShowAllUISetupsForm() {
           'UserId': userid,
         };
 
+        logger.info(`[${new Date().toLocaleTimeString()}] Fetching config data from API URL: ${finalApiUrl}`);
+
         const response = await axios.get(finalApiUrl, { headers });
         setConfigData(response.data);
         setError(null);
         setGenerationMessage("");
       } catch (error) {
-        console.error("Error fetching config data:", error);
+        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching config data:`, error);
         setError("An error occurred while fetching data.");
       }
     };
@@ -63,11 +68,21 @@ function ShowAllUISetupsForm() {
 
     setIsGeneratingFile(true);
     setGenerationMessage("Generating File...");
-    // Perform any file generation logic with finalApiUrl
-    // Simulate file generation with a timeout
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsGeneratingFile(false);
-    setGenerationMessage("File Generated!");
+
+    try {
+      logger.info(`[${new Date().toLocaleTimeString()}] Generating file from API URL: ${finalApiUrl}`);
+
+      // Simulate file generation with a timeout
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      setIsGeneratingFile(false);
+      setGenerationMessage("File Generated!");
+    } catch (error) {
+      logger.error(`[${new Date().toLocaleTimeString()}] Error generating file:`, error);
+      setIsGeneratingFile(false);
+      setGenerationMessage("Error generating file.");
+      setError("An error occurred while generating the file.");
+    }
   };
 
   const handleApiUrlChange = (event) => {
@@ -75,6 +90,7 @@ function ShowAllUISetupsForm() {
     setUseApiUrlFromFile(false); // Disable the checkbox when input is entered
     setConfigData([]); // Clear the table data
     setError(""); // Clear any previous error message
+    logger.info(`[${new Date().toLocaleTimeString()}] API URL changed: ${event.target.value}`);
   };
 
   const handleUseApiUrlFromFileChange = (event) => {
@@ -82,6 +98,7 @@ function ShowAllUISetupsForm() {
     setApiUrl(""); // Clear the input field when checkbox is selected
     setConfigData([]); // Clear the table data
     setError(""); // Clear any previous error message
+    logger.info(`[${new Date().toLocaleTimeString()}] Use API URL from file: ${event.target.checked}`);
   };
 
   return (

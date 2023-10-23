@@ -4,6 +4,9 @@ import "../../utilities/css/appcss.css";
 import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../setups/ConstDecl"; // Import your constants
 import CheckModuleAccess from "../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
+// Import your logger utility here
+import logger from "../../utilities/Logs/logger";
+
 function ShowAllDBSetupsForm() {
   const [configData, setConfigData] = useState([]);
   const [userData, setUserData] = useState([]);
@@ -37,6 +40,8 @@ function ShowAllDBSetupsForm() {
           'UserId': userid,
         };
 
+        logger.info(`[${new Date().toLocaleTimeString()}] Fetching data from API URL: ${finalApiUrl}`);
+
         const response = await axios.get(finalApiUrl, { headers });
         const { config_data, user_data } = response.data;
 
@@ -45,7 +50,7 @@ function ShowAllDBSetupsForm() {
         setError(null);
         setGenerationMessage("");
       } catch (error) {
-        console.error("Error fetching data:", error);
+        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching data:`, error);
         setError("An error occurred while fetching data.");
       }
     };
@@ -68,6 +73,8 @@ function ShowAllDBSetupsForm() {
     setGenerationMessage("Generating File...");
 
     try {
+      logger.info(`[${new Date().toLocaleTimeString()}] Generating file from API URL: ${finalApiUrl}`);
+
       const response = await axios.get(finalApiUrl);
 
       // Extract config_data from the response
@@ -117,8 +124,9 @@ function ShowAllDBSetupsForm() {
       setIsGeneratingFile(false);
       setGenerationMessage("File Generated!");
       setError("");
+      logger.info(`[${new Date().toLocaleTimeString()}] File Generated`);
     } catch (error) {
-      console.error("Error generating file:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error generating file:`, error);
       setIsGeneratingFile(false);
       setGenerationMessage("Error generating file.");
       setError("An error occurred while generating the file.");
@@ -131,6 +139,7 @@ function ShowAllDBSetupsForm() {
     setConfigData([]);
     setUserData([]);
     setError("");
+    logger.info(`[${new Date().toLocaleTimeString()}] API URL changed: ${event.target.value}`);
   };
 
   const handleUseApiUrlFromFileChange = (event) => {
@@ -139,6 +148,7 @@ function ShowAllDBSetupsForm() {
     setConfigData([]);
     setUserData([]);
     setError("");
+    logger.info(`[${new Date().toLocaleTimeString()}] Use API URL from file: ${event.target.checked}`);
   };
 
   return (

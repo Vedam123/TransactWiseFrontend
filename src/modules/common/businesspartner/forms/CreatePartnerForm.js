@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { API_URL , BACKEND_COMMON_MODULE_NAME , MODULE_LEVEL_CREATE_ACCESS } from "../../../admin/setups/ConstDecl";
+import { API_URL, BACKEND_COMMON_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
+
+// Import your logger utility here
+import logger from "../../../utilities/Logs/logger";
 
 export default function CreatePartnerForm() {
   const [formData, setFormData] = useState({
@@ -28,11 +31,12 @@ export default function CreatePartnerForm() {
   const statusOptions = ["Active", "Inactive", "Dormant"];
 
   const hasRequiredAccess = CheckModuleAccess(
-    BACKEND_COMMON_MODULE_NAME, // Replace with your module name constant
-    MODULE_LEVEL_CREATE_ACCESS // Replace with your access level constant
+    BACKEND_COMMON_MODULE_NAME,
+    MODULE_LEVEL_CREATE_ACCESS
   );
 
   useEffect(() => {
+    logger.info("Fetching currency data"); // Log when fetching currency data
     if (!hasRequiredAccess) {
       return; // Do not fetch data if access is not granted
     }
@@ -47,8 +51,9 @@ export default function CreatePartnerForm() {
           (currency) => currency.currencycode
         );
         setCurrencyOptions(currencyCodes);
+        logger.info(`[${new Date().toLocaleTimeString()}] Currency data fetched successfully`); // Log when currency data is fetched successfully
       } catch (error) {
-        console.error("Error fetching currencies:", error);
+        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching currencies`, error); // Log error when fetching currencies fails
       }
     };
 
@@ -104,7 +109,7 @@ export default function CreatePartnerForm() {
         }
       );
 
-      console.log(response.data);
+      logger.info(`[${new Date().toLocaleTimeString()}] Partner data created successfully`, response.data); // Log when partner data is created successfully
       setFormData({
         partnertype: "",
         partnername: "",
@@ -124,7 +129,7 @@ export default function CreatePartnerForm() {
         partnerimage: null,
       });
     } catch (error) {
-      console.error("Error creating partner data:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error creating partner data`, error); // Log error when creating partner data fails
     }
   };
 
@@ -132,7 +137,8 @@ export default function CreatePartnerForm() {
     <div className="child-container menu-container">
       <h2 className="title">Create Partner</h2>
       <div className="child-container form-container">
-      {hasRequiredAccess ? ( <form onSubmit={handleSubmit}>
+      {hasRequiredAccess ? (
+        <form onSubmit={handleSubmit}>
           {/* Partner Type */}
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
@@ -296,7 +302,6 @@ export default function CreatePartnerForm() {
           </div>
 
           <div className="contact-fieldset">
- 
               <legend>Contact Information</legend>
               {/* Contact Person */}
               <div className="form-group col-md-6 mb-2">
@@ -348,7 +353,6 @@ export default function CreatePartnerForm() {
                   />
                 </div>
               </div>
-
           </div>
 
           {/* Add more input fields for other partner attributes */}
@@ -417,7 +421,7 @@ export default function CreatePartnerForm() {
                 {formData.partnerimage && (
                   <img
                     src={URL.createObjectURL(formData.partnerimage)}
-                    alt="Selected Partner "
+                    alt="Selected Partner"
                     className="selected-image"
                   />
                 )}
@@ -432,9 +436,10 @@ export default function CreatePartnerForm() {
               </button>
             </div>
           </div>
-        </form>  ) : (
-          <div> You do not have permission to view this module </div>
-        )}
+        </form>
+      ) : (
+        <div>You do not have permission to view this module</div>
+      )}
       </div>
     </div>
   );

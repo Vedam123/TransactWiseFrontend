@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL ,BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
+import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
+import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
-const AssignUserModuleForm = () => {
+const AssignUserModulesForm = () => {
   const [formData, setFormData] = useState({
     username: "",
   });
@@ -41,7 +42,7 @@ const AssignUserModuleForm = () => {
   }, [hasRequiredAccess]);
 
   useEffect(() => {
-    console.log("The DB user id stored in the global variable is ", dbuserid);
+    logger.info(`[${new Date().toLocaleTimeString()}] The DB user id stored in the global variable is ${dbuserid}`);
   }, [dbuserid]);
 
   const fetchModuleList = async () => {
@@ -51,7 +52,7 @@ const AssignUserModuleForm = () => {
       });
       setModuleList(response.data.modules);
     } catch (error) {
-      console.error("Error fetching module list:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error fetching module list: ${error}`);
     }
   };
 
@@ -68,18 +69,16 @@ const AssignUserModuleForm = () => {
       });
       const usersData = usersResponse.data.users;
       if (!Array.isArray(usersData)) {
-        console.log(
-          "Invalid response from the server. Users data is not in the expected format."
-        );
+        logger.error(`[${new Date().toLocaleTimeString()}] Invalid response from the server. Users data is not in the expected format.`);
         return;
       }
-      console.log("UsersData ", usersData);
-      console.log("entered user name ", trimmedUsername);
+      logger.info(`[${new Date().toLocaleTimeString()}] UsersData: ${JSON.stringify(usersData)}`);
+      logger.info(`[${new Date().toLocaleTimeString()}] Entered user name: ${trimmedUsername}`);
 
       const user = usersData.find((user) => user.username === trimmedUsername);
 
       if (!user) {
-        console.log("User Not found in the DB!");
+        logger.info(`[${new Date().toLocaleTimeString()}] User Not found in the DB!`);
         setUserModules([]);
       } else {
         // Fetch the user's modules from the API
@@ -96,10 +95,10 @@ const AssignUserModuleForm = () => {
           .filter((permission) => permission.user_id === user.id)
           .map((permission) => permission.module);
         setUserModules(userModulesList);
-        console.log("User Module List ", userModules);
+        logger.info(`[${new Date().toLocaleTimeString()}] User Module List: ${userModulesList.join(", ")}`);
       }
     } catch (error) {
-      console.error("Error fetching users:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error fetching users: ${error}`);
     }
   };
 
@@ -112,12 +111,12 @@ const AssignUserModuleForm = () => {
     event.preventDefault();
 
     if (!selectedModule) {
-      console.error("Please select a module.");
+      logger.error(`[${new Date().toLocaleTimeString()}] Please select a module.`);
       return;
     }
 
-    console.log("Selected Module", selectedModule);
-    console.log("selected user id", dbuserid);
+    logger.info(`[${new Date().toLocaleTimeString()}] Selected Module: ${selectedModule}`);
+    logger.info(`[${new Date().toLocaleTimeString()}] Selected user id: ${dbuserid}`);
 
     try {
       const response = await axios.post(
@@ -133,12 +132,12 @@ const AssignUserModuleForm = () => {
         }
       );
 
-      console.log(response.data);
+      logger.info(`[${new Date().toLocaleTimeString()}] Response data: ${JSON.stringify(response.data)}`);
       // Clear form field after successful submission
       setFormData({ username: "" });
       setSelectedModule("");
     } catch (error) {
-      console.error("Error creating/updating permission:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error creating/updating permission: ${error}`);
     }
   };
 
@@ -218,4 +217,4 @@ const AssignUserModuleForm = () => {
   );
 };
 
-export default AssignUserModuleForm;
+export default AssignUserModulesForm;

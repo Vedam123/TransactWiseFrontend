@@ -1,18 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import useButtonBehavior from "../../../utilities/button/behavior";
-import behaviorOptions from "../../../utilities/button/config";
-import ButtonComponent from "../../../utilities/ButtonComponent"; // Import the new ButtonComponent
+import useButtonBehavior from "../../../utilities/button/useButtonBehavior";
+import behaviorOptions from "../../../utilities/button/behaviorOptions";
+import ButtonComponent from "../../../utilities/ButtonComponent";
 import "../../../utilities/css/appcss.css";
-import ModulePermissions from "../../../security/modulepermissions/ModulePermissions"; // Import the ModulePermissions hook
-import { BACKEND_COMMON_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants// Import your constants
+import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
+import logger from "../../../utilities/Logs/logger"; // Import your logger utility here
+import { BACKEND_COMMON_MODULE_NAME } from "../../../admin/setups/ConstDecl";
 
 export default function ViewExchangeRatesMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
-  //  const { canViewModule, canCreateModule, canDeleteModule, canUpdateModule } =
+
   const { canViewModule } = ModulePermissions({
-    moduleName: BACKEND_COMMON_MODULE_NAME, // Set the module name as needed
+    moduleName: BACKEND_COMMON_MODULE_NAME,
   });
 
   const handleMenuItemClick = (path) => {
@@ -24,9 +25,17 @@ export default function ViewExchangeRatesMenu() {
   };
 
   const menuItems = [
-    { path: "/list-exchange-rates", text: "View Rates", canRender: canViewModule }, // Add the "canRender" property
+    { path: "/list-exchange-rates", text: "View Rates", canRender: canViewModule },
     // ... add more menu items here
   ];
+
+  // Log constants and permissions with time
+  const moduleName = BACKEND_COMMON_MODULE_NAME;
+  const permissions = {
+    canViewModule,
+    // ... add other permissions here
+  };
+  logger.info(`[${new Date().toLocaleTimeString()}] Module Name: ${moduleName}, Permissions: ${JSON.stringify(permissions)}`);
 
   return (
     <div className="child-container form-container">

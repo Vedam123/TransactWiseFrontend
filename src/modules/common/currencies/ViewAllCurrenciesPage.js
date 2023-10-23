@@ -1,18 +1,23 @@
-import React from "react";
+//import React, { useEffect } from "react";
 import ViewAllCurrenciesForm from "./forms/ViewAllCurrenciesForm";
 import RotatingImage from "../../utilities/RotatingImage";
 import BottomContainer from "../../utilities/BottomContainer";
 
-function ViewAllCurrenciesPage() {
+// Import your logger utility here
+//import logger from "../../utilities/Logs/logger";
+
+export default function ViewAllCurrenciesPage() {
+  // Log tokens, userId, and other constants when the component is loaded
+  //logger.info(`[${new Date().toLocaleTimeString()}] Entered in ViewAllCurrencies Page`);  
+
   return (
     <div className="page-container">
       <h1 className="title">List of Currencies</h1>
-      
-        <ViewAllCurrenciesForm />
+      <ViewAllCurrenciesForm />
 
-      <RotatingImage />
       <BottomContainer />
+            
+      <RotatingImage />
     </div>
   );
 }
-export default ViewAllCurrenciesPage;

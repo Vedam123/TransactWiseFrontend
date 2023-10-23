@@ -2,12 +2,18 @@ import { useState, useEffect } from "react";
 import {
   TOKEN_EXPIRATION_CHECK_FREQUENCY,
   API_URL,
+  APPLICATION_NAME, // Include APPLICATION_NAME constant
 } from "../../../admin/setups/ConstDecl";
 import axios from "axios";
+import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
 function useToken() {
+  // Constants and variables
+  const refreshTokenKey = "refresh_token";
+  const userTokenKey = "token";
+
   function getToken() {
-    const refreshToken = localStorage.getItem("refresh_token");
+    const refreshToken = localStorage.getItem(refreshTokenKey);
     const userln = localStorage.getItem("loggedInUsername");
     if (refreshToken) {
       const payload1 = JSON.parse(atob(refreshToken.split(".")[1]));
@@ -15,18 +21,18 @@ function useToken() {
 
       const currentTime = new Date();
       if (refreshtokenexpiry < currentTime) {
-        const userToken = localStorage.getItem("token");
+        const userToken = localStorage.getItem(userTokenKey);
         if (userToken) {
-          localStorage.removeItem("token");
+          localStorage.removeItem(userTokenKey);
         }
         if (userln) {
           localStorage.removeItem("loggedInUsername");
         }
-        localStorage.removeItem("refresh_token");
+        localStorage.removeItem(refreshTokenKey);
         return null; // Return null if refresh token is expired
       }
     }
-    const userToken = localStorage.getItem("token");
+    const userToken = localStorage.getItem(userTokenKey);
 
     if (userToken) {
       const payload = JSON.parse(atob(userToken.split(".")[1]));
@@ -34,7 +40,7 @@ function useToken() {
       const currentTime = new Date();
 
       if (expirationTime < currentTime) {
-        localStorage.removeItem("token");
+        localStorage.removeItem(userTokenKey);
         return null; // Return null if access token is expired
       }
     }
@@ -47,7 +53,7 @@ function useToken() {
 
   async function refreshAccessToken() {
     try {
-      const refresh_token = localStorage.getItem("refresh_token");
+      const refresh_token = localStorage.getItem(refreshTokenKey);
       if (!refresh_token) {
         removeToken();
         return;
@@ -65,22 +71,28 @@ function useToken() {
 
       const { access_token } = response.data;
       saveToken(access_token, username);
+      // Log successful token refresh with username
+      logger.info(`[${new Date().toLocaleTimeString()}] Access token refreshed successfully for user: ${username}`);
     } catch (error) {
       console.error("Error refreshing access token: ", error);
       removeToken();
+      // Log token refresh error with username
+      logger.error(`[${new Date().toLocaleTimeString()}] Error refreshing access token for user: ${username}`, error);
     }
   }
 
   function saveToken(userToken, userUsername) {
-    localStorage.setItem("token", userToken);
+    localStorage.setItem(userTokenKey, userToken);
     setToken(userToken);
     setUsername(userUsername); // Set the username when saving token
   }
 
   function removeToken() {
-    localStorage.removeItem("token");
+    localStorage.removeItem(userTokenKey);
     setToken(null);
     setUsername(""); // Clear the username when removing token
+    // Log token removal with username
+    logger.info(`[${new Date().toLocaleTimeString()}] Token removed for user: ${username}`);
   }
 
   useEffect(() => {
@@ -101,6 +113,9 @@ function useToken() {
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Include refreshAccessToken in the dependency array
+
+  // Log hook initialization with constant
+  logger.info(`[${new Date().toLocaleTimeString()}] useToken hook initialized. Application name: ${APPLICATION_NAME}`);
 
   return {
     setToken: saveToken,

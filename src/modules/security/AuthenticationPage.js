@@ -8,7 +8,6 @@ import { SUPER_USERS_COUNT, APPLICATION_NAME } from "../admin/setups/ConstDecl";
 import RotatingImage from "../utilities/RotatingImage";
 import Login from "./accessmgmt/authtoolkit/Login";
 import UserName from "./accessmgmt/authtoolkit/UserName";
-//import Profile from "./accessmgmt/authtoolkit/Profile";
 import Logout from "./accessmgmt/authtoolkit/Logout";
 import useToken from "./accessmgmt/authtoolkit/useToken";
 import HomePage from "../application/HomePage";
@@ -35,7 +34,6 @@ import ViewAllExchangeRatesPage from "../common/exchangerates/ViewAllExchangeRat
 import ViewAllTaxCodesPage from "../common/taxcodes/ViewAllTaxCodesPage";
 import ViewAllProdCatPage from "../products/productcategories/ViewAllProdCatPage";
 import PermissionsContext from "./modulepermissions/PermissionsContext";
-
 import CurrenciesPage from "../common/currencies/CurrenciesPage";
 import TaxCodesPage from "../common/taxcodes/TaxCodesPage";
 import ExchangeRatesPage from "../common/exchangerates/ExchangeRatesPage";
@@ -50,7 +48,7 @@ import UISetupsSearchPage from "../admin/UISetupsSearchPage";
 import ShowAllUISetupsForm from "../admin/forms/ShowAllUISetupsForm";
 import CreateDBSetupsPage from "../admin/CreateDBSetupsPage";
 import DBSetupsSearchPage from "../admin/DBSetupsSearchPage";
-//import ShowAllDBSetupsForm from "../admin/forms/ShowAllDBSetupsForm";
+import logger from "../utilities/Logs/logger"; // Import your logger module here
 
 function AuthenticationPage() {
   const { token, removeToken, setToken } = useToken();
@@ -58,7 +56,6 @@ function AuthenticationPage() {
   const [userPermissions, setUserPermissions] = useState([]);
   const [name, setName] = useState("");
   const [emp_img, setImage] = useState("");
-  // eslint-disable-next-line
   const [refresh_token, setRefreshToken] = useState("");
 
   const nameWithSpace = name + "\u00a0";
@@ -77,13 +74,14 @@ function AuthenticationPage() {
     setName(name);
     setImage(emp_img);
     setRefreshToken(refresh_token);
+
+    // Log successful login
+    logger.info(`[${new Date().toLocaleTimeString()}] User logged in: ${username}`);
   };
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("loggedInUserid");
-    //console.log("Stored user id ",storedUserId);
-    //console.log("Super user count ",SUPER_USERS_COUNT);
-    //console.log("Loggedin user id vs stored user id ",loggedInUserid, storedUserId);
+
     const fetchUserPermissions = async () => {
       if (token) {
         try {
@@ -98,10 +96,8 @@ function AuthenticationPage() {
               read_permission: true,
               update_permission: true,
               user_id: storedUserId,
-              write_permission: true,
               loggedInUserid: storedUserId,
             }));
-            //console.log("UseEffect Super User fetch userPermissions ", filteredPermissions);
           } else {
             const response = await axios.get(
               `${API_URL}/list_user_permissions`,
@@ -111,7 +107,6 @@ function AuthenticationPage() {
                 },
               }
             );
-            //console.log("UseEffect FETCHED ", response.data.user_module_permissions,"Logged in Userid ",loggedInUserid);
             filteredPermissions = response.data.user_module_permissions
               .filter(
                 (permission) =>
@@ -122,8 +117,10 @@ function AuthenticationPage() {
                 loggedInUserid: storedUserId,
               }));
           }
-          //console.log("UseEffect DB Filtered userPermissions ", filteredPermissions);
           setUserPermissions(filteredPermissions);
+
+          // Log user permissions retrieval
+          logger.info(`[${new Date().toLocaleTimeString()}] User permissions retrieved for User ID: ${storedUserId}`);
         } catch (error) {
           console.error("Error fetching user permissions:", error);
         }
@@ -147,12 +144,9 @@ function AuthenticationPage() {
 
     fetchUserPermissions();
 
-    console.log();
-    /* Do not delete the commented code below */
+    // Log component rendering
+    logger.info(`[${new Date().toLocaleTimeString()}] AuthenticationPage component rendered.`);
   }, [token, loggedInUserid, name, emp_img, refresh_token]);
-
-  //eslint-disable-next-line
-  //}, [loggedInUserid]);
   return (
     <BrowserRouter>
       {!token ? (

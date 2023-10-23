@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
+import logger from "../utilities/Logs/logger"; // Import your logger module here
 
 export default function BottomContainer() {
+  useEffect(() => {
+    logger.info(`[${new Date().toLocaleTimeString()}] BottomContainer component is rendered.`);
+    return () => {
+      logger.info(`[${new Date().toLocaleTimeString()}] BottomContainer component is unmounted.`);
+    };
+  }, []);
+
   return (
     <div className="bottom-container">
       <div className="sub-container">

@@ -1,11 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import useButtonBehavior from "../../../utilities/button/behavior";
-import behaviorOptions from "../../../utilities/button/config";
+import useButtonBehavior from "../../../utilities/button/useButtonBehavior";
+import behaviorOptions from "../../../utilities/button/behaviorOptions";
 import ButtonComponent from "../../../utilities/ButtonComponent";
 import "../../../utilities/css/appcss.css";
 import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
-import { BACKEND_COMMON_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants// Import your constants
+import { BACKEND_COMMON_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants
+
+// Import your logger utility here
+import logger from "../../../utilities/Logs/logger";
 
 export default function BusinessPartnerMenu() {
   const { canViewModule, canCreateModule } = ModulePermissions({
@@ -17,8 +20,10 @@ export default function BusinessPartnerMenu() {
   const handleMenuItemClick = (path) => {
     if (behaviorOptions.DEFAULT === "_blank") {
       openInNewTab(path);
+      logger.info(`[${new Date().toLocaleTimeString()}] Opened path ${path} in a new tab.`);
     } else {
       navigate(path);
+      logger.info(`[${new Date().toLocaleTimeString()}] Navigated to path ${path}.`);
     }
   };
 
@@ -37,7 +42,10 @@ export default function BusinessPartnerMenu() {
               key={item.path}
               path={item.path}
               buttonText={item.text}
-              onClick={() => handleMenuItemClick(item.path)}
+              onClick={() => {
+                handleMenuItemClick(item.path);
+                logger.info(`[${new Date().toLocaleTimeString()}] Clicked on menu item: ${item.text}`);
+              }}
             />
           )
         ))}

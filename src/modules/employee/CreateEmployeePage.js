@@ -4,8 +4,11 @@ import RotatingImage from "../utilities/RotatingImage";
 import BottomContainer from "../utilities/BottomContainer";
 import DocumentationContainer from "../utilities/DocumentationContainer";
 import CreateEmployeeForm from "./forms/CreateEmployeeForm";
+import logger from "../utilities/Logs/logger"; // Import your logger
 
 function CreateEmployeePage() {
+  logger.info(`[${new Date().toLocaleTimeString()}] Loading CreateEmployeePage.`); // Info log message
+
   return (
     <div className="page-container">
       <h1 className="title">Create Employee</h1>
@@ -15,7 +18,7 @@ function CreateEmployeePage() {
         <DocumentationContainer />
       </div>
       <RotatingImage />
-      <BottomContainer /> 
+      <BottomContainer />
     </div>
   );
 }

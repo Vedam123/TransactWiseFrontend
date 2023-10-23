@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
+import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
 export default function Login(props) {
+  console.log("Entered Login function")
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -47,8 +49,14 @@ export default function Login(props) {
 
       setFormData({ username: "", password: "" });
       setError("");
+
+      // Log successful login with username
+      logger.info(`[${new Date().toLocaleTimeString()}] User ${username} logged in successfully.`);
     } catch (error) {
       setError("Invalid username or password");
+
+      // Log login error
+      logger.error(`[${new Date().toLocaleTimeString()}] Error logging in:`, error);
     }
   };
 

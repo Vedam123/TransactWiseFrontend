@@ -5,8 +5,11 @@ import BottomContainer from "../../utilities/BottomContainer";
 import DocumentationContainer from "../../utilities/DocumentationContainer";
 import AssignUserModulesForm from "./forms/AssignUserModulesForm";
 //import UserPermissionsForm from "./forms/ListUserPermissionsForm";
+import logger from "../../utilities/Logs/logger"; // Import your logger module here
 
 function AssignUserModules() {
+  logger.info(`[${new Date().toLocaleTimeString()}] Initializing AssignUserModules component.`);
+  
   return (
     <div className="page-container">
       <h1 className="title">Assign Modules to Users</h1>

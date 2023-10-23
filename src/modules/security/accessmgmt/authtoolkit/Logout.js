@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { API_URL } from "../../../admin/setups/ConstDecl";
+import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
 function Logout(props) {
   function logMeOut() {
@@ -45,6 +46,9 @@ function Logout(props) {
         if (loggedInUserid) {
           localStorage.removeItem("loggedInUserid");
         }
+
+        // Log successful logout with username
+        logger.info(`[${new Date().toLocaleTimeString()}] User ${username} logged out successfully.`);
       })
       .catch((error) => {
         if (error.response) {
@@ -52,6 +56,9 @@ function Logout(props) {
           console.log(error.response.status);
           console.log(error.response.headers);
         }
+
+        // Log logout error
+        logger.error(`[${new Date().toLocaleTimeString()}] Error logging out:`, error);
       });
   }
 

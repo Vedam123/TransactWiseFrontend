@@ -1,11 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import useButtonBehavior from "../../../utilities/button/behavior";
-import behaviorOptions from "../../../utilities/button/config";
+import useButtonBehavior from "../../../utilities/button/useButtonBehavior";
+import behaviorOptions from "../../../utilities/button/behaviorOptions";
 import ButtonComponent from "../../../utilities/ButtonComponent"; // Import the new ButtonComponent
 import "../../../utilities/css/appcss.css";
 import ModulePermissions from "../../../security/modulepermissions/ModulePermissions"; // Import the ModulePermissions hook
 import { BACKEND_COMMON_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants// Import your constants
+import logger from "../../../utilities/Logs/logger"; // Import your logger utility here
 
 export default function ViewTaxCodesMenu() {
   const navigate = useNavigate();
@@ -15,12 +16,16 @@ export default function ViewTaxCodesMenu() {
     moduleName: BACKEND_COMMON_MODULE_NAME, // Set the module name as needed
   });
 
-  const handleMenuItemClick = (path) => {
+  const handleMenuItemClick = (path, canRender) => {
     if (behaviorOptions.DEFAULT === "_blank") {
       openInNewTab(path);
     } else {
       navigate(path);
     }
+
+    // Log relevant variables and constants when a menu item is clicked
+    logger.info(`[${new Date().toLocaleTimeString()}] Clicked Menu Item: Path - ${path}, Can Render - ${canRender}`);
+    logger.info(`[${new Date().toLocaleTimeString()}] Module Name: ${BACKEND_COMMON_MODULE_NAME}`);
   };
 
   const menuItems = [
@@ -37,7 +42,7 @@ export default function ViewTaxCodesMenu() {
               key={item.path}
               path={item.path}
               buttonText={item.text}
-              onClick={() => handleMenuItemClick(item.path)}
+              onClick={() => handleMenuItemClick(item.path, item.canRender)}
             />
           )
         ))}

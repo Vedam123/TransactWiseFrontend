@@ -5,8 +5,11 @@ import RotatingImage from "../utilities/RotatingImage";
 import BottomContainer from "../utilities/BottomContainer";
 import DocumentationContainer from "../utilities/DocumentationContainer";
 import DisplayCard from "../utilities/DisplayCard";
+import logger from "../utilities/Logs/logger"; // Import your logger
 
 export default function EmployeePage() {
+  logger.info(`[${new Date().toLocaleTimeString()}] Loading EmployeePage.`); // Info log message
+
   return (
     <div className="page-container">
       <h1 className="title">Employee</h1>

@@ -3,6 +3,7 @@ import { API_URL, BACKEND_COMMON_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from ".
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
+import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
 function ViewAllUOMsForm() {
   const [uoms, setUOMs] = useState([]);
@@ -24,6 +25,9 @@ function ViewAllUOMsForm() {
   };
 
   useEffect(() => {
+    // Log the value of hasRequiredAccess
+    logger.info(`[${new Date().toLocaleTimeString()}] Has Required Access: ${hasRequiredAccess}`);
+
     if (!hasRequiredAccess) {
       return; // Do not fetch data if access is not granted
     }
@@ -34,8 +38,13 @@ function ViewAllUOMsForm() {
           headers: generateHeaders(),
         });
         setUOMs(response.data.uom);
+
+        // Log a success message
+        logger.info(`[${new Date().toLocaleTimeString()}] UOM data fetched successfully.`);
+
       } catch (error) {
-        console.error("Error fetching UOMs:", error);
+        // Log an error message
+        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching UOMs:`, error);
       }
     };
 

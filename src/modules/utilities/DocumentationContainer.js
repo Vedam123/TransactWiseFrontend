@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import logger from "../utilities/Logs/logger"; // Import your logger module here
 
 const imagePaths = [
   require("./images/lake-am.jpg"),
@@ -11,11 +12,14 @@ export default function DocumentationContainer() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
+    logger.info(`[${new Date().toLocaleTimeString()}] DocumentationContainer is rendered.`);
+    
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imagePaths.length);
     }, 30000); // 30 seconds in milliseconds
 
     return () => {
+      logger.info(`[${new Date().toLocaleTimeString()}] DocumentationContainer is unmounted.`);
       clearInterval(interval);
     };
   }, []); // No dependencies

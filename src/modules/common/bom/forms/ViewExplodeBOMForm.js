@@ -4,6 +4,9 @@ import { API_URL, BACKEND_COMMON_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from ".
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your permission checker
 
+// Import your logger utility here
+import logger from "../../../utilities/Logs/logger";
+
 function ViewExplodeBOMForm({ updateExplodedBOM }) {
   const [itemCode, setItemCode] = useState("");
   const [requiredQuantity, setRequiredQuantity] = useState("");
@@ -18,6 +21,7 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
   useEffect(() => {
     if (!hasRequiredAccess) {
       // Optionally, handle the case where access is not granted
+      logger.warn(`[${new Date().toLocaleTimeString()}] Access denied to ViewExplodeBOMForm component.`);
       return;
     }
     fetchItemList();
@@ -36,8 +40,8 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
       const response = await axios.get(`${API_URL}/list_items`, { headers });
       setItemList(response.data.items);
     } catch (error) {
+      logger.error(`[${new Date().toLocaleTimeString()}] Error fetching item lists:`, error);
       alert("Error fetching item lists");
-      console.error("Error fetching item list:", error);
     }
   };
 
@@ -56,12 +60,14 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
 
   const handleExplodeBOM = async () => {
     if (!itemCode) {
-      //alert("Please select an item.");
+      logger.warn(`[${new Date().toLocaleTimeString()}] No item code selected.`);
+      alert("Please select an item.");
       return;
     }
     
     if (!requiredQuantity) {
-      alert("Please select quanity as positive number.");
+      logger.warn(`[${new Date().toLocaleTimeString()}] Invalid quantity input.`);
+      alert("Please enter a positive quantity.");
       return;
     }
 
@@ -84,76 +90,79 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
       if (response.data.processed_data) {
         updateExplodedBOM(response.data.processed_data);
       } else {
+        logger.warn(`[${new Date().toLocaleTimeString()}] No data available for Item: ${itemCode}`);
         updateExplodedBOM([]);
-        alert("No data available for the Item .", itemCode);
+        alert("No data available for the Item.");
       }
     } catch (error) {
-      console.error("Error exploding BOM:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error exploding BOM:`, error);
       setExplodedBOM([]);
       alert("Error exploding BOM");
     }
   };
-  console.log("hasRequiredAccess:", hasRequiredAccess);
-  return (
-   <div className="child-container menu-container">
-      {  hasRequiredAccess ? ( <div className="child-container form-container">
-        <div className="form-group  col-md-6 mb-2">
-          <div className="form-row">
-            <div className="label-container">
-              <label htmlFor="itemCode">Item:</label>
-            </div>
-            {/* Replace this input field */}
-            <select
-              id="itemCode"
-              value={itemCode}
-              onChange={handleItemCodeChange}
-              className="form-control input-field"
-            >
-              <option value="">Select an item code</option>
-              {itemList.map((item) => (
-                <option key={item.item_id} value={item.item_code}>
-                  {item.item_code} - {item.item_name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="form-group  col-md-6 mb-2">
-          <div className="form-row">
-            <div className="label-container">
-              <label htmlFor="requiredQuantity">Quantity:</label>
-            </div>
-            <input
-              type="number"
-              id="requiredQuantity"
-              value={requiredQuantity}
-              onChange={handleRequiredQuantityChange}
-              className="form-control input-field"
-            />
-          </div>
-        </div>
-        <div className="form-group col-md-6 mb-2">
-          <div className="form-row">
-            <button onClick={handleExplodeBOM} className="btn btn-primary">
-              Explode BOM
-            </button>
-          </div>
-        </div>
 
-        <table className="table table-striped table-bordered">
-          {/* Render table headers here */}
-          <tbody>
-            {explodedBOM.map((item, index) => (
-              <tr key={index} className="table-row">
-                {/* Render table row data here */}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> ) : (
-      <div>You do not have permission to view this module</div>
-    )}
-    </div> 
+  return (
+    <div className="child-container menu-container">
+      {hasRequiredAccess ? (
+        <div className="child-container form-container">
+          <div className="form-group  col-md-6 mb-2">
+            <div className="form-row">
+              <div className="label-container">
+                <label htmlFor="itemCode">Item:</label>
+              </div>
+              {/* Replace this input field */}
+              <select
+                id="itemCode"
+                value={itemCode}
+                onChange={handleItemCodeChange}
+                className="form-control input-field"
+              >
+                <option value="">Select an item code</option>
+                {itemList.map((item) => (
+                  <option key={item.item_id} value={item.item_code}>
+                    {item.item_code} - {item.item_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="form-group  col-md-6 mb-2">
+            <div className="form-row">
+              <div className="label-container">
+                <label htmlFor="requiredQuantity">Quantity:</label>
+              </div>
+              <input
+                type="number"
+                id="requiredQuantity"
+                value={requiredQuantity}
+                onChange={handleRequiredQuantityChange}
+                className="form-control input-field"
+              />
+            </div>
+          </div>
+          <div className="form-group col-md-6 mb-2">
+            <div className="form-row">
+              <button onClick={handleExplodeBOM} className="btn btn-primary">
+                Explode BOM
+              </button>
+            </div>
+          </div>
+
+          <table className="table table-striped table-bordered">
+            {/* Render table headers here */}
+            <tbody>
+              {explodedBOM.map((item, index) => (
+                <tr key={index} className="table-row">
+                  {/* Render table row data here */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div>You do not have permission to view this module</div>
+      )}
+    </div>
   );
 }
 

@@ -1,28 +1,24 @@
 import { usePermissions } from "./PermissionsContext";
-import { hasPermission } from "./Permissions"
+import { hasPermission } from "./hasPermission";
 import { SUPER_USERS_COUNT } from "../../admin/setups/ConstDecl";
+import logger from "../../utilities/Logs/logger"; // Import your logger module here
 
-
-  // modules/employee/permissions.js
-  export const ModulePermission = {
-    VIEW_EMPLOYEES: "read_permission",
-    CREATE_EMPLOYEES: "write_permission",
-    DELETE_EMPLOYEES: "delete_permission",
-    UPDATE_EMPLOYEES: "update_permission",
-  };
+// modules/employee/permissions.js
+export const ModulePermission = {
+  VIEW_EMPLOYEES: "read_permission",
+  CREATE_EMPLOYEES: "write_permission",
+  DELETE_EMPLOYEES: "delete_permission",
+  UPDATE_EMPLOYEES: "update_permission",
+};
 
 export default function ModulePermissions({ moduleName }) {
-
   const userPermissions = usePermissions(); // Fetch user permissions from context
+  const userid = localStorage.getItem("loggedInUserid");
 
-  //console.log("Retrieved permissions --> ",userPermissions)
+  logger.info(`[${new Date().toLocaleTimeString()}] ModulePermissions: Checking permissions for moduleName=${moduleName}, userid=${userid}`);
 
-  const userid = localStorage.getItem("loggedInUserid");  
-  //alert(userid);
-  
-  //if (parseInt(userPermissions && userPermissions.length > 0 && userPermissions[0].loggedInUserid) < SUPER_USERS_COUNT) {
-    // If loggedInUserid is less than 100, set all permissions to true
-   if (parseInt(userid) < SUPER_USERS_COUNT) {
+  if (parseInt(userid) < SUPER_USERS_COUNT) {
+    logger.info(`[${new Date().toLocaleTimeString()}] ModulePermissions: User is a superuser, granting all permissions.`);
     return {
       canViewModule: true,
       canCreateModule: true,
@@ -51,8 +47,9 @@ export default function ModulePermissions({ moduleName }) {
     moduleName,
     ModulePermission.UPDATE_EMPLOYEES
   );
- // alert("Allmods",canDeleteModule,canUpdateModule,canCreateModule,canViewModule);
- //console.log(canViewModule,canCreateModule,canDeleteModule,canUpdateModule , userid,moduleName);
+
+  logger.info(`[${new Date().toLocaleTimeString()}] ModulePermissions: Permissions for moduleName=${moduleName}, userid=${userid} - canViewModule=${canViewModule}, canCreateModule=${canCreateModule}, canDeleteModule=${canDeleteModule}, canUpdateModule=${canUpdateModule}`);
+
   return {
     canViewModule,
     canCreateModule,

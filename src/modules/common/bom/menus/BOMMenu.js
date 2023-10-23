@@ -1,33 +1,35 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import useButtonBehavior from "../../../utilities/button/behavior";
-import behaviorOptions from "../../../utilities/button/config";
-import ButtonComponent from "../../../utilities/ButtonComponent"; // Import the new ButtonComponent
+import useButtonBehavior from "../../../utilities/button/useButtonBehavior";
+import behaviorOptions from "../../../utilities/button/behaviorOptions";
+import ButtonComponent from "../../../utilities/ButtonComponent";
 import "../../../utilities/css/appcss.css";
-import ModulePermissions from "../../../security/modulepermissions/ModulePermissions"; // Import the ModulePermissions hook
-import { BACKEND_COMMON_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants// Import your constants
+import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
+import { BACKEND_COMMON_MODULE_NAME } from "../../../admin/setups/ConstDecl";
+
+// Import your logger utility here
+import logger from "../../../utilities/Logs/logger";
 
 export default function BOMMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
 
-  // Get the permissions from ModulePermissions hook
-
-  //  const { canViewModule, canCreateModule, canDeleteModule, canUpdateModule } =
   const { canViewModule } = ModulePermissions({
-    moduleName: BACKEND_COMMON_MODULE_NAME, // Set the module name as needed
+    moduleName: BACKEND_COMMON_MODULE_NAME,
   });
 
   const handleMenuItemClick = (path) => {
     if (behaviorOptions.DEFAULT === "_blank") {
+      logger.info(`[${new Date().toLocaleTimeString()}] Opening ${path} in a new tab.`);
       openInNewTab(path);
     } else {
+      logger.info(`[${new Date().toLocaleTimeString()}] Navigating to ${path}.`);
       navigate(path);
     }
   };
 
   const menuItems = [
-    { path: "/bom-explosion", text: "Explode BOM", canRender: canViewModule }, // Add the "canRender" property
+    { path: "/bom-explosion", text: "Explode BOM", canRender: canViewModule },
     // ... add more menu items here
   ];
 
@@ -40,7 +42,10 @@ export default function BOMMenu() {
               key={item.path}
               path={item.path}
               buttonText={item.text}
-              onClick={() => handleMenuItemClick(item.path)}
+              onClick={() => {
+                logger.info(`[${new Date().toLocaleTimeString()}] Clicked on menu item: ${item.text}`);
+                handleMenuItemClick(item.path);
+              }}
             />
           )
         ))}

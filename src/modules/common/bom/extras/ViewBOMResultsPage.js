@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import logger from "../../../utilities/Logs/logger"; // Import the logger with timestamps
 
-export default function ResultsContainer({ explodedBOM }) {
+export default function ViewBOMResultsPage({ explodedBOM }) {
+  useEffect(() => {
+    // Log a message when the component mounts
+    logger.info(`[${new Date().toLocaleTimeString()}] ResultsContainer component has mounted.`);
+
+    // Log the number of explodedBOM items
+    logger.debug(`[${new Date().toLocaleTimeString()}] Number of explodedBOM items: ${explodedBOM.length}`);
+    
+    // Cleanup function: Log a message when the component unmounts
+    return () => {
+      logger.info(`[${new Date().toLocaleTimeString()}] ResultsContainer component is unmounting.`);
+    };
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div className="results-container">
       <div className="model-item-quantity">

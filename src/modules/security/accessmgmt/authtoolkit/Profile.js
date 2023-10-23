@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../general/var/constdecl";
+import logger from "../../utilities/Logs/logger"; // Import your logger module here
 
 function Profile() {
   const [profileData, setProfileData] = useState(null);
@@ -29,6 +30,9 @@ function Profile() {
           profile_name: res.name,
           about_me: res.about,
         });
+
+        // Log successful profile data retrieval with variables and constants
+        logger.info(`[${new Date().toLocaleTimeString()}] Profile data retrieved successfully. Token: ${token}, API_URL: ${API_URL}`);
       })
       .catch((error) => {
         if (error.response) {
@@ -36,6 +40,9 @@ function Profile() {
           console.log(error.response.status);
           console.log(error.response.headers);
         }
+
+        // Log profile data retrieval error with variables and constants
+        logger.error(`[${new Date().toLocaleTimeString()}] Error retrieving profile data. Token: ${token}, API_URL: ${API_URL}`, error);
       });
   }
 

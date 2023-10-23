@@ -3,6 +3,7 @@ import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "..
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
+import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
 function UserListForm() {
   const [users, setUsers] = useState([]);
@@ -26,6 +27,7 @@ function UserListForm() {
 
   useEffect(() => {
     if (!hasRequiredAccess) {
+      logger.warn(`[${new Date().toLocaleTimeString()}] User does not have required access to view this module.`);
       return; // Do not fetch data if access is not granted
     }
 
@@ -35,12 +37,17 @@ function UserListForm() {
 
   const fetchData = async () => {
     try {
+      logger.info(`[${new Date().toLocaleTimeString()}] Fetching user list...`);
+
       const response = await axios.get(`${API_URL}/list_users`, {
         headers: generateHeaders(), // Include headers here
       });
       setUsers(response.data.users);
+
+      logger.info(`[${new Date().toLocaleTimeString()}] User list fetched successfully.`);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error fetching users:`, error);
+      console.error(`[${new Date().toLocaleTimeString()}] Error fetching users:`, error);
     }
   };
 

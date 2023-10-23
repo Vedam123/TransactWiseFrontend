@@ -7,6 +7,7 @@ import {
 } from "../../admin/setups/ConstDecl"; // Import your constants
 import "../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
+import logger from "../../utilities/Logs/logger"; // Import your logger
 
 export default function CreateEmployeeForm() {
   const [formData, setFormData] = useState({
@@ -32,6 +33,7 @@ export default function CreateEmployeeForm() {
     if (!hasRequiredAccess) {
       return; // Do not fetch data if access is not granted
     }
+
     const fetchEmployees = async () => {
       try {
         const authToken = localStorage.getItem("token");
@@ -45,9 +47,13 @@ export default function CreateEmployeeForm() {
         const response = await axios.get(`${API_URL}/employee`, { headers });
         const employees = response.data;
         setManagerOptions(employees);
+
+        logger.info(`[${new Date().toLocaleTimeString()}] Fetching employees and designations...`);
+
         setSupervisorOptions(employees);
+        logger.info(`[${new Date().toLocaleTimeString()}] Employees data fetched successfully.`);
       } catch (error) {
-        console.error("Error fetching employees:", error);
+        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching employees:`, error);
       }
     };
 
@@ -69,8 +75,10 @@ export default function CreateEmployeeForm() {
           (designation) => designation.designation_name
         );
         setDesignationOptions(designationNames);
+
+        logger.info(`[${new Date().toLocaleTimeString()}] Designations data fetched successfully.`);
       } catch (error) {
-        console.error("Error fetching designations:", error);
+        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching designations:`, error);
       }
     };
 
@@ -84,10 +92,13 @@ export default function CreateEmployeeForm() {
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
+
+    logger.debug(`[${new Date().toLocaleTimeString()}] ${e.target.name} value changed: ${e.target.value}`);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const authToken = localStorage.getItem("token");
       const userid = localStorage.getItem("loggedInUserid");
@@ -107,12 +118,16 @@ export default function CreateEmployeeForm() {
       formDataToSend.append("salary", formData.salary);
       formDataToSend.append("pic", formData.pic);
 
+      logger.info(`[${new Date().toLocaleTimeString()}] Creating employee...`);
+
       const response = await axios.post(
         `${API_URL}/create_employee`,
         formDataToSend,
         { headers }
       );
-      console.log(response.data);
+
+      logger.info(`[${new Date().toLocaleTimeString()}] Employee created successfully:`, response.data);
+
       setFormData({
         name: "",
         dob: "",
@@ -124,10 +139,10 @@ export default function CreateEmployeeForm() {
         pic: null,
       });
     } catch (error) {
-      console.error("Error creating employee:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error creating employee:`, error);
     }
   };
-
+  
   return (
     <div className="child-container menu-container">
       <h2 className="title">Create Employee</h2>

@@ -4,6 +4,9 @@ import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS } from "
 import "../../utilities/css/appcss.css"; // Adjust the import path as needed
 import CheckModuleAccess from "../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
+// Import your logger utility here
+import logger from "../../utilities/Logs/logger";
+
 export default function CreateUISetupsForm() {
   const [formData, setFormData] = useState({
     config_key: "",
@@ -16,6 +19,7 @@ export default function CreateUISetupsForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    logger.info(`[${new Date().toLocaleTimeString()}] ${name} value changed: ${value}`); // Info log message
   };
 
   const handleSubmit = async (e) => {
@@ -29,15 +33,20 @@ export default function CreateUISetupsForm() {
         'UserId': userid,
       };
 
+      logger.info(`[${new Date().toLocaleTimeString()}] Creating UI Configuration Data...`);
+
       const response = await axios.post(`${API_URL}/create_ui_config_data`, formData, { headers });
-      console.log(response.data);
+      
+      // Log the response data
+      logger.info(`[${new Date().toLocaleTimeString()}] Response data:`, response.data);
+      
       setFormData({
         config_key: "",
         config_value: "",
       });
       setSubmitStatus("success"); // Set success status
     } catch (error) {
-      console.error("Error creating UI configuration data:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error creating UI configuration data:`, error);
       setSubmitStatus("failure"); // Set failure status
     }
   };
@@ -98,7 +107,7 @@ export default function CreateUISetupsForm() {
           </form>
         </div>
       ) : (
-        <div> You do not have permission to view this module </div>
+        <div>You do not have permission to view this module</div>
       )}
     </div>
   );

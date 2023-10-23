@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL  ,BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
+import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
+import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
 const GrantPermissionsForm = () => {
   const [username, setUsername] = useState("");
@@ -64,7 +65,7 @@ const GrantPermissionsForm = () => {
       });
       const usersData = usersResponse.data.users;
       if (!Array.isArray(usersData)) {
-          console.log("Invalid response from the server. Users data is not in the expected format.")
+        logger.error(`[${new Date().toLocaleTimeString()}] Invalid response from the server. Users data is not in the expected format.`);
         return;
       }
 
@@ -72,7 +73,7 @@ const GrantPermissionsForm = () => {
 
       if (!user) {
         //alert("Username not found in the users list.");
-        displayStatusMessage("User Not found in the DB!");
+        displayStatusMessage(`User Not found in the DB!`);
         setUserData(null);
         setModuleEntries([]);
         return;
@@ -80,7 +81,7 @@ const GrantPermissionsForm = () => {
 
       const dbuserid = user.id;
       setGbuserid(dbuserid);
-      console.log("DB user id ", dbuserid);
+      logger.info(`[${new Date().toLocaleTimeString()}] DB user id: ${dbuserid}`);
 
       // Check if the user exists in adm.user_module_permissions table
       const permissionsResponse = await axios.get(
@@ -98,19 +99,20 @@ const GrantPermissionsForm = () => {
         );
         return;
       }
-      console.log("Seems userPermissionsData is an Arry ");
+      logger.info(`[${new Date().toLocaleTimeString()}] Seems userPermissionsData is an Array`);
+
       const userPermissions = userPermissionsData.find(
         (perm) => perm.user_id === dbuserid
       );
-      console.log(userPermissions.id);
+      logger.info(`[${new Date().toLocaleTimeString()}] User permissions id: ${userPermissions.id}`);
 
       const userPermissionsbyUserid = userPermissionsData.filter(
         (perm) => perm.user_id === dbuserid
       );
-      console.log(userPermissionsbyUserid);
+      logger.info(`[${new Date().toLocaleTimeString()}] User permissions by User id: ${JSON.stringify(userPermissionsbyUserid)}`);
       if (userPermissionsbyUserid.length > 0) {
         // If the user exists in adm.user_module_permissions table, set the module entries for editing
-        console.log("User is present in the permissions table as well");
+        logger.info(`[${new Date().toLocaleTimeString()}] User is present in the permissions table as well`);
         setUserData(user);
 
         const moduleEntriesForUser = userPermissionsbyUserid.map(
@@ -127,12 +129,12 @@ const GrantPermissionsForm = () => {
         setModuleEntries(moduleEntriesForUser);
       } else {
         // If the user does not exist in adm.user_module_permissions table, reset module entries
-        console.log("User is not present in the permissions table");
+        logger.info(`[${new Date().toLocaleTimeString()}] User is not present in the permissions table`);
         setUserData(user);
         setModuleEntries([]);
       }
     } catch (error) {
-      console.error("Error fetching users:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error fetching users: ${error}`);
     }
   };
 
@@ -158,7 +160,7 @@ const GrantPermissionsForm = () => {
       user_id: gbuserid, // Add the dbuserid as the value of user_id for each entry
     }));
 
-    console.log("Request data:", updatedModuleEntries);
+    logger.info(`[${new Date().toLocaleTimeString()}] Request data: ${JSON.stringify(updatedModuleEntries)}`);
 
     try {
       const response = await axios.post(
@@ -169,7 +171,7 @@ const GrantPermissionsForm = () => {
         }
       );
 
-      console.log(response.data);
+      logger.info(`[${new Date().toLocaleTimeString()}] Response data: ${JSON.stringify(response.data)}`);
       // Clear form fields after successful submission
       setUsername("");
       setUserData(null);
@@ -177,7 +179,7 @@ const GrantPermissionsForm = () => {
       // Display success message
       displayStatusMessage("Permissions saved successfully!");
     } catch (error) {
-      console.error("Error creating/updating permission:", error);
+      logger.error(`[${new Date().toLocaleTimeString()}] Error creating/updating permission: ${error}`);
       // Display error message
       displayStatusMessage(
         "Error saving permissions. Please try again later.",
@@ -189,101 +191,103 @@ const GrantPermissionsForm = () => {
   return (
     <div className="child-container form-container">
       <h1 className="title">Create User Module Permissions</h1>
-      {hasRequiredAccess ? ( <form onSubmit={handleSubmit}>
-        {statusMessage && <div className="status-message">{statusMessage}</div>}
-        <div className="form-group col-md-6 mb-2">
-          <div className="form-row">
-            <div className="label-container">
-              <label htmlFor="username">Username :</label>
+      {hasRequiredAccess ? (
+        <form onSubmit={handleSubmit}>
+          {statusMessage && <div className="status-message">{statusMessage}</div>}
+          <div className="form-group col-md-6 mb-2">
+            <div className="form-row">
+              <div className="label-container">
+                <label htmlFor="username">Username :</label>
+              </div>
+              <input
+                type="text"
+                id="usernameInput"
+                name="usernameInput"
+                value={username}
+                onChange={handleUsernameChange}
+                className="form-control input-field"
+              />
+              <button
+                type="button"
+                onClick={handleCheckUser}
+                className="menu-button"
+              >
+                CheckUser
+              </button>
             </div>
-            <input
-              type="text"
-              id="usernameInput"
-              name="usernameInput"
-              value={username}
-              onChange={handleUsernameChange}
-              className="form-control input-field"
-            />
+          </div>
+          {userData && (
+            <div>
+              <h4 className="sub-title">Permissions for {userData.username}</h4>
+              {moduleEntries.map((entry, index) => (
+                <div key={index} className="form-row">
+                  <div className="label-container">
+                    <label htmlFor={`module`}>Module:</label>
+                  </div>
+                  <input
+                    type="text"
+                    id={`module`}
+                    name="module"
+                    defaultValue={entry.module}
+                    className="permission-row"
+                  />
+                  <label>
+                    <input
+                      type="checkbox"
+                      name={`read_permission`}
+                      checked={entry.read_permission} 
+                      onChange={(event) => handleModuleEntryChange(index, event)}
+                    />
+                    Read
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name={`write_permission`}
+                      checked={entry.write_permission}
+                      onChange={(event) => handleModuleEntryChange(index, event)}
+                    />
+                    Write
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name={`update_permission`}
+                      checked={entry.update_permission}
+                      onChange={(event) => handleModuleEntryChange(index, event)}
+                    />
+                    Update
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name={`delete_permission`}
+                      checked={entry.delete_permission}
+                      onChange={(event) => handleModuleEntryChange(index, event)}
+                    />
+                    Delete
+                  </label>
+                </div>
+              ))}
+              
+            </div>
+          )}
+          <div className="right-side-form-button">
             <button
               type="button"
-              onClick={handleCheckUser}
-              className="menu-button"
+              className="btn btn-secondary"
+              onClick={handleCancel}
             >
-              CheckUser
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-primary">
+              Save Permissions
             </button>
           </div>
-        </div>
-        {userData && (
-          <div>
-            <h4 className="sub-title">Permissions for {userData.username}</h4>
-            {moduleEntries.map((entry, index) => (
-              <div key={index} className="form-row">
-                <div className="label-container">
-                  <label htmlFor={`module`}>Module:</label>
-                </div>
-                <input
-                  type="text"
-                  id={`module`}
-                  name="module"
-                  defaultValue={entry.module}
-                  className="permission-row"
-                />
-                <label>
-                  <input
-                    type="checkbox"
-                    name={`read_permission`}
-                    checked={entry.read_permission} 
-                    onChange={(event) => handleModuleEntryChange(index, event)}
-                  />
-                  Read
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    name={`write_permission`}
-                    checked={entry.write_permission}
-                    onChange={(event) => handleModuleEntryChange(index, event)}
-                  />
-                  Write
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    name={`update_permission`}
-                    checked={entry.update_permission}
-                    onChange={(event) => handleModuleEntryChange(index, event)}
-                  />
-                  Update
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    name={`delete_permission`}
-                    checked={entry.delete_permission}
-                    onChange={(event) => handleModuleEntryChange(index, event)}
-                  />
-                  Delete
-                </label>
-              </div>
-            ))}
-            
-          </div>
-        )}
-        <div className="right-side-form-button">
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={handleCancel}
-          >
-            Cancel
-          </button>
-          <button type="submit" className="btn btn-primary">
-            Save Permissions
-          </button>
-        </div>
-      </form> ) : (
-      <div>You do not have permission to view this module</div>
-    )}
+        </form>
+      ) : (
+        <div>You do not have permission to view this module</div>
+      )}
     </div>
   );
 };

@@ -1,13 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import useButtonBehavior from "../../utilities/button/behavior";
-import behaviorOptions from "../../utilities/button/config";
+import useButtonBehavior from "../../utilities/button/useButtonBehavior";
+import behaviorOptions from "../../utilities/button/behaviorOptions";
 import ButtonComponent from "../../utilities/ButtonComponent";
 import "../../utilities/css/appcss.css";
 import ModulePermissions from "../../security/modulepermissions/ModulePermissions";
-import { BACKEND_EMPLOYEE_MODULE_NAME, 
-    BACKEND_SECURITY_MODULE_NAME, 
-    BACKEND_ADMIN_MODULE_NAME } from "../setups/ConstDecl"; // Import your constants// Import your constants
+import {
+  BACKEND_EMPLOYEE_MODULE_NAME,
+  BACKEND_SECURITY_MODULE_NAME,
+  BACKEND_ADMIN_MODULE_NAME,
+} from "../setups/ConstDecl"; // Import your constants
+
+// Import your logger utility here
+import logger from "../../utilities/Logs/logger";
 
 export default function AdminPageMenu() {
   const navigate = useNavigate();
@@ -19,6 +24,9 @@ export default function AdminPageMenu() {
     } else {
       navigate(path);
     }
+
+    // Log the menu item click with the path
+    logger.info(`[${new Date().toLocaleTimeString()}] Menu item clicked: ${path}`);
   };
 
   // Retrieve employee and security permissions
@@ -94,9 +102,9 @@ export default function AdminPageMenu() {
           (item.path === "/employee-functions" && isEmployeePermissionGranted) ||
           (item.path === "/user-functions" && isSecurityPermissionGranted) ||
           (item.path === "/view-emails-function" && isAdminPermissionGranted) ||
-          (item.path === "/create-ui-setups" && isAdminPermissionGranted) || 
-          (item.path === "/list-ui-setups" && isAdminPermissionGranted) ||   
-          (item.path === "/create-db-setups" && isAdminPermissionGranted) || 
+          (item.path === "/create-ui-setups" && isAdminPermissionGranted) ||
+          (item.path === "/list-ui-setups" && isAdminPermissionGranted) ||
+          (item.path === "/create-db-setups" && isAdminPermissionGranted) ||
           (item.path === "/list-db-setups" && isAdminPermissionGranted) ? (
             <ButtonComponent
               key={item.path}

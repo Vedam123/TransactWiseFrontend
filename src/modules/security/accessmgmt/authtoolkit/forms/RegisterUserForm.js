@@ -4,6 +4,7 @@ import axios from "axios";
 import "../../../../utilities/css/appcss.css";
 import useToken from "../useToken";
 import CheckModuleAccess from "../../../modulepermissions/CheckModuleAccess";
+import logger from "../../../../utilities/Logs/logger"; // Import your logger module here
 
 export default function RegisterUserForm() {
   const { token } = useToken();
@@ -15,19 +16,20 @@ export default function RegisterUserForm() {
     emailid: "",
   });
   const hasRequiredAccess = CheckModuleAccess(
-    BACKEND_ADMIN_MODULE_NAME, // Replace with your module name constant
-    MODULE_LEVEL_CREATE_ACCESS // Replace with your access level constant
+    BACKEND_ADMIN_MODULE_NAME,
+    MODULE_LEVEL_CREATE_ACCESS
   );
 
   const [employeeData, setEmployeeData] = useState([]);
-  const [registrationSuccess, setRegistrationSuccess] = useState(false); // State variable to track successful registration
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   useEffect(() => {
     if (!hasRequiredAccess) {
-      return; // Do not fetch data if access is not granted
+      return;
     }
 
     fetchEmployeeData();
+    // eslint-disable-next-line
   }, [hasRequiredAccess]);
 
   const fetchEmployeeData = async () => {
@@ -42,8 +44,13 @@ export default function RegisterUserForm() {
       const response = await axios.get(`${API_URL}/employee` , { headers });
       const data = response.data;
       setEmployeeData(data);
+      
+      // Log the successful data fetch with timestamp
+      logger.info(`[${new Date().toLocaleTimeString()}] Fetched employee data. Access granted: ${hasRequiredAccess}`);
     } catch (error) {
       console.error("Error fetching employee data:", error);
+      // Log the error with timestamp
+      logger.error(`[${new Date().toLocaleTimeString()}] Error fetching employee data. Access granted: ${hasRequiredAccess}`, error);
     }
   };
 
@@ -57,7 +64,6 @@ export default function RegisterUserForm() {
       const headers = {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'UserId': localStorage.getItem("userid"),
-        // Add other headers if needed
       };
 
       const response = await axios.post(`${API_URL}/register_user`, formData, {
@@ -65,14 +71,14 @@ export default function RegisterUserForm() {
       });
       
       console.log(response.data);
-      setRegistrationSuccess(true); // Set the registrationSuccess state to true
+      setRegistrationSuccess(true);
 
       // Sending email data to SMTP endpoint
       const emailData = {
         sender_email: SMTP_EML,
-        recipient_email: formData.emailid, // Replace with the appropriate recipient email address
+        recipient_email: formData.emailid,
         subject: "Test email by Vedam",
-        message: "Being an employee with an id "+formData.empid+" Your Registrtion is successful with the user id  "+formData.username + "and password  "+formData.password,
+        message: "Being an employee with an id "+formData.empid+" Your Registration is successful with the user id  "+formData.username + "and password  "+formData.password,
       };
 
       setFormData({
@@ -87,8 +93,13 @@ export default function RegisterUserForm() {
       });
 
       console.log(response2.data);
+
+      // Log the successful registration with timestamp
+      logger.info(`[${new Date().toLocaleTimeString()}] User registered successfully. Access granted: ${hasRequiredAccess}`);
     } catch (error) {
       console.error("Error registering user:", error);
+      // Log the error with timestamp
+      logger.error(`[${new Date().toLocaleTimeString()}] Error registering user. Access granted: ${hasRequiredAccess}`, error);
     }
   };
 
