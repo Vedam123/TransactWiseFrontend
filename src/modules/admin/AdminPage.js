@@ -23,8 +23,9 @@ export default function AdminPage() {
           </DisplayCard>
         </div>
         <DocumentationContainer />
-      </div>
 
+      </div>
+      <BottomContainer />
       {/* Log a debug message with the current time when the RotatingImage component is rendered */}
       {RotatingImage && logger.debug(`[${new Date().toLocaleTimeString()}] RotatingImage component is rendered.`)}
 

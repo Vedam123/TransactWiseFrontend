@@ -83,7 +83,7 @@ export default function AdminPageMenu() {
     canDeleteAdminModule ||
     canUpdateAdminModule;
 
-  const menuItems = [
+ /* const menuItems = [
     { path: "/employee-functions", text: "Employee" },
     { path: "/user-functions", text: "Users&Accesses" },
     { path: "/view-emails-function", text: "View Emails" },
@@ -92,6 +92,12 @@ export default function AdminPageMenu() {
     { path: "/create-db-setups", text: "Create DB Setups" },
     { path: "/list-db-setups", text: "Config DB Setup File" },
     // ... add more menu items here
+  ];*/
+
+  const menuItems = [
+    { path: "/employee-functions", text: "Employee" },
+    { path: "/user-functions", text: "Users&Accesses" },
+    { path: "/view-emails-function", text: "View Emails" },
   ];
 
   return (
