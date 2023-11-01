@@ -9,11 +9,23 @@ import ExchangeRatesPage from "./exchangerates/ExchangeRatesPage";
 import CurrenciesPage from "./currencies/CurrenciesPage";
 import BOMPage from "./bom/BOMPage";
 import BusinessPartnersPage from "./businesspartner/BusinessPartnersPage";
-import logger from "../utilities/Logs/logger"; // Import your logger module here
+import logger from "../utilities/Logs/logger";
 
 export default function CommonPage() {
   // Log the component rendering with timestamp
   logger.info(`[${new Date().toLocaleTimeString()}] CommonPage component is rendering.`);
+
+  // Define the list of components to render
+  const componentsToRender = [
+    BusinessPartnersPage,
+    UOMPage,
+    TaxCodesPage,
+    ExchangeRatesPage,
+    CurrenciesPage,
+    BOMPage,
+  ];
+
+  const componentsToRender2 = [CommonPage]
 
   return (
     <div className="page-container">
@@ -22,17 +34,12 @@ export default function CommonPage() {
       <div className="parent-container">
         <div className="child-container menu-container">
           <div className="menu-list-container">
-            <UOMPage />
-            <TaxCodesPage />
-            <ExchangeRatesPage />
-            <CurrenciesPage />
-            <BOMPage />
-          </div>
-          <div className="menu-list-container">
-            <BusinessPartnersPage />
+            {componentsToRender.map((Component, index) => (
+              <Component key={index} />
+            ))}
           </div>
         </div>
-        <DocumentationContainer />
+        <DocumentationContainer  componentNames={componentsToRender2.map(component => component.name)} />
       </div>
       <RotatingImage />
       <BottomContainer />

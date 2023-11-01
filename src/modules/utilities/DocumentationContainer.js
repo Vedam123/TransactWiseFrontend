@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
-import logger from "../utilities/Logs/logger"; // Import your logger module here
+import React, { useState, useEffect, Suspense } from "react";
+import { IS_INAPP_HELP_NEEDED } from "../admin/setups/ConstDecl"; // Import your constants
+import logger from "./Logs/logger";
+import "../utilities/css/appcss.css";
 
 const imagePaths = [
   require("./images/lake-am.jpg"),
@@ -8,35 +10,77 @@ const imagePaths = [
   // Add more image paths here
 ];
 
-export default function DocumentationContainer() {
+export default function DocumentationContainer(props) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [resolvedComponents, setResolvedComponents] = useState([]);
 
   useEffect(() => {
-    logger.info(`[${new Date().toLocaleTimeString()}] DocumentationContainer is rendered.`);
-    
+    logger.info(
+      `[${new Date().toLocaleTimeString()}] DocumentationContainer is rendered`
+    );
+
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imagePaths.length);
     }, 30000); // 30 seconds in milliseconds
 
     return () => {
-      logger.info(`[${new Date().toLocaleTimeString()}] DocumentationContainer is unmounted.`);
+      logger.info(
+        `[${new Date().toLocaleTimeString()}] DocumentationContainer is unmounted`
+      );
       clearInterval(interval);
     };
-  }, []); // No dependencies
+  }, []);
+
+  useEffect(() => {
+    if (props.componentNames && Array.isArray(props.componentNames) && IS_INAPP_HELP_NEEDED) {
+      const dynamicComponentPromises = [];
+
+      props.componentNames.forEach((componentName) => {
+        // Add "HELP_" prefix to the componentName
+        const docComponentName = `HELP_${componentName}`;
+        dynamicComponentPromises.push(
+          import(`../inapp-help/display/${docComponentName}.js`)
+            .then((module) => module.default)
+            .catch((error) => {
+              console.error(`Failed to import ${docComponentName}:`, error);
+              return null;
+            })
+        );
+      });
+
+      // Render dynamic components within Suspense after they have all resolved
+      Promise.all(dynamicComponentPromises).then((resolvedComponents) => {
+        setResolvedComponents(resolvedComponents);
+      });
+    }
+  }, [props.componentNames]);
 
   const backgroundImageStyle = {
-    backgroundImage: currentImageIndex !== undefined ? `url(${imagePaths[currentImageIndex]?.default})` : "none",
+    backgroundImage:
+      currentImageIndex !== undefined
+        ? `url(${imagePaths[currentImageIndex]?.default})`
+        : "none",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",
     opacity: 0.8,
   };
 
-  return (
+  return IS_INAPP_HELP_NEEDED ? (
     <div className="child-container empty-container" style={backgroundImageStyle}>
-      <div className="empty-text">
-        This space is reserved to update documentation
+      <div className="documentation-content">
+        <Suspense fallback={<div>Loading...</div>}>
+          {resolvedComponents.map((DynamicComponent, index) =>
+            DynamicComponent ? <DynamicComponent key={index} /> : null
+          )}
+        </Suspense>
       </div>
+    </div>
+  ) :   (
+    <div className="child-container empty-container" style={backgroundImageStyle}>
+      <div className="documentation-content">
+      <p className="no-help-text-message">Help text is not enabled.</p>
+    </div>
     </div>
   );
 }

@@ -11,17 +11,23 @@ export default function ProductsPage() {
   // Log the component rendering with timestamp
   logger.info(`[${new Date().toLocaleTimeString()}] ProductsPage component is rendering.`);
 
+  // Define the list of components to render
+  const componentsToRender = [ProductPage, ProductCategoriesPage];
+
+  const componentsToRender2 = [ProductsPage];
+
   return (
     <div className="page-container">
       <h1 className="title">Product & Product Categories</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
           <div className="menu-list-container">
-            <ProductPage />
-            <ProductCategoriesPage />
+            {componentsToRender.map((Component, index) => (
+              <Component key={index} />
+            ))}
           </div>
         </div>
-        <DocumentationContainer />
+        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
       </div>
       <RotatingImage />
       <BottomContainer />

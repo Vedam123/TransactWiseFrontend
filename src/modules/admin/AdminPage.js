@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AdminPageMenu from "./menus/AdminPageMenu";
 import "../utilities/css/appcss.css";
 import RotatingImage from "../utilities/RotatingImage";
@@ -13,16 +13,34 @@ export default function AdminPage() {
   // Log an info message with the current time when the AdminPage component starts rendering
   logger.info(`[${new Date().toLocaleTimeString()}] AdminPage component is rendering.`);
 
+  // Create an array of components to render
+  const componentsToRender = [AdminPageMenu]; // Add other components as needed
+
+  useEffect(() => {
+    // Log a message when the component mounts
+    logger.info(`[${new Date().toLocaleTimeString()}] AdminPage component has mounted.`);
+
+    // You can also log additional information as needed
+    logger.debug(`[${new Date().toLocaleTimeString()}] Debug message for component mount.`);
+    
+    // Cleanup function: Log a message when the component unmounts
+    return () => {
+      logger.info(`[${new Date().toLocaleTimeString()}] AdminPage component is unmounting.`);
+    };
+  }, []);
+
   return (
     <div className="page-container">
       <h1 className="title">Admin & Setups</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
           <DisplayCard title="Admin Functions" color="#FFD799">
-            <AdminPageMenu />
+            {componentsToRender.map((Component, index) => (
+              <Component key={index} />
+            ))}
           </DisplayCard>
         </div>
-        <DocumentationContainer />
+        <DocumentationContainer  componentNames={componentsToRender.map(component => component.name)} />
 
       </div>
       <BottomContainer />

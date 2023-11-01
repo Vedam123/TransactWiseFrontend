@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import "../utilities/css/appcss.css";
 import HomePageMenu from "./menus/HomePageMenu";
+//import HomePageMenu1 from "./menus/HomePageMenu1";
 import RotatingImage from "../utilities/RotatingImage";
 import BottomContainer from "../utilities/BottomContainer";
 import DocumentationContainer from "../utilities/DocumentationContainer";
 import DisplayCard from "../utilities/DisplayCard";
 import { APPLICATION_NAME, APPLICATION_LEVEL } from "../admin/setups/ConstDecl";
-import logger from "../utilities/Logs/logger"; // Use default import
+import logger from "../utilities/Logs/logger";
 
 export default function HomePage() {
   useEffect(() => {
@@ -22,6 +23,9 @@ export default function HomePage() {
     };
   }, []);
 
+  // Create an array of components to render
+  const componentsToRender = [HomePageMenu];
+
   return (
     <div className="page-container">
       <h1 className="title">{APPLICATION_NAME}</h1>
@@ -29,12 +33,13 @@ export default function HomePage() {
       <div className="parent-container">
         <div className="child-container menu-container">
           <DisplayCard title="Modules" color="#FFD799">
-            <HomePageMenu />
+            {componentsToRender.map((Component, index) => (
+              <Component key={index} />
+            ))}
             <RotatingImage />
           </DisplayCard>
         </div>
-
-        <DocumentationContainer />
+        <DocumentationContainer  componentNames={componentsToRender.map(component => component.name)} />
       </div>
       <BottomContainer />
     </div>
