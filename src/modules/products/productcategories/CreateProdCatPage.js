@@ -10,13 +10,19 @@ function CreateProdCatPage() {
   // Log the component rendering with timestamp
   logger.info(`[${new Date().toLocaleTimeString()}] CreateProdCatPage component is rendering.`);
 
+  // Define the list of components to render
+  const componentsToRender = [CreateProdCatForm];
+  const componentsToRender2 = [CreateProdCatPage];
+
   return (
     <div className="page-container">
       <h1 className="title">Create Product Category</h1>
 
       <div className="parent-container">
-        <CreateProdCatForm />
-        <DocumentationContainer />
+        {componentsToRender.map((Component, index) => (
+          <Component key={index} />
+        ))}
+        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
       </div>
       <RotatingImage />
       <BottomContainer />

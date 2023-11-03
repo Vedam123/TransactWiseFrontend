@@ -22,6 +22,7 @@ function useToken() {
       const currentTime = new Date();
       if (refreshtokenexpiry < currentTime) {
         const userToken = localStorage.getItem(userTokenKey);
+        
         if (userToken) {
           localStorage.removeItem(userTokenKey);
         }
@@ -110,7 +111,12 @@ function useToken() {
       TOKEN_EXPIRATION_CHECK_FREQUENCY
     );
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      // Add code here to perform auto-logout, e.g., redirect to the login page
+      removeToken(); // This will clear the token and log the user out
+    };
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Include refreshAccessToken in the dependency array
 

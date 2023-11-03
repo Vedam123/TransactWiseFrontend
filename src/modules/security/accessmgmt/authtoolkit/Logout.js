@@ -27,6 +27,8 @@ function Logout(props) {
         const emp_img = localStorage.getItem("emp_img");
         const username = localStorage.getItem("username");
         const loggedInUserid = localStorage.getItem("loggedInUserid");
+        const currenciesDataFetched = localStorage.getItem("currenciesDataFetched");
+        const loglevel = localStorage.getItem("loglevel");
 
         if (userToken) {
           localStorage.removeItem("token");
@@ -45,6 +47,12 @@ function Logout(props) {
         }
         if (loggedInUserid) {
           localStorage.removeItem("loggedInUserid");
+        }
+        if (currenciesDataFetched) {
+          localStorage.removeItem("currenciesDataFetched");
+        }
+        if (loglevel) {
+          localStorage.removeItem("loglevel");
         }
 
         // Log successful logout with username

@@ -15,8 +15,8 @@ export default function ProductsCatMenu() {
 
   const menuItems = [
     { path: "/create-item-category", text: "Create Product Cat", canRender: canCreateModule },
-    { path: "/delete-item", text: "Delete Product Cat", canRender: canDeleteModule },
-    { path: "/update-item", text: "Update Product Cat", canRender: canUpdateModule },
+    { path: "/delete-item-category", text: "Delete Product Cat", canRender: canDeleteModule },
+    { path: "/update-item-category", text: "Update Product Cat", canRender: canUpdateModule },
     { path: "/list-product-categories", text: "List Products Cats", canRender: canViewModule },
   ];
 

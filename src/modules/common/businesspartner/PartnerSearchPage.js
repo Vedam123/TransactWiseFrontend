@@ -12,13 +12,19 @@ function PartnerSearchPage() {
   // Log a message with the current time when entering the PartnerSearchPage component
   logger.info(`[${new Date().toLocaleTimeString()}] Entered PartnerSearchPage`);
 
+  // Define the list of components to render
+  const componentsToRender = [PartnerSearchForm];
+  const componentsToRender2 = [PartnerSearchPage];
+
   return (
     <div className="page-container">
       <h1 className="title">Business Partner Search Page</h1>
 
       <div className="parent-container">
-        <PartnerSearchForm />
-        <DocumentationContainer />
+        {componentsToRender.map((Component, index) => (
+          <Component key={index} />
+        ))}
+        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
       </div>
       <RotatingImage />
       <BottomContainer />

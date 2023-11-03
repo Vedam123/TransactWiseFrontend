@@ -5,7 +5,6 @@ import "../../../utilities/css/appcss.css";
 import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
 export default function Login(props) {
-  console.log("Entered Login function")
   const [formData, setFormData] = useState({
     username: "",
     password: "",
