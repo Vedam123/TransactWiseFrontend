@@ -10,6 +10,7 @@ import Login from "./accessmgmt/authtoolkit/Login";
 import UserName from "./accessmgmt/authtoolkit/UserName";
 import Logout from "./accessmgmt/authtoolkit/Logout";
 import useToken from "./accessmgmt/authtoolkit/useToken";
+import TokenExpirationChecker from "./accessmgmt/authtoolkit/TokenExpirationChecker";
 import HomePage from "../application/HomePage";
 import ViewAllEmployeesPage from "../employee/ViewAllEmployeesPage";
 import AdminPage from "../admin/AdminPage";
@@ -57,6 +58,7 @@ function AuthenticationPage() {
   const [name, setName] = useState("");
   const [emp_img, setImage] = useState("");
   const [refresh_token, setRefreshToken] = useState("");
+
 
   const nameWithSpace = name + "\u00a0";
   const useridWithSpace = loggedInUserid + "\u00a0";
@@ -158,7 +160,8 @@ function AuthenticationPage() {
           </div>
         </div>
       ) : (
-        <PermissionsContext.Provider value={userPermissions}>
+        <PermissionsContext.Provider value={userPermissions}>8
+          <TokenExpirationChecker /> 
           <header className="logout_page-container">
             <div className="left-header">
               <UserName
@@ -169,10 +172,11 @@ function AuthenticationPage() {
               <Link to="/">Home</Link>
             </div>
             <div className="right-header">
-              <Logout token={removeToken} />
+              <Logout token={removeToken} /> {/* Pass the navigate function to Logout */}
             </div>
           </header>
           <Routes>
+            <Route path="/Login" element={<Login />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/employee-functions" element={<EmployeePage />} />
             <Route path="/list-employees" element={<ViewAllEmployeesPage />} />

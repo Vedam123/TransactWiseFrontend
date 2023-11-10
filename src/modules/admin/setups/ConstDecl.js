@@ -19,5 +19,5 @@ export const BACKEND_INVENTORY_MODULE_NAME = "Inventory";
 export const BACKEND_PURCHASE_MODULE_NAME = "purchase";
 export const BACKEND_SALES_MODULE_NAME = "sales";
 export const BACKEND_FINANCE_MODULE_NAME = "finance";
-export const APPLICATION_LEVEL ="Development"  //Test, Production, Development
+export const APPLICATION_LEVEL ="Production"  //Test, Production, Development
 export const IS_INAPP_HELP_NEEDED = true;
