@@ -160,7 +160,7 @@ function AuthenticationPage() {
           </div>
         </div>
       ) : (
-        <PermissionsContext.Provider value={userPermissions}>8
+        <PermissionsContext.Provider value={userPermissions}>
           <TokenExpirationChecker /> 
           <header className="logout_page-container">
             <div className="left-header">

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { checkTokenExpiration } from "./checkTokenExpiration";
-//import Login from "./Login";
+import { IS_ACCESS_CONTROLLED_BY_REFRESH_TOKEN } from "../../../admin/setups/ConstDecl";
 
 function TokenExpirationChecker() {
   const token_expires_by = localStorage.getItem("token_expires_by");
@@ -9,8 +9,7 @@ function TokenExpirationChecker() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (checkTokenExpiration(token_expires_by)) {
-        // Remove items from local storage
+      if (!IS_ACCESS_CONTROLLED_BY_REFRESH_TOKEN && checkTokenExpiration(token_expires_by)) {
         const keysToRemove = [
           "token",
           "refresh_token",
@@ -32,10 +31,7 @@ function TokenExpirationChecker() {
           }
         });
 
-        // Navigate to Login page
-        //navigate("/Login");
-
-        clearInterval(interval);
+       clearInterval(interval);
       }
     }, 1000);
 

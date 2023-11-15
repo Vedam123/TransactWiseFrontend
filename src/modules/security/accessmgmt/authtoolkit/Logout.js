@@ -29,6 +29,8 @@ function Logout(props) {
         "token_expires_by",
         "refresh_token_expires_delta",
         "refresh_token_expires_by",
+        'token_expires_by_timestamp',
+        'refresh_token_expires_by_timestamp'
       ];
 
       keysToRemove.forEach((key) => {

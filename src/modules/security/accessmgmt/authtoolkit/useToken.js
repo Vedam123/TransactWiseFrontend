@@ -100,10 +100,11 @@ function useToken() {
     function checkTokenExpiration() {
       const userToken = getToken();
       if (!userToken) {
+        //console.log("useToken.js --> No userToken");
         refreshAccessToken(); // Token has expired or refresh token is expired, try to refresh it
       }
     }
-
+    //console.log("Use Effect in useToken.js is executed");
     checkTokenExpiration();
 
     const interval = setInterval(
