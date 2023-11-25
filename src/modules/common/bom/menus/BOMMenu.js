@@ -30,6 +30,7 @@ export default function BOMMenu() {
 
   const menuItems = [
     { path: "/bom-explosion", text: "Explode BOM", canRender: canViewModule },
+    { path: "/bom", text: "Model BOM", canRender: canViewModule },
     // ... add more menu items here
   ];
 

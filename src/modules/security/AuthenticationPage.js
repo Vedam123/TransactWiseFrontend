@@ -26,6 +26,7 @@ import AssignUserModules from "./modulepermissions/AssignUserModules";
 import LoadModulestoDB from "./modulepermissions/LoadModulestoDB";
 import PurchasePage from "../purchase/PurchasePage";
 import ViewBOMExplodePage from "../common/bom/ViewBOMExplodePage";
+import ViewBOMModelPage from "../common/bom/ViewBOMModelPage";
 import ProductsPage from "../products/ProductsPage";
 import ViewAllProductsPage from "../products/product/ViewAllProductsPage";
 import CommonPage from "../common/CommonPage";
@@ -203,6 +204,7 @@ function AuthenticationPage() {
             <Route path="/bom-page" element={<BOMPage />} />
 
             <Route path="/bom-explosion" element={<ViewBOMExplodePage />} />
+            <Route path="/bom" element={<ViewBOMModelPage />} />            
             <Route path="/list-uoms" element={<ViewAllUOMsPage />} />
             <Route
               path="/list-currencies"
