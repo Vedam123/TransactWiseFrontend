@@ -31,6 +31,10 @@ const HELP_CommonPage = () => (
     <p className="indented-paragraph">
       Create BOM and explode Bill of Materials for Model items
     </p>
+    <h3 className="subheading">Legal Entities</h3>
+    <p className="indented-paragraph">
+      Using this menu item one can create , update , delete , and view Leagal entities
+    </p>
   </div>
 );
 

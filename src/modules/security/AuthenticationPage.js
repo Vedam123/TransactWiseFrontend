@@ -50,6 +50,20 @@ import UISetupsSearchPage from "../admin/UISetupsSearchPage";
 import ShowAllUISetupsForm from "../admin/forms/ShowAllUISetupsForm";
 import CreateDBSetupsPage from "../admin/CreateDBSetupsPage";
 import DBSetupsSearchPage from "../admin/DBSetupsSearchPage";
+import ViewAllLegalEntities from "../common/legalentity/ViewAllLegalEntities";
+import LegalEntityPage from "../common/legalentity/LegalEntityPage";
+import CreateLegalEntityPage from "../common/legalentity/CreateLegalEntityPage";
+import ViewAllGroupCompaniesPage from "../common/groupcompany/ViewAllGroupCompaniesPage";
+import GroupCompaniesPage from "../common/groupcompany/GroupCompaniesPage";
+import CreateGroupCompaniesPage from "../common/groupcompany/CreateGroupCompaniesPage";
+import ViewAllCompaniesPage from "../common/company/ViewAllCompaniesPage";
+import CompaniesPage from "../common/company/CompaniesPage";
+import CreateCompaniesPage from "../common/company/CreateCompaniesPage";
+
+import ViewAllDepartmentsPage from "../common/department/ViewAllDepartmentsPage";
+import DepartmentsPage from "../common/department/DepartmentsPage";
+import CreateDepartmentsPage from "../common/department/CreateDepartmentsPage";
+
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
 function AuthenticationPage() {
@@ -206,6 +220,23 @@ function AuthenticationPage() {
             <Route path="/bom-explosion" element={<ViewBOMExplodePage />} />
             <Route path="/bom" element={<ViewBOMModelPage />} />            
             <Route path="/list-uoms" element={<ViewAllUOMsPage />} />
+
+            <Route path="/legal-entities" element={<LegalEntityPage />} />
+            <Route path="/get-legal-entities" element={<ViewAllLegalEntities />} />
+            <Route path="/create-legalentity" element={<CreateLegalEntityPage />} />
+
+            <Route path="/group-companies" element={<GroupCompaniesPage />} />
+            <Route path="/get-group-companies" element={<ViewAllGroupCompaniesPage />} />
+            <Route path="/create-group-company" element={<CreateGroupCompaniesPage />} />
+
+            <Route path="/companies" element={<CompaniesPage />} />
+            <Route path="/get-companies" element={<ViewAllCompaniesPage />} />
+            <Route path="/create-company" element={<CreateCompaniesPage />} />
+
+            <Route path="/departments" element={<DepartmentsPage />} />
+            <Route path="/get-departments" element={<ViewAllDepartmentsPage />} />
+            <Route path="/create-department" element={<CreateDepartmentsPage />} />
+            
             <Route
               path="/list-currencies"
               element={<ViewAllCurrenciesPage />}

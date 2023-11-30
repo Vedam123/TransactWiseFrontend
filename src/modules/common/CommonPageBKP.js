@@ -10,9 +10,6 @@ import CurrenciesPage from "./currencies/CurrenciesPage";
 import BOMPage from "./bom/BOMPage";
 import BusinessPartnersPage from "./businesspartner/BusinessPartnersPage";
 import LegalEntityPage from "./legalentity/LegalEntityPage";
-import GroupCompaniesPage from "./groupcompany/GroupCompaniesPage";
-import CompaniesPage from "./company/CompaniesPage";
-import DepartmentsPage from "./department/DepartmentsPage";
 import logger from "../utilities/Logs/logger";
 
 export default function CommonPage() {
@@ -27,29 +24,10 @@ export default function CommonPage() {
     ExchangeRatesPage,
     CurrenciesPage,
     BOMPage,
-    LegalEntityPage,
-    GroupCompaniesPage,
-    CompaniesPage,
-    DepartmentsPage
+    LegalEntityPage
   ];
 
-  const componentsToRender2 = [CommonPage];
-
-  // Function to render components in rows
-  const renderComponentsInRows = (components, componentsPerRow) => {
-    const rows = [];
-    for (let i = 0; i < components.length; i += componentsPerRow) {
-      const row = components.slice(i, i + componentsPerRow);
-      rows.push(row);
-    }
-    return rows;
-  };
-
-  // Set the number of components per row
-  const componentsPerRow = 5;
-
-  // Render components in rows
-  const rowsOfComponents = renderComponentsInRows(componentsToRender, componentsPerRow);
+  const componentsToRender2 = [CommonPage]
 
   return (
     <div className="page-container">
@@ -58,16 +36,12 @@ export default function CommonPage() {
       <div className="parent-container">
         <div className="child-container menu-container">
           <div className="menu-list-container">
-            {rowsOfComponents.map((row, rowIndex) => (
-              <div key={rowIndex} className="row-container">
-                {row.map((Component, columnIndex) => (
-                  <Component key={columnIndex} />
-                ))}
-              </div>
+            {componentsToRender.map((Component, index) => (
+              <Component key={index} />
             ))}
           </div>
         </div>
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer  componentNames={componentsToRender2.map(component => component.name)} />
       </div>
       <RotatingImage />
       <BottomContainer />
