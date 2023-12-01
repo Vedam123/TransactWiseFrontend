@@ -64,6 +64,11 @@ import ViewAllDepartmentsPage from "../common/department/ViewAllDepartmentsPage"
 import DepartmentsPage from "../common/department/DepartmentsPage";
 import CreateDepartmentsPage from "../common/department/CreateDepartmentsPage";
 
+import FinancePage from "../finance/FinancePage";
+import ViewAllAccountsPage from "../finance/accounts/ViewAllAccountsPage";
+import CreateAccountPage from "../finance/accounts/CreateAccountPage";
+
+
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
 function AuthenticationPage() {
@@ -210,7 +215,7 @@ function AuthenticationPage() {
               element={<AssignUserModules />}
             />
             <Route path="/common-module" element={<CommonPage />} />
-
+            
             <Route path="/currencies-page" element={<CurrenciesPage />} />
             <Route path="/taxcodes-page" element={<TaxCodesPage />} />
             <Route path="/exchangerates-page" element={<ExchangeRatesPage />} />
@@ -295,6 +300,13 @@ function AuthenticationPage() {
               path="/create-businesspartner"
               element={<CreatePartnerPage />}
             />
+
+            <Route path="/finance-module" element={<FinancePage />} />
+            <Route path="/get-accounts" element={<ViewAllAccountsPage />} />
+            <Route path="/create-account" element={<CreateAccountPage />} />
+            
+            
+          
           </Routes>
         </PermissionsContext.Provider>
       )}

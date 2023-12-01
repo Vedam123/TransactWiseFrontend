@@ -22,3 +22,23 @@ export const BACKEND_FINANCE_MODULE_NAME = "finance";
 export const APPLICATION_LEVEL ="Production"  //Test, Production, Development
 export const IS_INAPP_HELP_NEEDED = true;
 export const IS_ACCESS_CONTROLLED_BY_REFRESH_TOKEN = false;
+export const ACCOUNT_TYPES = [
+    "Cash",
+    "Accounts Receivable",
+    "Inventory",
+    "Property, Plant, and Equipment (PP&E)",
+    "Accounts Payable",
+    "Loans Payable",
+    "Accrued Liabilities",
+    "Owner's Equity",
+    "Retained Earnings",
+    "Sales",
+    "Interest Income",
+    "Cost of Goods Sold (COGS)",
+    "Rent Expense",
+    "Utilities Expense",
+    "Salary/Wages Income",
+    "Rent/Mortgage Expense",
+    "Groceries Expense",
+    "Purchase"
+  ];
