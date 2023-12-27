@@ -68,6 +68,20 @@ import FinancePage from "../finance/FinancePage";
 import ViewAllAccountsPage from "../finance/accounts/ViewAllAccountsPage";
 import CreateAccountPage from "../finance/accounts/CreateAccountPage";
 
+import InventoryPage from "../inventory/InventoryPage";
+import ViewAllBinsPage from "../inventory/bins/ViewAllBinsPage";
+
+import ViewAllReceiptsPage from "../inventory/receipts/ViewAllReceiptsPage";
+import CreateReceiptPage from "../inventory/receipts/CreateReceiptPage";
+
+import ViewAllItemInventoriesPage from "../inventory/transactions/ViewAllItemInventoriesPage";
+import SearchItemInventoryPage from "../inventory/transactions/SearchItemInventoryPage";
+
+import ViewAllInspectionsPage from "../inventory/transactions/ViewAllInspectionsPage";
+import UpdateInspectionPage from "../inventory/transactions/UpdateInspectionPage";
+
+import PutAwayPage from "../inventory/transactions/PutAwayPage";
+
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
@@ -304,8 +318,21 @@ function AuthenticationPage() {
             <Route path="/finance-module" element={<FinancePage />} />
             <Route path="/get-accounts" element={<ViewAllAccountsPage />} />
             <Route path="/create-account" element={<CreateAccountPage />} />
-            
-            
+
+            <Route path="/inventory-module" element={<InventoryPage />} />
+            <Route path="/get-bins" element={<ViewAllBinsPage />} />
+
+            <Route path="/get-receipts" element={<ViewAllReceiptsPage />} />
+            <Route path="/create-receipt" element={<CreateReceiptPage />} />
+
+
+            <Route path="/get-item-transactions" element={<ViewAllItemInventoriesPage />} />
+            <Route path="/search-item-transactions" element={<SearchItemInventoryPage />} />
+
+            <Route path="/get-inspections" element={<ViewAllInspectionsPage />} />
+            <Route path="/update-inspection" element={<UpdateInspectionPage />} />        
+
+            <Route path="/perform-putaway" element={<PutAwayPage />} />  
           
           </Routes>
         </PermissionsContext.Provider>

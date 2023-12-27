@@ -7,17 +7,20 @@ import ModulePermissions from "../../../security/modulepermissions/ModulePermiss
 import { BACKEND_PRODUCT_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants
 import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
-export default function AccountsMenu() {
+export default function TransactionsMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
   const ProductPermissions = ModulePermissions({ moduleName: BACKEND_PRODUCT_MODULE_NAME });
   const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } = ProductPermissions;
 
   const menuItems = [
-    { path: "/create-account", text: "Create Account", canRender: canCreateModule },
-    { path: "/delete-account", text: "Delete Account", canRender: canDeleteModule },
-    { path: "/update-account", text: "Update Account", canRender: canUpdateModule },
-    { path: "/get-accounts", text: "Get Accounts", canRender: canViewModule },
+    { path: "/perform-putaway", text: "Perform Put Away", canRender: canCreateModule },
+    { path: "/delete-transaction", text: "Delete transaction", canRender: canDeleteModule },
+    { path: "/update-transaction", text: "Update transaction", canRender: canUpdateModule },
+    { path: "/get-item-transactions", text: "Get All Inventory", canRender: canViewModule },
+    { path: "/search-item-transactions", text: "Search Item Inventory", canRender: canUpdateModule },
+    { path: "/update-inspection", text: "Perform Inspection", canRender: canViewModule },
+    { path: "/get-inspections", text: "Get All Inspections", canRender: canViewModule },
   ];
 
   const handleMenuItemClick = (path) => {
@@ -33,10 +36,9 @@ export default function AccountsMenu() {
   };
 
   // Log the component rendering with timestamp
-  logger.info(`[${new Date().toLocaleTimeString()}] Accounts component is rendering.`);
+  logger.info(`[${new Date().toLocaleTimeString()}] Transactions component is rendering.`);
 
   return (
-
       <div className="menu-list">
         {menuItems.map((item) =>
           item.canRender && (
@@ -53,6 +55,5 @@ export default function AccountsMenu() {
           )
         )}
       </div>
-
   );
 }

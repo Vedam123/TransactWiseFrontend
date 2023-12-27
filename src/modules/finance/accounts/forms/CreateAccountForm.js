@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL, ACCOUNT_TYPES } from "../../../admin/setups/ConstDecl";
+import { API_URL } from "../../../admin/setups/ConstDecl";
+import { ACCOUNT_TYPES } from  "../../config/config";
 import "../../../utilities/css/appcss.css";
 import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
 import logger from "../../../utilities/Logs/logger";

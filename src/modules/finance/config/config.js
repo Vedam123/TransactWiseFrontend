@@ -1,0 +1,20 @@
+export const ACCOUNT_TYPES = [
+    "Cash",
+    "Accounts Receivable",
+    "Inventory",
+    "Property, Plant, and Equipment (PP&E)",
+    "Accounts Payable",
+    "Loans Payable",
+    "Accrued Liabilities",
+    "Owner's Equity",
+    "Retained Earnings",
+    "Sales",
+    "Interest Income",
+    "Cost of Goods Sold (COGS)",
+    "Rent Expense",
+    "Utilities Expense",
+    "Salary/Wages Income",
+    "Rent/Mortgage Expense",
+    "Groceries Expense",
+    "Purchase"
+  ];

@@ -7,17 +7,17 @@ import ModulePermissions from "../../../security/modulepermissions/ModulePermiss
 import { BACKEND_PRODUCT_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants
 import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
-export default function AccountsMenu() {
+export default function BinsMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
   const ProductPermissions = ModulePermissions({ moduleName: BACKEND_PRODUCT_MODULE_NAME });
   const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } = ProductPermissions;
 
   const menuItems = [
-    { path: "/create-account", text: "Create Account", canRender: canCreateModule },
-    { path: "/delete-account", text: "Delete Account", canRender: canDeleteModule },
-    { path: "/update-account", text: "Update Account", canRender: canUpdateModule },
-    { path: "/get-accounts", text: "Get Accounts", canRender: canViewModule },
+    { path: "/create-bin", text: "Create Bin", canRender: canCreateModule },
+    { path: "/delete-bin", text: "Delete Bin", canRender: canDeleteModule },
+    { path: "/update-bin", text: "Update Bin", canRender: canUpdateModule },
+    { path: "/get-bins", text: "Get Bins", canRender: canViewModule },
   ];
 
   const handleMenuItemClick = (path) => {
@@ -33,10 +33,9 @@ export default function AccountsMenu() {
   };
 
   // Log the component rendering with timestamp
-  logger.info(`[${new Date().toLocaleTimeString()}] Accounts component is rendering.`);
+  logger.info(`[${new Date().toLocaleTimeString()}] Bins component is rendering.`);
 
   return (
-
       <div className="menu-list">
         {menuItems.map((item) =>
           item.canRender && (
@@ -53,6 +52,5 @@ export default function AccountsMenu() {
           )
         )}
       </div>
-
   );
 }

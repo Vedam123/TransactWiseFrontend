@@ -4,6 +4,7 @@ import logger from "../../../utilities/Logs/logger"; // Import the logger with t
 export default function ViewBOMResultsPage({ explodedBOM }) {
   useEffect(() => {
     // Log a message when the component mounts
+    console.log("Exploded BOM",explodedBOM)
     logger.info(`[${new Date().toLocaleTimeString()}] ResultsContainer component has mounted.`);
 
     // Log the number of explodedBOM items

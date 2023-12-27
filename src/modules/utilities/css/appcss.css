@@ -464,3 +464,31 @@
   color: blue;
   font-style: italic;
 }
+
+.form-group-bin {
+  background-color: #F0F8FF;
+}
+
+.form-group-rack {
+  background-color: #FFE4E1;
+}
+
+.form-group-row {
+  background-color: #F0FFF0;
+}
+
+.form-group-aisle {
+  background-color: #E6E6FA;
+}
+
+.form-group-zone {
+  background-color: #FFDAB9;
+}
+
+.form-group-location {
+  background-color: #FAFAD2;
+}
+
+.form-group-warehouse {
+  background-color: #FFFAF0;
+}
