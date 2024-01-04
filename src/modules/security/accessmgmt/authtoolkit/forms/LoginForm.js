@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { API_URL } from "../../../admin/setups/ConstDecl";
-import "../../../utilities/css/appcss.css";
-import logger from "../../../utilities/Logs/logger";
+
+import { API_URL,USER_STATUS  } from "../../../../admin/setups/ConstDecl";
+import "../../../../utilities/css/appcss.css";
+import UpdateCredentialsForm from "./UpdateCredentialsForm";
+
+import logger from "../../../../utilities/Logs/logger"; // Import your logger module here
 
 function convertTimestampToDateTime(timestamp) {
   const date = new Date(timestamp * 1000);
@@ -14,20 +17,23 @@ function convertTimestampToDateTime(timestamp) {
   const seconds = date.getSeconds();
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
+;
 
-export default function Login(props) {
+export default function LoginForm(props) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-
+  const [showUpdateCredentialsForm, setShowUpdateCredentialsForm] = useState(false)
   const [error, setError] = useState("");
 
   const logMeIn = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${API_URL}/login_user`, formData);
+      const statusWithShortName = USER_STATUS.find((status) => status.short_name === "ACTIVE");
+      const updatedFormData = { ...formData, name: statusWithShortName ? statusWithShortName.name : "" };
+      const response = await axios.post(`${API_URL}/login_user`, updatedFormData);
 
       const {
         userid,
@@ -77,14 +83,24 @@ export default function Login(props) {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const handleForgotPassword = () => {
+    // Set the state to show UpdateCredentialsForm
+    setError("");
+    setShowUpdateCredentialsForm(true);
+  };
 
   return (
     <div className="child-container menu-container">
-      <h2 className="title">Login</h2>
+
       {error && <div>{error}</div>}
       <div className="child-container form-container">
+      {showUpdateCredentialsForm ? (
+          // If showUpdateCredentialsForm is true, display UpdateCredentialsForm
+          <UpdateCredentialsForm />
+        ) : (
         <form onSubmit={logMeIn}>
           <div className="form-group col-md-6 mb-2">
+          <h2 className="title">User Credentials</h2>
             <div className="form-row">
               <div className="label-container">
                 <label htmlFor="username">Username:</label>
@@ -116,7 +132,11 @@ export default function Login(props) {
             </div>
           </div>
           <button type="submit">Login</button>
+          <button type="button" onClick={handleForgotPassword}>
+              Forgot Password?
+            </button>
         </form>
+            )}
       </div>
     </div>
   );

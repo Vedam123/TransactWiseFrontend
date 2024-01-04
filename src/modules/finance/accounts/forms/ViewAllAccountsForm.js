@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { API_URL, BACKEND_PRODUCT_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
+import { API_URL, BACKEND_FINANCE_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 import logger from "../../../utilities/Logs/logger";
@@ -8,7 +8,7 @@ import logger from "../../../utilities/Logs/logger";
 function ViewAllAccountsForm() {
   const [accountsList, setAccountsList] = useState([]);
   const hasRequiredAccess = CheckModuleAccess(
-    BACKEND_PRODUCT_MODULE_NAME,
+    BACKEND_FINANCE_MODULE_NAME,
     MODULE_LEVEL_VIEW_ACCESS
   );
 
@@ -51,6 +51,7 @@ function ViewAllAccountsForm() {
             <tr>
               <th>Account ID</th>
               <th>Account Number</th>
+              <th>Account Name</th>              
               <th>Account Type</th>
               <th>Company ID</th>
               <th>Company Name</th>
@@ -63,6 +64,7 @@ function ViewAllAccountsForm() {
               <tr key={account.account_id}>
                 <td>{account.account_id}</td>
                 <td>{account.account_number}</td>
+                <td>{account.account_name}</td>                
                 <td>{account.account_type}</td>
                 <td>{account.company_id}</td>
                 <td>{account.company_name}</td>

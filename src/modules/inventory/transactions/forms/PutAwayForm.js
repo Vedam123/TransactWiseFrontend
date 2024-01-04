@@ -3,7 +3,7 @@ import axios from "axios";
 import {
   API_URL,
   BACKEND_INVENTORY_MODULE_NAME,
-  MODULE_LEVEL_CREATE_ACCESS,
+  MODULE_LEVEL_UPDATE_ACCESS,
 } from "../../../admin/setups/ConstDecl";
 import {
   RECEIPT_STATUS,
@@ -83,7 +83,7 @@ function PutAwayForm() {
 
   const hasRequiredAccess = CheckModuleAccess(
     BACKEND_INVENTORY_MODULE_NAME,
-    MODULE_LEVEL_CREATE_ACCESS
+    MODULE_LEVEL_UPDATE_ACCESS
   );
   const handleTransactionTypeChange = async (event) => {
     // Reset the selected receipt and receipts list when the transaction type changes
@@ -142,7 +142,6 @@ function PutAwayForm() {
       const statusParam = INSPECTION_STATUS.filter((status) => status.toputaway)
         .map((status) => status.name)
         .join(",");
-
 
       const response = await axios.get(
         `${API_URL}/get_open_inspections?status_param=${statusParam}`,

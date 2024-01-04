@@ -6,7 +6,7 @@ import { API_URL } from "../admin/setups/ConstDecl";
 import { SUPER_USERS_COUNT, APPLICATION_NAME } from "../admin/setups/ConstDecl";
 
 import RotatingImage from "../utilities/RotatingImage";
-import Login from "./accessmgmt/authtoolkit/Login";
+import LoginForm from "./accessmgmt/authtoolkit/forms/LoginForm";
 import UserName from "./accessmgmt/authtoolkit/UserName";
 import Logout from "./accessmgmt/authtoolkit/Logout";
 import useToken from "./accessmgmt/authtoolkit/useToken";
@@ -18,8 +18,8 @@ import ViewEmailsPage from "../utilities/ViewEmailsPage";
 import EmployeePage from "../employee/EmployeePage";
 import CreateEmployeePage from "../employee/CreateEmployeePage";
 import UserRolesPage from "./UserRolesPage";
-import RegisterUser from "./accessmgmt/authtoolkit/RegisterUser";
-import UsersList from "./modulepermissions/UsersList";
+import RegisterUserPage from "./accessmgmt/authtoolkit/RegisterUserPage";
+import UsersListPage from "./accessmgmt/authtoolkit/UsersListPage";
 import ListUserPermissions from "./modulepermissions/ListUserPermissions";
 import GrantPermissions from "./modulepermissions/GrantPermissions";
 import AssignUserModules from "./modulepermissions/AssignUserModules";
@@ -81,6 +81,12 @@ import ViewAllInspectionsPage from "../inventory/transactions/ViewAllInspections
 import UpdateInspectionPage from "../inventory/transactions/UpdateInspectionPage";
 
 import PutAwayPage from "../inventory/transactions/PutAwayPage";
+
+//import ModifyUserPage from "../accessmgmt/ModifyUserPage";
+import ModifyUserPage from "./accessmgmt/authtoolkit/ModifyUserPage";
+//import UpdateCredentialsPage from "./accessmgmt/authtoolkit/UpdateCredentialsPage1";
+
+//import UpdateCredentialsForm from "./accessmgmt/authtoolkit/UpdateCredentialsForm";
 
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
@@ -188,7 +194,7 @@ function AuthenticationPage() {
       {!token ? (
         <div className="page-container center-container">
           <h1 className="title">{APPLICATION_NAME}</h1>
-          <Login onLoginSuccess={handleLoginSuccess} />
+          <LoginForm onLoginSuccess={handleLoginSuccess} />
           <div className="rotating-image-container">
             <RotatingImage />
           </div>
@@ -208,21 +214,23 @@ function AuthenticationPage() {
             <div className="right-header">
               <Logout token={removeToken} /> {/* Pass the navigate function to Logout */}
             </div>
+
           </header>
           <Routes>
-            <Route path="/Login" element={<Login />} />
+            <Route path="/Login" element={<LoginForm />} />
             <Route path="/" element={<HomePage />} />
+
             <Route path="/employee-functions" element={<EmployeePage />} />
             <Route path="/list-employees" element={<ViewAllEmployeesPage />} />
 
             <Route path="/create-employee" element={<CreateEmployeePage />} />
             <Route path="/user-functions" element={<UserRolesPage />} />
-            <Route path="/list-users" element={<UsersList />} />
+            <Route path="/list-users" element={<UsersListPage />} />
             <Route
               path="/list-user-permissions"
               element={<ListUserPermissions />}
             />
-            <Route path="/register-user" element={<RegisterUser />} />
+            <Route path="/register-user" element={<RegisterUserPage />} />
             <Route path="/create-permissions" element={<GrantPermissions />} />
             <Route
               path="/assign-user-modules"
@@ -333,7 +341,10 @@ function AuthenticationPage() {
             <Route path="/update-inspection" element={<UpdateInspectionPage />} />        
 
             <Route path="/perform-putaway" element={<PutAwayPage />} />  
-          
+
+            <Route path="/modify-user" element={<ModifyUserPage />} />
+        
+
           </Routes>
         </PermissionsContext.Provider>
       )}

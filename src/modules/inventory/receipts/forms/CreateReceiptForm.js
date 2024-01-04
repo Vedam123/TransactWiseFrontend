@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../../admin/setups/ConstDecl";
 import { RECEIPT_TYPES, RECEIPT_STATUS } from "../../config/config";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
+import {
+  BACKEND_INVENTORY_MODULE_NAME,
+  MODULE_LEVEL_CREATE_ACCESS,
+} from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
 import logger from "../../../utilities/Logs/logger";
 
@@ -17,7 +22,7 @@ export default function CreateReceiptForm() {
     transaction_number: 0,
     status: "",
     inspection_location_id: null, // Added inspection_location_id
-    type_short:"",
+    type_short: "",
   });
 
   const [items, setItems] = useState([]);
@@ -25,6 +30,10 @@ export default function CreateReceiptForm() {
   const [locations, setLocations] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const hasRequiredAccess = CheckModuleAccess(
+    BACKEND_INVENTORY_MODULE_NAME,
+    MODULE_LEVEL_CREATE_ACCESS
+  );
 
   useEffect(() => {
     async function fetchData() {
@@ -65,11 +74,55 @@ export default function CreateReceiptForm() {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+
+    // Update form data based on the field type
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+
+    const selectedStatus = RECEIPT_STATUS.find(
+      (status) => status.name === value
+    );
+    if (selectedStatus) {
+      // If yes, set the 'inspect' flag to true; otherwise, set it to false
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        inspect: selectedStatus.toinspect || false,
+      }));
+    }
   };
 
   const handleCheckboxChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.checked });
+    const { name, checked } = e.target;
+
+    // Store the previous status value
+    const prevStatus = formData.status;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: checked,
+      // Update the status only if 'inspect' is checked
+      status: checked ? prevFormData.status || "" : prevStatus,
+    }));
+
+    // Check if the 'inspect' flag is true and update the status accordingly
+    if (checked) {
+      const correspondingStatus = RECEIPT_STATUS.find(
+        (status) => status.toinspect
+      );
+      if (correspondingStatus) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          status: correspondingStatus.name,
+        }));
+      }
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        status: "",
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -78,12 +131,18 @@ export default function CreateReceiptForm() {
       // Include type.short in formData when the inspect checkbox is selected
       const formDataToSend = {
         ...formData,
-        type_short: RECEIPT_TYPES.find(type => type.name === formData.receipt_name)?.short
+        type_short: RECEIPT_TYPES.find(
+          (type) => type.name === formData.receipt_name
+        )?.short,
       };
 
-      const response = await axios.post(`${API_URL}/create_receipt`, formDataToSend, {
-        headers: generateHeaders(),
-      });
+      const response = await axios.post(
+        `${API_URL}/create_receipt`,
+        formDataToSend,
+        {
+          headers: generateHeaders(),
+        }
+      );
       setSuccessMessage("Receipt created successfully!");
       setErrorMessage("");
       console.log(response.data);
@@ -110,206 +169,150 @@ export default function CreateReceiptForm() {
     <div className="child-container menu-container">
       <h2 className="title">Create Receipt</h2>
       <div className="child-container form-container">
-        <form onSubmit={handleSubmit}>
-          {/* Receipt Name field */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="receipt_name">Receipt Name:</label>
-              </div>
-              <select
-                id="receipt_name"
-                name="receipt_name"
-                value={formData.receipt_name}
-                onChange={handleChange}
-                className="form-control input-field"
-              >
-                <option value="">Select Receipt Type</option>
-                {RECEIPT_TYPES.map((type) => (
-                  <option key={type.name} value={type.name}>
-                    {type.name} ({type.short})
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Transaction Number field */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="transaction_number">Transaction Number:</label>
-              </div>
-              <input
-                type="text"
-                id="transaction_number"
-                name="transaction_number"
-                value={formData.transaction_number}
-                onChange={handleChange}
-                className="form-control input-field"
-              />
-            </div>
-          </div>
-
-          {/* Item field */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="item_id">Item:</label>
-              </div>
-              <select
-                id="item_id"
-                name="item_id"
-                value={formData.item_id}
-                onChange={handleChange}
-                className="form-control input-field"
-              >
-                <option value="">Select Item</option>
-                {items.map((item) => (
-                  <option key={item.item_id} value={item.item_id}>
-                    {item.item_code} ({item.item_name})
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Quantity field */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="quantity">Quantity:</label>
-              </div>
-              <input
-                type="text"
-                id="quantity"
-                name="quantity"
-                value={formData.quantity}
-                onChange={handleChange}
-                className="form-control input-field"
-              />
-            </div>
-          </div>
-
-          {/* UOM field */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="uom_id">Unit of Measure:</label>
-              </div>
-              <select
-                id="uom_id"
-                name="uom_id"
-                value={formData.uom_id}
-                onChange={handleChange}
-                className="form-control input-field"
-              >
-                <option value="">Select UOM</option>
-                {uoms.map((uom) => (
-                  <option key={uom.uom_id} value={uom.uom_id}>
-                    {uom.abbreviation} ({uom.uom_name})
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          {/* Status field */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="status">Status:</label>
-              </div>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="form-control input-field"
-              >
-                <option value="">Select Status</option>
-                {RECEIPT_STATUS.map((index) => (
-                  <option key={index.name} value={index.name}>
-                    {index.sequence}  {index.name} 
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          {/* Receiving Location field */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="receiving_location_id">
-                  Receiving Location:
-                </label>
-              </div>
-              <select
-                id="receiving_location_id"
-                name="receiving_location_id"
-                value={formData.receiving_location_id}
-                onChange={handleChange}
-                className="form-control input-field"
-              >
-                <option value="">Select Location</option>
-                {locations.map((location) => (
-                  <option
-                    key={location.location_id}
-                    value={location.location_id}
-                  >
-                    {location.location_name} ({location.warehouse_name})
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Comments field */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="comments">Batch & SNo range:</label>
-              </div>
-              <input
-                type="text"
-                id="comments"
-                name="comments"
-                value={formData.comments}
-                onChange={handleChange}
-                className="form-control input-field"
-              />
-            </div>
-          </div>
-
-          {/* Inspect field */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="inspect">Inspect:</label>
-              </div>
-              <input
-                type="checkbox"
-                id="inspect"
-                name="inspect"
-                checked={formData.inspect}
-                onChange={handleCheckboxChange}
-                className="form-check-input"
-              />
-            </div>
-          </div>
-          {formData.inspect && (
+        {hasRequiredAccess ? (
+          <form onSubmit={handleSubmit}>
+            {/* Receipt Name field */}
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
                 <div className="label-container">
-                  <label htmlFor="inspection_location_id">Inspection Location:</label>
+                  <label htmlFor="receipt_name">Receipt Name:</label>
                 </div>
                 <select
-                  id="inspection_location_id"
-                  name="inspection_location_id"
-                  value={formData.inspection_location_id}
+                  id="receipt_name"
+                  name="receipt_name"
+                  value={formData.receipt_name}
                   onChange={handleChange}
                   className="form-control input-field"
                 >
-                  <option value="">Select Inspection Location</option>
+                  <option value="">Select Receipt Type</option>
+                  {RECEIPT_TYPES.map((type) => (
+                    <option key={type.name} value={type.name}>
+                      {type.name} ({type.short})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Transaction Number field */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="transaction_number">
+                    Transaction Number:
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  id="transaction_number"
+                  name="transaction_number"
+                  value={formData.transaction_number}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                />
+              </div>
+            </div>
+
+            {/* Item field */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="item_id">Item:</label>
+                </div>
+                <select
+                  id="item_id"
+                  name="item_id"
+                  value={formData.item_id}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select Item</option>
+                  {items.map((item) => (
+                    <option key={item.item_id} value={item.item_id}>
+                      {item.item_code} ({item.item_name})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Quantity field */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="quantity">Quantity:</label>
+                </div>
+                <input
+                  type="text"
+                  id="quantity"
+                  name="quantity"
+                  value={formData.quantity}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                />
+              </div>
+            </div>
+
+            {/* UOM field */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="uom_id">Unit of Measure:</label>
+                </div>
+                <select
+                  id="uom_id"
+                  name="uom_id"
+                  value={formData.uom_id}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select UOM</option>
+                  {uoms.map((uom) => (
+                    <option key={uom.uom_id} value={uom.uom_id}>
+                      {uom.abbreviation} ({uom.uom_name})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            {/* Status field */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="status">Status:</label>
+                </div>
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select Status</option>
+                  {RECEIPT_STATUS.map((index) => (
+                    <option key={index.name} value={index.name}>
+                      {index.sequence} {index.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            {/* Receiving Location field */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="receiving_location_id">
+                    Receiving Location:
+                  </label>
+                </div>
+                <select
+                  id="receiving_location_id"
+                  name="receiving_location_id"
+                  value={formData.receiving_location_id}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select Location</option>
                   {locations.map((location) => (
                     <option
                       key={location.location_id}
@@ -321,19 +324,81 @@ export default function CreateReceiptForm() {
                 </select>
               </div>
             </div>
-          )}
-          
 
-          {/* Submit button */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <button type="submit" className="btn btn-primary">
-                Create Receipt
-              </button>
+            {/* Comments field */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="comments">Batch & SNo range:</label>
+                </div>
+                <input
+                  type="text"
+                  id="comments"
+                  name="comments"
+                  value={formData.comments}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                />
+              </div>
             </div>
-          </div>
-        </form>
 
+            {/* Inspect field */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="inspect">Inspect:</label>
+                </div>
+                <input
+                  type="checkbox"
+                  id="inspect"
+                  name="inspect"
+                  checked={formData.inspect}
+                  onChange={handleCheckboxChange}
+                  className="form-check-input"
+                />
+              </div>
+            </div>
+            {formData.inspect && (
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="inspection_location_id">
+                      Inspection Location:
+                    </label>
+                  </div>
+                  <select
+                    id="inspection_location_id"
+                    name="inspection_location_id"
+                    value={formData.inspection_location_id}
+                    onChange={handleChange}
+                    className="form-control input-field"
+                  >
+                    <option value="">Select Inspection Location</option>
+                    {locations.map((location) => (
+                      <option
+                        key={location.location_id}
+                        value={location.location_id}
+                      >
+                        {location.location_name} ({location.warehouse_name})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {/* Submit button */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <button type="submit" className="btn btn-primary">
+                  Create Receipt
+                </button>
+              </div>
+            </div>
+          </form>
+        ) : (
+          <div>You do not have permission to view this module</div>
+        )}
         {/* Display success message */}
         {successMessage && (
           <div className="success-message">{successMessage}</div>

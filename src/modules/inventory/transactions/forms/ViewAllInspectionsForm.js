@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { API_URL, MODULE_LEVEL_VIEW_ACCESS, BACKEND_PRODUCT_MODULE_NAME } from "../../../admin/setups/ConstDecl";
+import { API_URL, MODULE_LEVEL_VIEW_ACCESS, BACKEND_INVENTORY_MODULE_NAME } from "../../../admin/setups/ConstDecl";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 import logger from "../../../utilities/Logs/logger";
 
@@ -18,7 +18,7 @@ const generateHeaders = () => {
 function ViewAllInspections() {
   const [inspectionsList, setInspectionsList] = useState([]);
   const hasRequiredAccess = CheckModuleAccess(
-    BACKEND_PRODUCT_MODULE_NAME,
+    BACKEND_INVENTORY_MODULE_NAME,
     MODULE_LEVEL_VIEW_ACCESS
   );
 

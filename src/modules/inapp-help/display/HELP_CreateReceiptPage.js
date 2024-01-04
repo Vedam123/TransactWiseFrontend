@@ -1,9 +1,7 @@
-
-
 import React from "react";
 import "../../utilities/css/appcss.css";
 
-const HELP_AdminPageMenu = () => (
+const HELP_CreateReceiptPage = () => (
   <div>
     <h2 className="subheading">Admin Page Menu Component</h2>
     <p className="indented-paragraph">
@@ -11,7 +9,7 @@ const HELP_AdminPageMenu = () => (
     </p>
     <h3 className="subheading">Employee Module</h3>
     <p className="indented-paragraph">
-      The Employee Module allows users to manage employee-related functionalities§.
+      The Employee Module allows users to manage employee-related functionalities.
     </p>
     <h3 className="subheading">Security Module</h3>
     <p className="indented-paragraph">
@@ -25,4 +23,4 @@ const HELP_AdminPageMenu = () => (
   </div>
 );
 
-export default HELP_AdminPageMenu;
+export default HELP_CreateReceiptPage;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   API_URL,
-  BACKEND_COMMON_MODULE_NAME,
+  BACKEND_INVENTORY_MODULE_NAME,
   MODULE_LEVEL_VIEW_ACCESS,
 } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
@@ -207,7 +207,7 @@ function SearchItemInventoryForm({ updateSearchItemInventory }) {
   };
 
   const hasRequiredAccess = CheckModuleAccess(
-    BACKEND_COMMON_MODULE_NAME,
+    BACKEND_INVENTORY_MODULE_NAME,
     MODULE_LEVEL_VIEW_ACCESS
   );
 

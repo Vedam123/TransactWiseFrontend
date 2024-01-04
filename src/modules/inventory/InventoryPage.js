@@ -7,7 +7,7 @@ import DocumentationContainer from "../utilities/DocumentationContainer";
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 import ReceiptsPage from "./receipts/ReceiptsPage";
 import TransactionsPage from "./transactions/TransactionsPage";
-import SearchItemInventoryPage from "./transactions/SearchItemInventoryPage"
+//import SearchItemInventoryPage from "./transactions/SearchItemInventoryPage"
 
 export default function InventoryPage() {
   // Log the component rendering with timestamp

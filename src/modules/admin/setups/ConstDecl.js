@@ -42,3 +42,7 @@ export const ACCOUNT_TYPES = [
     "Groceries Expense",
     "Purchase"
   ];
+  export const USER_STATUS = [
+    { name: "Active", short_name: "ACTIVE", sequence: 10 },
+    { name: "Expired", short_name: "EXPIRED", sequence: 20 },
+  ];

@@ -36,7 +36,9 @@ export default function CreatePartnerForm() {
   );
 
   useEffect(() => {
-    logger.info("Fetching currency data"); // Log when fetching currency data
+    logger.warn(
+      `[${new Date().toLocaleTimeString()}] Access denied to Create Partner Form.`
+    );
     if (!hasRequiredAccess) {
       return; // Do not fetch data if access is not granted
     }

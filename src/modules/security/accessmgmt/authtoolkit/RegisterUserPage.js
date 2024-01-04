@@ -6,7 +6,7 @@ import DocumentationContainer from "../../../utilities/DocumentationContainer";
 import RegisterUserForm from "./forms/RegisterUserForm";
 import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
-function RegisterUser() {
+function RegisterUserPage() {
   // Constants and variables
   const pageTitle = "Create User";
 
@@ -27,4 +27,4 @@ function RegisterUser() {
   );
 }
 
-export default RegisterUser;
+export default RegisterUserPage;

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   API_URL,
-  BACKEND_PRODUCT_MODULE_NAME,
-  MODULE_LEVEL_VIEW_ACCESS,
+  BACKEND_INVENTORY_MODULE_NAME,
+  MODULE_LEVEL_UPDATE_ACCESS,
 } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
 import { INSPECTION_STATUS } from "../../config/config";
@@ -35,8 +35,8 @@ export default function UpdateInspectionForm() {
   const toinspect = INSPECTION_STATUS.filter((status) => status.toinspect);
   
   const hasRequiredAccess = CheckModuleAccess(
-    BACKEND_PRODUCT_MODULE_NAME,
-    MODULE_LEVEL_VIEW_ACCESS
+    BACKEND_INVENTORY_MODULE_NAME,
+    MODULE_LEVEL_UPDATE_ACCESS
   );
 
   useEffect(() => {

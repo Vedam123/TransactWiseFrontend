@@ -7,10 +7,10 @@ export const RECEIPT_TYPES = [
 
 
 export const RECEIPT_STATUS = [
-  { name: "New", short_name: "NEW", sequence: 10 },
-  { name: "In Progress", short_name: "IP", sequence: 20 },
+  { name: "New", short_name: "NEW", sequence: 10, toupdated: true },
+  { name: "In Progress", short_name: "IP", sequence: 20, toupdated: true },
   { name: "Received", short_name: "REC", sequence: 30, toputaway: true },
-  { name: "To Inspect", short_name: "TOI", sequence: 40 },
+  { name: "To Inspect", short_name: "TOI", sequence: 40, toinspect: true},
   { name: "Pending", short_name: "PEN", sequence: 50 , toputaway: true},
   { name: "Put Away", short_name: "PA", sequence: 60, putaway:true },
   { name: "Closed", short_name: "DN", sequence: 70 }

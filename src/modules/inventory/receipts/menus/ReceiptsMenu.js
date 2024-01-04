@@ -14,7 +14,7 @@ export default function ReceiptsMenu() {
   const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } = ProductPermissions;
 
   const menuItems = [
-    { path: "/create-receipt", text: "Create receipt", canRender: canCreateModule },
+    { path: "/create-receipt", text: "Receipts", canRender: canCreateModule },
     { path: "/delete-receipt", text: "Delete receipt", canRender: canDeleteModule },
     { path: "/update-receipt", text: "Update receipt", canRender: canUpdateModule },
     { path: "/get-Receipts", text: "Get Receipts", canRender: canViewModule },

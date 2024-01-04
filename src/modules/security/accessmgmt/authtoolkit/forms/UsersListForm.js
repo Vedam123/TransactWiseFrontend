@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
+import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../../admin/setups/ConstDecl";
 import axios from "axios";
-import "../../../utilities/css/appcss.css";
-import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
-import logger from "../../../utilities/Logs/logger"; // Import your logger module here
+import "../../../../utilities/css/appcss.css";
+import CheckModuleAccess from "../../../modulepermissions/CheckModuleAccess";
+import logger from "../../../../utilities/Logs/logger"; // Import your logger module here
 
 function UserListForm() {
   const [users, setUsers] = useState([]);
@@ -61,8 +61,9 @@ function UserListForm() {
               <th>ID</th>
               <th>Username</th>
               <th>Employee ID</th>
-              <th>Email ID</th>            
-              <th>Created At</th>
+              <th>Email ID</th>        
+              <th>Status</th>                   
+              <th>Start Date</th>
             </tr>
           </thead>
           <tbody>
@@ -71,8 +72,9 @@ function UserListForm() {
                 <td>{user.id}</td>
                 <td>{user.username}</td>
                 <td>{user.empid}</td>
-                <td>{user.emailid}</td>              
-                <td>{user.created_at}</td>
+                <td>{user.emailid}</td>        
+                <td>{user.status}</td>                          
+                <td>{user.start_date}</td>
               </tr>
             ))}
           </tbody>
