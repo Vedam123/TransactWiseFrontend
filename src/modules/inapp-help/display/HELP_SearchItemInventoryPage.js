@@ -3,26 +3,50 @@
 import React from "react";
 import "../../utilities/css/appcss.css";
 
-const HELP_AdminPageMenu = () => (
+const HELP_SearchItemInventoryPage = () => (
   <div>
-    <h2 className="subheading">Admin Page Menu Component</h2>
-    <p className="indented-paragraph">
-      The `Admin Page Menu` component is responsible for rendering a list of menu items based on user permissions.
-    </p>
-    <h3 className="subheading">Employee Module</h3>
-    <p className="indented-paragraph">
-      The Employee Module allows users to manage employee-related functionalities§.
-    </p>
-    <h3 className="subheading">Security Module</h3>
-    <p className="indented-paragraph">
-      The Security Module is responsible for managing user access and permissions.
-    </p>
-    <h3 className="subheading">Email </h3>
-    <p className="indented-paragraph">
-      One can view all the emails generated in the system.
-    </p>
-    
-  </div>
+  <h2 className="subheading">Put Away Inventory Form</h2>
+  <p className="indented-paragraph">
+    The Put Away Inventory Form allows users to perform put-away operations for received items or inspected items.
+  </p>
+
+  <h3 className="subheading">Transaction Type</h3>
+  <p className="indented-paragraph">
+    Select the type of transaction you want to perform put-away for, either "Receipts" or "Inspections."
+  </p>
+
+  <h3 className="subheading">Transaction Number</h3>
+  <p className="indented-paragraph">
+    Choose a specific transaction by selecting its corresponding number. The available transactions will depend on the chosen transaction type.
+  </p>
+
+  <h3 className="subheading">Item Details</h3>
+  <p className="indented-paragraph">
+    The form displays details of the selected item, including its name, location, quantity, unit of measure (UOM), and additional information.
+  </p>
+
+  <h3 className="subheading">Target Location</h3>
+  <p className="indented-paragraph">
+    Choose the target location for the put-away operation, including the bin, rack, row, aisle, zone, new location, and warehouse.
+  </p>
+
+  <h3 className="subheading">Additional Information</h3>
+  <p className="indented-paragraph">
+    Provide any additional information related to the put-away operation in the designated field.
+  </p>
+
+  <h3 className="subheading">Submit</h3>
+  <p className="indented-paragraph">
+    Click the "Put Away" button to submit the form and execute the put-away operation. Upon success, a success message will be displayed.
+  </p>
+
+  <h3 className="subheading">Notes</h3>
+  <p className="indented-paragraph">
+    - Ensure that the selected transaction and target location details are accurate before submitting the form.
+    <br />
+    - Users must have the necessary permissions to perform put-away operations.
+  </p>
+</div>
 );
 
-export default HELP_AdminPageMenu;
+export default HELP_SearchItemInventoryPage;

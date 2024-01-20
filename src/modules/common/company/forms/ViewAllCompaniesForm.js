@@ -65,14 +65,12 @@ function ViewAllCompaniesForm() {
           <thead>
             <tr className="table-header">
               <th>ID</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Group Company ID</th>
+              <th>Company</th>
+              <th>Group Company </th>
               <th>Local Currency</th>
               <th>Home Currency</th>
               <th>Reporting Currency</th>
-              <th>Group Company Name</th>
-              <th>Group Company Description</th>
+              <th>Default Tax Group</th>
             </tr>
           </thead>
           <tbody>
@@ -80,13 +78,11 @@ function ViewAllCompaniesForm() {
               <tr key={company.company_id} className="table-row">
                 <td>{company.company_id}</td>
                 <td>{company.company_name}</td>
-                <td>{company.company_description}</td>
-                <td>{company.group_company_id}</td>
-                <td>{company.local_cur}</td>
-                <td>{company.home_cur}</td>
-                <td>{company.reporting_cur}</td>
                 <td>{company.group_company_name}</td>
-                <td>{company.group_company_description}</td>
+                <td>{company.local_currency_code}({company.local_currency_symbol})</td>
+                <td>{company.home_currency_code}({company.home_currency_symbol})</td>
+                <td>{company.reporting_currency_code}({company.reporting_currency_symbol})</td>
+                <td>{company.company_tax_codes_description}</td>                
               </tr>
             ))}
           </tbody>

@@ -14,7 +14,7 @@ function CreateAccountForm() {
     account_name: "",
     account_type: "",
     opening_balance: 0,
-    currency_code: "",
+    currency_id: "",
     bank_name: "",
     branch_name: "",
     account_holder_name: "",
@@ -134,8 +134,10 @@ function CreateAccountForm() {
       );
       handleShow(); // Show the success modal
       setSuccessMessage(
-        `New Account Number: ${modifiedFormData.account_number}, New Account Name: ${modifiedFormData.account_name}`
+        `Account Number: ${modifiedFormData.account_number},` +
+        ` Account Name: ${modifiedFormData.account_name}`
       );
+      
       setErrorMessage(""); // Clear error message if any
       logger.debug(`[${new Date().toLocaleTimeString()}] Accounts data:`, response.data);
 
@@ -146,7 +148,7 @@ function CreateAccountForm() {
         account_type: "",
         opening_balance: 0,
         current_balance: "", // Set current_balance to an appropriate default value
-        currency_code: "",
+        currency_id: "",
         bank_name: "",
         branch_name: "",
         account_holder_name: "",
@@ -276,22 +278,22 @@ function CreateAccountForm() {
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
                 <div className="label-container">
-                  <label htmlFor="currency_code">Currency:</label>
+                  <label htmlFor="currency_id">Currency:</label>
                 </div>
                 <select
-                  id="currency_code"
-                  name="currency_code"
-                  value={formData.currency_code}
+                  id="currency_id"
+                  name="currency_id"
+                  value={formData.currency_id}
                   onChange={handleChange}
                   className="form-control input-field"
                 >
                   <option value="">Select Currency</option>
                   {currencies.map((currency) => (
                     <option
-                      key={currency.currencycode}
-                      value={currency.currencycode}
+                      key={currency.currency_id}
+                      value={currency.currency_id}
                     >
-                      {currency.currencyname} ({currency.currencycode})
+                      {currency.currencycode} ({currency.currencysymbol})
                     </option>
                   ))}
                 </select>

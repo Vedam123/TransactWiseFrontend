@@ -9,13 +9,17 @@ export default function CreateCompanyForm() {
     group_company_id: "",
     name: "",
     description: "",
-    local_cur: "",
-    home_cur: "",
-    reporting_cur: "",
+    local_cur_id: "",
+    home_cur_id: "",
+    reporting_cur_id: "",
+    tax_code_id: "",
   });
 
   const [groupCompanies, setGroupCompanies] = useState([]);
   const [loadingGroupCompanies, setLoadingGroupCompanies] = useState(true);
+
+  const [companyTaxCodes, setCompanyTaxCodes] = useState([]);
+  const [loadingCompanyTaxCodes, setLoadingCompanyTaxCodes] = useState(true);
 
   const [currencies, setCurrencies] = useState([]);
   const [loadingCurrencies, setLoadingCurrencies] = useState(true);
@@ -48,17 +52,28 @@ export default function CreateCompanyForm() {
     }));
   };
 
-  const handleGroupCompanyChange = (e) => {
+  const handleTaxCodeChange = (e) => {
+    const taxCodeId = parseInt(e.target.value, 10);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      group_company_id: e.target.value,
+      tax_code_id: isNaN(taxCodeId) ? "" : taxCodeId,
     }));
   };
 
-  const handleCurrencyChange = (e, currencyType) => {
+  const handleGroupCompanyChange = (e) => {
+    const grpCompanyId = parseInt(e.target.value, 10);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [currencyType]: e.target.value,
+      group_company_id: isNaN(grpCompanyId) ? "" : grpCompanyId,
+    }));
+  };
+
+
+  const handleCurrencyChange = (e, currencyType) => {
+    const currencyId = parseInt(e.target.value, 10);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [`${currencyType}_id`]: isNaN(currencyId) ? "" : currencyId,
     }));
   };
 
@@ -67,11 +82,14 @@ export default function CreateCompanyForm() {
 
     setLoading(true);
     setError(null);
-
+    console.log(formData)
     try {
       const response = await axios.post(
         `${API_URL}/create_company`,
-        formData,
+        {
+          ...formData,
+          // Add any other fields needed based on the backend API requirements
+        },
         { headers: generateHeaders() }
       );
 
@@ -81,9 +99,10 @@ export default function CreateCompanyForm() {
         group_company_id: "",
         name: "",
         description: "",
-        local_cur: "",
-        home_cur: "",
-        reporting_cur: "",
+        local_cur_id: "",
+        home_cur_id: "",
+        reporting_cur_id: "",
+        tax_code_id: "",
       });
     } catch (error) {
       logger.error(`[${new Date().toLocaleTimeString()}] Error creating company`, error);
@@ -94,6 +113,19 @@ export default function CreateCompanyForm() {
   };
 
   useEffect(() => {
+    const fetchCompanyTaxCodes = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/get_company_tax_codes`, {
+          headers: generateHeaders(),
+        });
+        setCompanyTaxCodes(response.data.company_tax_codes_list);
+      } catch (error) {
+        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching company tax codes:`, error);
+      } finally {
+        setLoadingCompanyTaxCodes(false);
+      }
+    };
+
     const fetchGroupCompanies = async () => {
       try {
         const response = await axios.get(`${API_URL}/get_group_companies`, {
@@ -122,6 +154,7 @@ export default function CreateCompanyForm() {
 
     fetchGroupCompanies();
     fetchCurrencies();
+    fetchCompanyTaxCodes();
   }, []);
 
   return (
@@ -178,7 +211,7 @@ export default function CreateCompanyForm() {
                   ) : (
                     groupCompanies.map((company) => (
                       <option key={company.id} value={company.id}>
-                        {company.name}
+                        {company.group_company_name}
                       </option>
                     ))
                   )}
@@ -191,19 +224,19 @@ export default function CreateCompanyForm() {
                   <label htmlFor="local_cur">Local Currency:</label>
                 </div>
                 <select
-                  id="local_cur"
-                  name="local_cur"
-                  value={formData.local_cur}
+                  id="local_cur_id"
+                  name="local_cur_id"
+                  value={formData.local_cur_id}
                   onChange={(e) => handleCurrencyChange(e, "local_cur")}
                   className="form-control input-field"
                 >
-                  <option value="" disabled>Select Local Currency</option>
+                  <option value="" >Select Local Currency</option>
                   {loadingCurrencies ? (
                     <option value="" disabled>Loading Currencies...</option>
                   ) : (
                     currencies.map((currency) => (
-                      <option key={currency.currencycode} value={currency.currencycode}>
-                        {currency.currencyname} ({currency.currencycode})
+                      <option key={currency.currencycode} value={currency.currency_id}>
+                        {currency.currencycode} ({currency.currencysymbol})
                       </option>
                     ))
                   )}
@@ -216,20 +249,20 @@ export default function CreateCompanyForm() {
                   <label htmlFor="home_cur">Home Currency:</label>
                 </div>
                 <select
-                  id="home_cur"
-                  name="home_cur"
-                  value={formData.home_cur}
+                  id="home_cur_id"
+                  name="home_cur_id"
+                  value={formData.home_cur_id}
                   onChange={(e) => handleCurrencyChange(e, "home_cur")}
                   className="form-control input-field"
                 >
-                  <option value="" disabled>Select Home Currency</option>
+                  <option value="" >Select Home Currency</option>
                   {loadingCurrencies ? (
                     <option value="" disabled>Loading Currencies...</option>
                   ) : (
                     currencies.map((currency) => (
-                      <option key={currency.currencycode} value={currency.currencycode}>
-                        {currency.currencyname} ({currency.currencycode})
-                      </option>
+                      <option key={currency.currencycode} value={currency.currency_id}>
+                      {currency.currencycode} ({currency.currencysymbol})
+                    </option>
                     ))
                   )}
                 </select>
@@ -241,25 +274,52 @@ export default function CreateCompanyForm() {
                   <label htmlFor="reporting_cur">Reporting Currency:</label>
                 </div>
                 <select
-                  id="reporting_cur"
-                  name="reporting_cur"
-                  value={formData.reporting_cur}
+                  id="reporting_cur_id"
+                  name="reporting_cur_id"
+                  value={formData.reporting_cur_id}
                   onChange={(e) => handleCurrencyChange(e, "reporting_cur")}
                   className="form-control input-field"
                 >
-                  <option value="" disabled>Select Reporting Currency</option>
+                  <option value="" >Select Reporting Currency</option>
                   {loadingCurrencies ? (
                     <option value="" disabled>Loading Currencies...</option>
                   ) : (
                     currencies.map((currency) => (
-                      <option key={currency.currencycode} value={currency.currencycode}>
-                        {currency.currencyname} ({currency.currencycode})
+                      <option key={currency.currencycode} value={currency.currency_id}>
+                      {currency.currencycode} ({currency.currencysymbol})
+                    </option>
+                    ))
+                  )}
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="tax_code">Tax Code:</label>
+                </div>
+                <select
+                  id="tax_code"
+                  name="tax_code"
+                  value={formData.tax_code}
+                  onChange={handleTaxCodeChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select Tax Code</option>
+                  {loadingCompanyTaxCodes ? (
+                    <option value="" disabled>Loading Tax Codes...</option>
+                  ) : (
+                    companyTaxCodes.map((taxCode) => (
+                      <option key={taxCode.id} value={taxCode.id}>
+                        {taxCode.description}
                       </option>
                     ))
                   )}
                 </select>
               </div>
             </div>
+
             {loading && <div className="loading-indicator">Creating...</div>}
             {error && <div className="error-message">{error}</div>}
             {successMessage && <div className="success-message">{successMessage}</div>}

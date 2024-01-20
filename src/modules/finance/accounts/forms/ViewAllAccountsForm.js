@@ -57,6 +57,7 @@ function ViewAllAccountsForm() {
               <th>Company Name</th>
               <th>Department ID</th>
               <th>Department Name</th>
+              <th>Currency </th>              
             </tr>
           </thead>
           <tbody>
@@ -70,6 +71,7 @@ function ViewAllAccountsForm() {
                 <td>{account.company_name}</td>
                 <td>{account.department_id}</td>
                 <td>{account.department_name}</td>
+                <td>{account.currencycode}({account.currencysymbol})</td>                
               </tr>
             ))}
           </tbody>

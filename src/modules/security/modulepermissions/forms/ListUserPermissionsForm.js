@@ -65,7 +65,7 @@ const ListUserPermissionsForm = () => {
 
   return (
     <div className="child-container form-container">
-      <h1 className="title">List of User Module Permissions</h1>
+      <h3 className="title">Granted Permissions to Users</h3>
       {hasRequiredAccess ? (
         <table className="table table-striped table-bordered">
           <thead>

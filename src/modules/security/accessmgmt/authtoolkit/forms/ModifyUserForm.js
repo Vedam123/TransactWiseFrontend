@@ -36,12 +36,31 @@ function ModifyUserForm() {
     UserId: localStorage.getItem("userid"),
   };
 
+  // Function to format date to YYYY-MM-DD
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+
+    const [day, month, year] = dateString.split("-");
+    return `${year}-${month}-${day}`;
+  };
+
   const handleSearchChange = (e) => {
     setSearchCriteria({ ...searchCriteria, [e.target.name]: e.target.value });
   };
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
+
+    // Set userDetails to null
+    setUserDetails({
+      id: null,
+      username: "",
+      empid: null,
+      emailid: "",
+      start_date: null,
+      status: "",
+      expiry_date: null,
+    });
 
     try {
       // Call your list_users API with the searchCriteria and headers
@@ -75,6 +94,7 @@ function ModifyUserForm() {
         status: "",
         expiry_date: "",
       });
+      setApiResponse(null);
     } catch (error) {
       console.error("Error searching for user:", error);
       // Handle errors based on your requirements
@@ -83,6 +103,15 @@ function ModifyUserForm() {
 
   const handleModifyChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Update userDetails.status and userDetails.expiry_date if formData.status is changed to "Active"
+    if (name === "status" && value === "Active") {
+      setUserDetails({
+        ...userDetails,
+        status: "Active",
+        expiry_date: null,
+      });}
   };
 
   const handleModifySubmit = async (e) => {
@@ -102,6 +131,22 @@ function ModifyUserForm() {
       setPasswordError(null);
     }
 
+    if (formData.status === "Active" && formData.expiry_date !== null) {
+      setFormData({
+        ...formData,
+        expiry_date: null,
+      });
+    }
+
+    if (formData.status === "Active") {
+      setUserDetails({
+        ...userDetails,
+        status: "Active",
+        expiry_date: null,
+      });
+    }
+
+    console.log("Form Data -->",formData)
     try {
       // Include userDetails.id in the formData
       const modifiedFormData = {
@@ -164,6 +209,27 @@ function ModifyUserForm() {
             </div>
           </div>
           <button type="submit">Search</button>
+          {userDetails.id && (
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label>User Details </label>
+                </div>
+                <div className="singleRowContainer">
+                  {userDetails.username}
+                  {userDetails.status !== null && (
+                    <span> - {userDetails.status}</span>
+                  )}
+                  {userDetails.expiry_date !== null && (
+                    <span> - Expiry Date: {userDetails.expiry_date}</span>
+                  )}
+                  {userDetails.emailid !== null && (
+                    <span> - {userDetails.emailid}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </form>
       </div>
 
@@ -171,26 +237,6 @@ function ModifyUserForm() {
         <div>
           <div className="child-container form-container">
             <form onSubmit={handleModifySubmit}>
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <div className="label-container">
-                    <label>Employee ID:</label>
-                  </div>
-                  <div>{userDetails.empid}</div>
-                </div>
-              </div>
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <div className="label-container">
-                    <label>User Name:</label>
-                  </div>
-                  <div>
-                    {userDetails.username} - Expiry Date:{" "}
-                    {userDetails.expiry_date}
-                  </div>
-                </div>
-              </div>
-
               <div className="form-group col-md-6 mb-2">
                 <div className="form-row">
                   <div className="label-container">
@@ -203,9 +249,6 @@ function ModifyUserForm() {
                     onChange={handleModifyChange}
                     className="form-control input-field"
                   />
-                  <span className="user-details-span">
-                    {userDetails.emailid}
-                  </span>
                 </div>
               </div>
 
@@ -249,7 +292,7 @@ function ModifyUserForm() {
                   </div>
                   <select
                     name="status"
-                    value={formData.status}
+                    value={formData.status || userDetails.status}
                     onChange={handleModifyChange}
                     className="form-control input-field"
                   >
@@ -258,32 +301,32 @@ function ModifyUserForm() {
                         {status.name}
                       </option>
                     ))}
-                  </select>{" "}
-                  <span className="user-details-span">
-                    {userDetails.status}
-                  </span>
+                  </select>
                 </div>
               </div>
 
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <div className="label-container">
-                    <label>Expiry Date:</label>
-                  </div>
-                  {formData.status === "Expired" && (
+              {(formData.status === "Expired" ||
+                userDetails.status === "Expired" ||
+                userDetails.expiry_date) && (
+                <div className="form-group col-md-6 mb-2">
+                  <div className="form-row">
+                    <div className="label-container">
+                      <label>Expiry Date:</label>
+                    </div>
                     <input
-                      type="text"
+                      type="date"
                       name="expiry_date"
-                      value={formData.expiry_date}
+                      value={
+                        formatDate(userDetails.expiry_date) ||
+                        formData.expiry_date
+                      }
                       onChange={handleModifyChange}
-                      className="form-control input-field"
+                      className="form-control input-field date-input" 
+                      style={{ width: "100%" }} // Add this line
                     />
-                  )}
+                  </div>
                 </div>
-                <span className="user-details-span">
-                  <p></p>
-                </span>
-              </div>
+              )}
               <button type="submit">Modify User</button>
             </form>
             {/* Display API response in the same form */}

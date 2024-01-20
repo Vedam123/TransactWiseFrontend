@@ -3,7 +3,7 @@ import React from "react";
 
 const HELP_HomePageMenu = () => (
 <div >
-    <h2 className="subheading">HomePageMenu Component</h2>
+    <h2 className="subheading">Home Page Component</h2>
     <p className="indented-paragraph">
       The `Home Page` component is responsible for rendering a list of modules in the system 
     </p>

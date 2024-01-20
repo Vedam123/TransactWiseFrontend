@@ -66,19 +66,21 @@ export default function DocumentationContainer(props) {
     opacity: 0.8,
   };
 
-  return (
-    <div className={`child-container empty-container ${IS_INAPP_HELP_NEEDED ? 'help-enabled' : 'help-disabled'}`} style={backgroundImageStyle}>
+  return IS_INAPP_HELP_NEEDED ? (
+    <div className="child-container empty-container" style={backgroundImageStyle}>
       <div className="documentation-content">
-        {IS_INAPP_HELP_NEEDED ? (
-          <Suspense fallback={<div>Loading...</div>}>
-            {resolvedComponents.map((DynamicComponent, index) =>
-              DynamicComponent ? <DynamicComponent key={index} /> : null
-            )}
-          </Suspense>
-        ) : (
-          <p className="no-help-text-message">Help text is not enabled.</p>
-        )}
+        <Suspense fallback={<div>Loading...</div>}>
+          {resolvedComponents.map((DynamicComponent, index) =>
+            DynamicComponent ? <DynamicComponent key={index} /> : null
+          )}
+        </Suspense>
       </div>
+    </div>
+  ) :   (
+    <div className="child-container empty-container" style={backgroundImageStyle}>
+      <div className="documentation-content">
+      <p className="no-help-text-message">Help text is not enabled.</p>
+    </div>
     </div>
   );
 }

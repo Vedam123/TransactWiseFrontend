@@ -82,14 +82,16 @@ import UpdateInspectionPage from "../inventory/transactions/UpdateInspectionPage
 
 import PutAwayPage from "../inventory/transactions/PutAwayPage";
 
-//import ModifyUserPage from "../accessmgmt/ModifyUserPage";
 import ModifyUserPage from "./accessmgmt/authtoolkit/ModifyUserPage";
-//import UpdateCredentialsPage from "./accessmgmt/authtoolkit/UpdateCredentialsPage1";
 
-//import UpdateCredentialsForm from "./accessmgmt/authtoolkit/UpdateCredentialsForm";
+import UOMConversionPage from "../inventory/handling/UOMConversionPage";
+import MoveInventoryPage from "../inventory/handling/MoveInventoryPage";
+import ItemUOMConsolidationPage from "../inventory/handling/ItemUOMConsolidationPage";
+
 
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
+
 
 function AuthenticationPage() {
   const { token, removeToken, setToken } = useToken();
@@ -343,6 +345,11 @@ function AuthenticationPage() {
             <Route path="/perform-putaway" element={<PutAwayPage />} />  
 
             <Route path="/modify-user" element={<ModifyUserPage />} />
+
+            <Route path="/item-inventory-conversion" element={<UOMConversionPage />} />
+            <Route path="/move-inventory" element={<MoveInventoryPage />} />
+            
+            <Route path="/item-transaction-consolidation" element={<ItemUOMConsolidationPage />} />
         
 
           </Routes>

@@ -1,9 +1,13 @@
 import React from "react";
 import "../../utilities/css/appcss.css";
 
-const HELP_AccountsMenu = () => (
+const HELP_FinancePage = () => (
   <div>
-    <h2 className="subheading">Accounts Menu Component</h2>
+    <h2 className="subheading">Finance Module</h2>
+    <p className="indented-paragraph">
+      In this module you can create all kinds of financial transactions for this application
+    </p>
+    <h4 className="subheading">Accounts </h4>
     <p className="indented-paragraph">
       The `Accounts Menu` component is responsible for rendering a list of menu items based on user permissions.
     </p>
@@ -26,4 +30,4 @@ const HELP_AccountsMenu = () => (
   </div>
 );
 
-export default HELP_AccountsMenu;
+export default HELP_FinancePage;

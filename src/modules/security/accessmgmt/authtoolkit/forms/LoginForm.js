@@ -100,7 +100,7 @@ export default function LoginForm(props) {
         ) : (
         <form onSubmit={logMeIn}>
           <div className="form-group col-md-6 mb-2">
-          <h2 className="title">User Credentials</h2>
+          <h3 className="title">Login </h3>
             <div className="form-row">
               <div className="label-container">
                 <label htmlFor="username">Username:</label>

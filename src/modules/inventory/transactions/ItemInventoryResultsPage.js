@@ -34,8 +34,7 @@ export default function ItemInventoryResultsPage({ SearchItemInventory }) {
             <th>Aisle</th>
             <th>Zone</th>
             <th>Location</th>
-            <th>Warehouse</th>
-            <th>Addional Info</th>            
+            <th>Warehouse</th>       
             {/* Add more table headers as needed */}
           </tr>
         </thead>
@@ -55,7 +54,6 @@ export default function ItemInventoryResultsPage({ SearchItemInventory }) {
               <td>{item.zone_name}</td>
               <td>{item.location_name}</td>
               <td>{item.warehouse_name}</td>
-              <td>{item.additional_info}</td>
               {/* Render more table row data as needed */}
             </tr>
           ))}

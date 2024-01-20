@@ -22,7 +22,7 @@ export default function CreatePartnerForm() {
     taxid: "",
     registrationnumber: "",
     additionalinfo: "",
-    currencycode: "",
+    currency_id: "",
     status: "",
     partnerimage: null,
   });
@@ -49,10 +49,12 @@ export default function CreatePartnerForm() {
           headers: generateHeaders(),
         });
         const currencies = response.data.currencies;
+        console.log(currencies)
         const currencyCodes = currencies.map(
           (currency) => currency.currencycode
         );
-        setCurrencyOptions(currencyCodes);
+        console.log('Mapped',currencyCodes)
+        setCurrencyOptions(currencies);
         logger.info(`[${new Date().toLocaleTimeString()}] Currency data fetched successfully`); // Log when currency data is fetched successfully
       } catch (error) {
         logger.error(`[${new Date().toLocaleTimeString()}] Error fetching currencies`, error); // Log error when fetching currencies fails
@@ -99,7 +101,7 @@ export default function CreatePartnerForm() {
       formDataToSend.append("taxid", formData.taxid);
       formDataToSend.append("registrationnumber", formData.registrationnumber);
       formDataToSend.append("additionalinfo", formData.additionalinfo);
-      formDataToSend.append("currencycode", formData.currencycode);
+      formDataToSend.append("currency_id", parseInt(formData.currency_id, 10));
       formDataToSend.append("status", formData.status);
       formDataToSend.append("partnerimage", formData.partnerimage);
 
@@ -126,7 +128,7 @@ export default function CreatePartnerForm() {
         taxid: "",
         registrationnumber: "",
         additionalinfo: "",
-        currencycode: "",
+        currency_id: "",
         status: "",
         partnerimage: null,
       });
@@ -183,19 +185,19 @@ export default function CreatePartnerForm() {
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
               <div className="label-container">
-                <label htmlFor="currencycode">Currency Code:</label>
+                <label htmlFor="currency_id">Currency Code:</label>
               </div>
               <select
-                id="currencycode"
-                name="currencycode"
-                value={formData.currencycode}
+                id="currency_id"
+                name="currency_id"
+                value={formData.currency_id}
                 onChange={handleChange}
                 className="form-control input-field"
               >
                 <option value="">Select Currency Code</option>
-                {currencyOptions.map((currencyCode) => (
-                  <option key={currencyCode} value={currencyCode}>
-                    {currencyCode}
+                {currencyOptions.map((curr) => (
+                  <option key={curr.currency_id} value={curr.currency_id}>
+                    {curr.currencycode} ({curr.currencysymbol})
                   </option>
                 ))}
               </select>

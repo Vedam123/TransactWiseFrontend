@@ -56,19 +56,27 @@ function ViewAllExchangeRatesForm() {
         <table className="table table-striped table-bordered">
           <thead>
             <tr className="table-header">
-              <th className="table-header">From Currency</th>
+              <th>Rate ID</th>
+              <th>From Currency</th>
               <th>To Currency</th>
               <th>Exchange Rate</th>
-              <th>Exchange Rate Date</th>
+              <th>Valid From</th>
+              <th>Valid to</th>
+              <th>Status</th>
+              <th>Version</th>
             </tr>
           </thead>
           <tbody>
             {exchangeRates.map((rate) => (
-              <tr key={`${rate.fromcurrency}-${rate.tocurrency}`} className="table-row">
-                <td>{rate.fromcurrency}</td>
-                <td>{rate.tocurrency}</td>
+              <tr key={`${rate.exchange_rate_id}`} className="table-row">
+                <td>{rate.exchange_rate_id}</td>
+                <td>{rate.from_currency_code}</td>
+                <td>{rate.to_currency_code}</td>
                 <td>{rate.exchangerate}</td>
-                <td>{rate.exchangeratedate}</td>
+                <td>{rate.valid_from}</td>
+                <td>{rate.valid_to}</td>
+                <td>{rate.status}</td>                                                
+                <td>{rate.version}</td>
               </tr>
             ))}
           </tbody>

@@ -54,6 +54,8 @@ function PutAwayForm() {
   const [zoneList, setZoneList] = useState([]);
   const [locationList, setLocationList] = useState([]);
   const [warehouseList, setWarehouseList] = useState([]);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const resetFormData = () => {
     setFormData({
@@ -161,7 +163,6 @@ function PutAwayForm() {
 
     // Check if the transaction type is "Receipts"
     if (transactionType === "Receipts") {
-
       const transaction = trasnactionsList.find(
         (transaction) =>
           transaction.receipt_id === parseInt(transactionNumberId)
@@ -206,7 +207,6 @@ function PutAwayForm() {
 
     // Check if the transaction type is "Receipts"
     if (transactionType === "Inspections") {
-
       const transaction = trasnactionsList.find(
         (transaction) =>
           transaction.inspection_id === parseInt(transactionNumberId)
@@ -253,6 +253,9 @@ function PutAwayForm() {
   };
 
   const handleFormSubmit = async (event) => {
+
+    setSuccessMessage("");
+    setErrorMessage("");
     try {
       event.preventDefault();
       if (!transactionNumber) {
@@ -288,21 +291,22 @@ function PutAwayForm() {
       }
 
       const putAwayData = {
-        item_id: transactionNumber.item_id || null,
-        // inventory_id: transactionNumber.inventory_id || null,
-        uom_id: transactionNumber.uom_id || null,
         quantity: transactionNumber.quantity || null,
-        transaction_id: transactionNumber.transaction_number || null,
+        item_id: parseInt(transactionNumber.item_id, 10) || null,
+        // inventory_id: parseInt(transactionNumber.inventory_id, 10) || null,
+        uom_id: parseInt(transactionNumber.uom_id, 10) || null,
+        transaction_id:
+          parseInt(transactionNumber.transaction_number, 10) || null,
         transaction_type: transactionType || null,
-        bin_id: selectedBin || null,
-        rack_id: selectedRack || null,
-        row_id: selectedRow || null,
-        aisle_id: selectedAisle || null,
-        zone_id: selectedZone || null,
-        location_id: selectedNewLocation || null,
-        warehouse_id: selectedWarehouse || null,
+        bin_id: parseInt(selectedBin, 10) || null,
+        rack_id: parseInt(selectedRack, 10) || null,
+        row_id: parseInt(selectedRow, 10) || null,
+        aisle_id: parseInt(selectedAisle, 10) || null,
+        zone_id: parseInt(selectedZone, 10) || null,
+        location_id: parseInt(selectedNewLocation, 10) || null,
+        warehouse_id: parseInt(selectedWarehouse, 10) || null,
+        transaction_source_id: parseInt(trasnactionSource, 10) || null,
         additional_info: additionalInfoValue || null,
-        transaction_source_id: trasnactionSource || null,
       };
 
       // Send a POST request to the put_away_inventory API
@@ -346,11 +350,12 @@ function PutAwayForm() {
 
       logger.debug(updateStatusResponse);
       resetFormData();
+      setSuccessMessage("Succes : The PutAway is successful");
       settransactionNumber(null);
       setTransactionType(null);
-
     } catch (error) {
       logger.error("Error inserting item inventory:", error);
+      setErrorMessage("Error : Unable to Perform PutAway ");
       // Handle error
     }
   };
@@ -506,6 +511,8 @@ function PutAwayForm() {
   useEffect(() => {
     if (!hasRequiredAccess) {
       // Optionally, handle the case where access is not granted
+      setSuccessMessage("");
+      setErrorMessage("");
       logger.warn(
         `[${new Date().toLocaleTimeString()}] Access denied to Put Away component.`
       );
@@ -867,6 +874,19 @@ function PutAwayForm() {
               </button>
             </div>
           </div>
+          {/* Display success message if exists */}
+          {successMessage && (
+            <div className="alert alert-success" role="alert">
+              {successMessage}
+            </div>
+          )}
+
+          {/* Display error message if exists */}
+          {errorMessage && (
+            <div className="alert alert-danger" role="alert">
+              {errorMessage}
+            </div>
+          )}
         </form>
       </div>
     </div>

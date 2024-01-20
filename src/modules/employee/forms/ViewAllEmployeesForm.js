@@ -69,10 +69,10 @@ function ViewAllEmployeesForm() {
               <tr key={employee.empid} className="table-row">
                 <td>{employee.name}</td>
                 <td>{employee.empid}</td>
-                <td>{employee.manager}</td>
-                <td>{employee.supervisor}</td>
+                <td>{employee.manager_name}</td>
+                <td>{employee.supervisor_name}</td>
                 <td>{employee.salary}</td>
-                <td>{employee.role}</td>
+                <td>{employee.designation_name}</td>
                 <td>{employee.dob}</td>
                 <td>{employee.doj}</td>
                 <td>

@@ -46,8 +46,12 @@ export default function RegisterUserForm() {
         Authorization: `Bearer ${useridauthToken}`,
         UserId: userid,
       };
-      console.log("Token value to call employee ", useridauthToken);
-      console.log("User id to call employee", userid);
+      logger.info(
+        `[${new Date().toLocaleTimeString()}] Token value to call employee: ${useridauthToken}`
+      );
+      logger.info(
+        `[${new Date().toLocaleTimeString()}] User id to call employee: ${userid}`
+      );
       const response = await axios.get(`${API_URL}/employee`, { headers });
       const data = response.data;
       setEmployeeData(data);
@@ -99,8 +103,9 @@ export default function RegisterUserForm() {
         headers: headers,
       });
 
-      console.log(response2.data);
-
+      logger.info(
+        `[${new Date().toLocaleTimeString()}] Response from send_email API call: ${response2}`
+      );
       // Log the successful email sending with timestamp
       logger.info(
         `[${new Date().toLocaleTimeString()}] Email sent successfully. Access granted: ${hasRequiredAccess}`
@@ -141,7 +146,6 @@ export default function RegisterUserForm() {
         headers: headers,
       });
   
-      console.log(response.data);
       setRegistrationSuccess(true);
   
       setFormData({
@@ -150,9 +154,15 @@ export default function RegisterUserForm() {
         empid: "",
         emailid: "",
       });
+
+      logger.info(
+        `[${new Date().toLocaleTimeString()}] Response Register_user API: ${response}`
+      );
   
       // Conditionally send email if the checkbox is checked
-      console.log("Send email check box ", sendEmail);
+      logger.info(
+        `[${new Date().toLocaleTimeString()}] Send Email check box: ${sendEmail}`
+      );
       if (sendEmail) {
         await sendEmailData();
       }

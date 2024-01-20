@@ -3,23 +3,35 @@ import "../../utilities/css/appcss.css";
 
 const HELP_CreateReceiptPage = () => (
   <div>
-    <h2 className="subheading">Admin Page Menu Component</h2>
+    <h2 className="subheading">Create Receipt</h2>
     <p className="indented-paragraph">
-      The `Admin Page Menu` component is responsible for rendering a list of menu items based on user permissions.
+      The `Create Receipt Form` allows users to input information for creating a new receipt in the system.
     </p>
-    <h3 className="subheading">Employee Module</h3>
+    <h3 className="subheading">Receipt Name</h3>
     <p className="indented-paragraph">
-      The Employee Module allows users to manage employee-related functionalities.
+      Select the type of receipt you want to create. Choose from the available receipt types in the dropdown.
     </p>
-    <h3 className="subheading">Security Module</h3>
+    <h3 className="subheading">Transaction Number</h3>
     <p className="indented-paragraph">
-      The Security Module is responsible for managing user access and permissions.
+      Enter a transaction number associated with the receipt.
     </p>
-    <h3 className="subheading">Email </h3>
+    <h3 className="subheading">Item</h3>
     <p className="indented-paragraph">
-      One can view all the emails generated in the system.
+      Choose the item for which the receipt is being created. Items are listed in the dropdown.
     </p>
-    
+    {/* Add similar sections for other form fields as needed */}
+    <h3 className="subheading">Inspect</h3>
+    <p className="indented-paragraph">
+      Check the "Inspect" checkbox if the receipt requires inspection. This may affect the subsequent steps and status.
+    </p>
+    <h3 className="subheading">Submission</h3>
+    <p className="indented-paragraph">
+      After filling in the necessary information, click the "Create Receipt" button to submit the form and create the receipt.
+    </p>
+    <h3 className="subheading">Permission</h3>
+    <p className="indented-paragraph">
+      Users need the appropriate permissions to access and use the Create Receipt Form. Ensure proper module-level access is granted.
+    </p>
   </div>
 );
 

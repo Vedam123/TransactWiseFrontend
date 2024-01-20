@@ -4,21 +4,19 @@ import useButtonBehavior from "../../../utilities/button/useButtonBehavior";
 import behaviorOptions from "../../../utilities/button/behaviorOptions";
 import ButtonComponent from "../../../utilities/ButtonComponent";
 import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
-import { BACKEND_PRODUCT_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants
+import { BACKEND_INVENTORY_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants
 import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
-export default function TransactionsMenu() {
+export default function HandlingMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
-  const ProductPermissions = ModulePermissions({ moduleName: BACKEND_PRODUCT_MODULE_NAME });
-  const { canCreateModule,  canUpdateModule, canViewModule } = ProductPermissions;
+  const ProductPermissions = ModulePermissions({ moduleName: BACKEND_INVENTORY_MODULE_NAME });
+  const { canCreateModule } = ProductPermissions;
 
   const menuItems = [
-    { path: "/perform-putaway", text: "Put Away", canRender: canCreateModule },
-    { path: "/get-item-transactions", text: "View Inventory", canRender: canViewModule },
-    { path: "/search-item-transactions", text: "Search Inventory", canRender: canUpdateModule },
-    { path: "/update-inspection", text: "Inspect", canRender: canViewModule },
-    { path: "/get-inspections", text: "View Inspections", canRender: canViewModule },
+    { path: "/item-inventory-conversion", text: "UOM Conversion", canRender: canCreateModule },
+    { path: "/item-transaction-consolidation", text: "Item Consolidation", canRender: canCreateModule },
+    { path: "/move-inventory", text: "Move Inventory", canRender: canCreateModule },
   ];
 
   const handleMenuItemClick = (path) => {
@@ -34,7 +32,7 @@ export default function TransactionsMenu() {
   };
 
   // Log the component rendering with timestamp
-  logger.info(`[${new Date().toLocaleTimeString()}] Transactions component is rendering.`);
+  logger.info(`[${new Date().toLocaleTimeString()}] Receipts component is rendering.`);
 
   return (
       <div className="menu-list">

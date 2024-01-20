@@ -20,7 +20,6 @@ function ViewAllGroupCompaniesForm() {
     return {
       'Authorization': `Bearer ${token}`,
       'UserId': userId,
-      // Add other headers if needed
     };
   };
 
@@ -67,7 +66,7 @@ function ViewAllGroupCompaniesForm() {
               <th>ID</th>
               <th>Name</th>
               <th>Description</th>
-              <th>Legal Entity ID</th>
+              <th>Legal Entity name</th>
               <th>Created At</th>
               <th>Updated At</th>
             </tr>
@@ -76,9 +75,9 @@ function ViewAllGroupCompaniesForm() {
             {groupCompanies?.map((company) => (
               <tr key={company.id} className="table-row">
                 <td>{company.id}</td>
-                <td>{company.name}</td>
+                <td>{company.group_company_name}</td>
                 <td>{company.description}</td>
-                <td>{company.legal_entity_id}</td>
+                <td>{company.legal_entity_name}</td>
                 <td>{company.created_at}</td>
                 <td>{company.updated_at}</td>
               </tr>

@@ -72,7 +72,6 @@ const GrantPermissionsForm = () => {
       const user = usersData.find((user) => user.username === trimmedUsername);
 
       if (!user) {
-        //alert("Username not found in the users list.");
         displayStatusMessage(`User Not found in the DB!`);
         setUserData(null);
         setModuleEntries([]);
@@ -93,12 +92,12 @@ const GrantPermissionsForm = () => {
       const userPermissionsData =
         permissionsResponse.data.user_module_permissions;
 
-      if (!Array.isArray(userPermissionsData)) {
-        alert(
-          "Invalid response from the server. User permissions data is not in the expected format."
-        );
-        return;
-      }
+        if (Object.keys(userPermissionsData).length === 0 || !Array.isArray(userPermissionsData)) {
+          displayStatusMessage("The fetched Data is not proper or null")
+          return;
+        }
+       
+      logger.info(`[${new Date().toLocaleTimeString()}] User Permissions data: ${userPermissionsData}`);
       logger.info(`[${new Date().toLocaleTimeString()}] Seems userPermissionsData is an Array`);
 
       const userPermissions = userPermissionsData.find(
@@ -190,7 +189,7 @@ const GrantPermissionsForm = () => {
 
   return (
     <div className="child-container form-container">
-      <h1 className="title">Create User Module Permissions</h1>
+      <h3 className="title">Grant Module Access Permissions to user</h3>
       {hasRequiredAccess ? (
         <form onSubmit={handleSubmit}>
           {statusMessage && <div className="status-message">{statusMessage}</div>}

@@ -67,8 +67,7 @@ function ViewAllItemInventoriesForm() {
               <th>Aisle Name</th>
               <th>Zone Name</th>
               <th>Location Name</th>
-              <th>Warehouse Name</th>  
-              <th>Additional Info</th>                          
+              <th>Warehouse Name</th>                         
               {/* Add more headers as needed */}
             </tr>
           </thead>
@@ -89,8 +88,7 @@ function ViewAllItemInventoriesForm() {
                 <td>{item.aisle_name}</td>
                 <td>{item.zone_name}</td>
                 <td>{item.location_name}</td>
-                <td>{item.warehouse_name}</td> 
-                <td>{item.additional_info}</td>                             
+                <td>{item.warehouse_name}</td>                           
                 {/* Add more table data cells as needed */}
               </tr>
             ))}

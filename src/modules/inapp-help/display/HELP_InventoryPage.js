@@ -3,27 +3,35 @@ import "../../utilities/css/appcss.css";
 
 const HELP_InventoryPage = () => (
   <div>
-    <h2 className="subheading">Bins Menu Component</h2>
+    <h2 className="subheading">Inventory Page</h2>
     <p className="indented-paragraph">
-      The `Bins Menu` component is responsible for rendering a list of menu items based on user permissions.
+      The `Inventory Page` serves as a hub for various inventory-related
+      functions.
     </p>
-    <h3 className="subheading">Create Bin</h3>
+    <h3 className="subheading">Components</h3>
     <p className="indented-paragraph">
-      Allows users to create a new bin.
+      This page renders the following components:
+      <ul>
+        <li>Handling Page</li>
+        <li>Transactions Page</li>
+        <li>Receipts Page</li>
+      </ul>
     </p>
-    <h3 className="subheading">Delete Bin</h3>
+    <h2 className="subheading">Receipts Page</h2>
     <p className="indented-paragraph">
-      Allows users to delete an existing bin.
+      The `Receipts Menu` provides options for interacting with receipts, such
+      as creating, updating, and viewing.
     </p>
-    <h3 className="subheading">Update Bin</h3>
+    <h2 className="subheading">Handling Menu</h2>
     <p className="indented-paragraph">
-      Allows users to update the details of an existing bin.
+      The `Handling Menu` provides options for handling inventory items, such as
+      UOM conversion and item consolidation.
     </p>
-    <h3 className="subheading">Get Bins</h3>
+    <h2 className="subheading">Transactions Menu</h2>
     <p className="indented-paragraph">
-      Allows users to retrieve a list of bins based on specified conditions.
+      The `Transactions Menu` provides options for performing transactions on
+      inventory items, such as put away and inspection.
     </p>
   </div>
 );
-
 export default HELP_InventoryPage;

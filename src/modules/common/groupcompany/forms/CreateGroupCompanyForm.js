@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { API_URL, BACKEND_COMMON_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS } from "../../../admin/setups/ConstDecl";
+import {
+  API_URL,
+  BACKEND_COMMON_MODULE_NAME,
+  MODULE_LEVEL_CREATE_ACCESS,
+} from "../../../admin/setups/ConstDecl";
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
@@ -29,8 +33,8 @@ export default function CreateGroupCompanyForm() {
     const userid = localStorage.getItem("userid");
 
     return {
-      'Authorization': `Bearer ${token}`,
-      'UserId': userid,
+      Authorization: `Bearer ${token}`,
+      UserId: userid,
     };
   };
 
@@ -44,7 +48,10 @@ export default function CreateGroupCompanyForm() {
   };
 
   const handleLegalEntityChange = (e) => {
-    const selectedLegalEntity = legalEntities.find(entity => entity.name === e.target.value);
+    const selectedLegalEntity = legalEntities.find(
+      (entity) => entity.id === parseInt(e.target.value, 10)
+    );
+  
     if (selectedLegalEntity) {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -52,6 +59,7 @@ export default function CreateGroupCompanyForm() {
       }));
     }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +74,10 @@ export default function CreateGroupCompanyForm() {
         { headers: generateHeaders() }
       );
 
-      logger.info(`[${new Date().toLocaleTimeString()}] Group company created successfully`, response.data);
+      logger.info(
+        `[${new Date().toLocaleTimeString()}] Group company created successfully`,
+        response.data
+      );
       setSuccessMessage("Group company created successfully");
       setFormData({
         legal_entity_id: "",
@@ -74,8 +85,13 @@ export default function CreateGroupCompanyForm() {
         description: "",
       });
     } catch (error) {
-      logger.error(`[${new Date().toLocaleTimeString()}] Error creating group company`, error);
-      setError("An error occurred while creating the group company. Please try again.");
+      logger.error(
+        `[${new Date().toLocaleTimeString()}] Error creating group company`,
+        error
+      );
+      setError(
+        "An error occurred while creating the group company. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -89,7 +105,10 @@ export default function CreateGroupCompanyForm() {
         });
         setLegalEntities(response.data.legal_entity_list);
       } catch (error) {
-        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching legal entities:`, error);
+        logger.error(
+          `[${new Date().toLocaleTimeString()}] Error fetching legal entities:`,
+          error
+        );
       } finally {
         setLoadingLegalEntities(false);
       }
@@ -146,12 +165,16 @@ export default function CreateGroupCompanyForm() {
                   onChange={handleLegalEntityChange}
                   className="form-control input-field"
                 >
-                  <option value="" disabled>Select Legal Entity</option>
+                  <option value="" disabled>
+                    Select Legal Entity
+                  </option>
                   {loadingLegalEntities ? (
-                    <option value="" disabled>Loading Legal Entities...</option>
+                    <option value="" disabled>
+                      Loading Legal Entities...
+                    </option>
                   ) : (
                     legalEntities.map((entity) => (
-                      <option key={entity.id} value={entity.name}>
+                      <option key={entity.id} value={entity.id}>
                         {entity.name}
                       </option>
                     ))
@@ -161,7 +184,9 @@ export default function CreateGroupCompanyForm() {
             </div>
             {loading && <div className="loading-indicator">Creating...</div>}
             {error && <div className="error-message">{error}</div>}
-            {successMessage && <div className="success-message">{successMessage}</div>}
+            {successMessage && (
+              <div className="success-message">{successMessage}</div>
+            )}
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
                 <button type="submit" className="btn btn-primary">

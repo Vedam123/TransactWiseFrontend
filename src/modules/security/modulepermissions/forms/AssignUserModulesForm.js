@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_VIEW_ACCESS } from "../../../admin/setups/ConstDecl";
+import {
+  API_URL,
+  BACKEND_ADMIN_MODULE_NAME,
+  MODULE_LEVEL_VIEW_ACCESS,
+} from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 import logger from "../../../utilities/Logs/logger"; // Import your logger module here
@@ -10,10 +14,11 @@ const AssignUserModulesForm = () => {
     username: "",
   });
 
-  const [userModules, setUserModules] = useState([]);
   const [moduleList, setModuleList] = useState([]);
   const [selectedModule, setSelectedModule] = useState("");
-  const [dbuserid, setDbuserid] = useState("");
+  const [error, setError] = useState("");
+  const [userOptions, setUserOptions] = useState([]);
+  const [fetchedModules, setFetchedModules] = useState([]);
 
   const hasRequiredAccess = CheckModuleAccess(
     BACKEND_ADMIN_MODULE_NAME, // Replace with your module name constant
@@ -26,8 +31,8 @@ const AssignUserModulesForm = () => {
     const userId = localStorage.getItem("userid");
 
     return {
-      'Authorization': `Bearer ${token}`,
-      'UserId': userId,
+      Authorization: `Bearer ${token}`,
+      UserId: userId,
       // Add other headers if needed
     };
   };
@@ -38,12 +43,10 @@ const AssignUserModulesForm = () => {
     }
 
     fetchModuleList();
+    fetchUserOptions();
     // eslint-disable-next-line
   }, [hasRequiredAccess]);
 
-  useEffect(() => {
-    logger.info(`[${new Date().toLocaleTimeString()}] The DB user id stored in the global variable is ${dbuserid}`);
-  }, [dbuserid]);
 
   const fetchModuleList = async () => {
     try {
@@ -52,54 +55,38 @@ const AssignUserModulesForm = () => {
       });
       setModuleList(response.data.modules);
     } catch (error) {
-      logger.error(`[${new Date().toLocaleTimeString()}] Error fetching module list: ${error}`);
+      logger.error(
+        `[${new Date().toLocaleTimeString()}] Error fetching module list: ${error}`
+      );
+    }
+  };
+
+  const fetchUserOptions = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/list_users`, {
+        headers: generateHeaders(),
+      });
+
+      const usersData = response.data.users;
+      if (Array.isArray(usersData)) {
+        const options = usersData.map((user) => ({
+          value: user.id,
+          label: `${user.username} (${user.id})`, // Display username(id) in LOV
+        }));
+        setUserOptions(options);
+      }
+    } catch (error) {
+      logger.error(
+        `[${new Date().toLocaleTimeString()}] Error fetching user options: ${error}`
+      );
     }
   };
 
   const handleUsernameChange = (event) => {
-    setFormData({ ...formData, username: event.target.value });
-  };
-
-  const handleCheckUser = async () => {
-    const trimmedUsername = formData.username.trim();
-
-    try {
-      const usersResponse = await axios.get(`${API_URL}/list_users`, {
-        headers: generateHeaders(), // Include headers here
-      });
-      const usersData = usersResponse.data.users;
-      if (!Array.isArray(usersData)) {
-        logger.error(`[${new Date().toLocaleTimeString()}] Invalid response from the server. Users data is not in the expected format.`);
-        return;
-      }
-      logger.info(`[${new Date().toLocaleTimeString()}] UsersData: ${JSON.stringify(usersData)}`);
-      logger.info(`[${new Date().toLocaleTimeString()}] Entered user name: ${trimmedUsername}`);
-
-      const user = usersData.find((user) => user.username === trimmedUsername);
-
-      if (!user) {
-        logger.info(`[${new Date().toLocaleTimeString()}] User Not found in the DB!`);
-        setUserModules([]);
-      } else {
-        // Fetch the user's modules from the API
-        setDbuserid(user.id);
-        const userPermissionsResponse = await axios.get(
-          `${API_URL}/list_user_permissions`,
-          {
-            headers: generateHeaders(), // Include headers here
-          }
-        );
-        const userPermissionsData =
-          userPermissionsResponse.data.user_module_permissions;
-        const userModulesList = userPermissionsData
-          .filter((permission) => permission.user_id === user.id)
-          .map((permission) => permission.module);
-        setUserModules(userModulesList);
-        logger.info(`[${new Date().toLocaleTimeString()}] User Module List: ${userModulesList.join(", ")}`);
-      }
-    } catch (error) {
-      logger.error(`[${new Date().toLocaleTimeString()}] Error fetching users: ${error}`);
-    }
+    setFormData({
+      ...formData,
+      username: event.target.value, // Set selected user_id
+    });
   };
 
   const handleCancel = () => {
@@ -109,41 +96,88 @@ const AssignUserModulesForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (!selectedModule) {
-      logger.error(`[${new Date().toLocaleTimeString()}] Please select a module.`);
+  
+    if (!formData.username || !selectedModule) {
+      setError("Please select both username and Module name.");
       return;
     }
-
-    logger.info(`[${new Date().toLocaleTimeString()}] Selected Module: ${selectedModule}`);
-    logger.info(`[${new Date().toLocaleTimeString()}] Selected user id: ${dbuserid}`);
-
+  
+    logger.info(
+      `[${new Date().toLocaleTimeString()}] Selected Module: ${selectedModule}`
+    );
+    logger.info(
+      `[${new Date().toLocaleTimeString()}] Selected user id: ${formData.username}`
+    );
+  
+    // Check if the user and module combination already exists in the fetched modules
+    const isAlreadyAssigned = fetchedModules.includes(selectedModule);
+  
+    if (isAlreadyAssigned) {
+      setError("User is already assigned to the selected module.");
+      return;
+    }
+  
     try {
       const response = await axios.post(
         `${API_URL}/create_permissions`,
         [
           {
-            user_id: dbuserid,
+            user_id: formData.username,
             module: selectedModule,
           },
         ],
         {
-          headers: generateHeaders(), // Include headers here
+          headers: generateHeaders(),
         }
       );
-
-      logger.info(`[${new Date().toLocaleTimeString()}] Response data: ${JSON.stringify(response.data)}`);
+  
+      logger.info(
+        `[${new Date().toLocaleTimeString()}] Response data: ${JSON.stringify(
+          response.data
+        )}`
+      );
       // Clear form field after successful submission
-      setFormData({ username: "" });
-      setSelectedModule("");
+     // setFormData({ username: "" });
+     // setSelectedModule("");
+      // Refetch user permissions to update fetchedModules
+      handleCheckUserPermissions();
     } catch (error) {
-      logger.error(`[${new Date().toLocaleTimeString()}] Error creating/updating permission: ${error}`);
+      setError(
+        `[${new Date().toLocaleTimeString()}] Error creating/updating permission: ${error}`
+      );
+      logger.error(`[${new Date().toLocaleTimeString()}] ${error}`);
+    }
+  };
+  
+
+  const handleCheckUserPermissions = async () => {
+    try {
+      if (!formData.username) {
+        setError("Please select a username.");
+        return;
+      }
+
+      const response = await axios.get(`${API_URL}/list_user_permissions?user_id=${formData.username}`, {
+        headers: generateHeaders(),
+      });
+
+      const userPermissionsData = response.data.user_module_permissions;
+
+      const userModulesList = userPermissionsData.map((permission) => permission.module);
+
+      setFetchedModules(userModulesList);
+      setError(""); // Clear any previous error
+      logger.info(`[${new Date().toLocaleTimeString()}] User Module List: ${userModulesList.join(", ")}`);
+    } catch (error) {
+      setError(`Error fetching user permissions: ${error}`);
+      logger.error(`[${new Date().toLocaleTimeString()}] ${error}`);
     }
   };
 
+
   return (
     <div className="child-container form-container">
-      <h2 className="title">User Module Assignment</h2>
+      <h2 className="title">Assign Modules to Users</h2>
       {hasRequiredAccess ? (
         <form onSubmit={handleSubmit}>
           <div className="form-group col-md-6 mb-2">
@@ -151,30 +185,40 @@ const AssignUserModulesForm = () => {
               <div className="label-container">
                 <label htmlFor="username">Username:</label>
               </div>
-              <input
-                type="text"
+              <select
                 id="username"
                 name="username"
                 value={formData.username}
                 onChange={handleUsernameChange}
                 className="form-control input-field"
-              />
+              >
+                <option value="">Select Username</option>
+                {userOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
               <button
                 type="button"
-                onClick={handleCheckUser}
+                onClick={handleCheckUserPermissions}
                 className="menu-button"
               >
-                CheckUser
+                Checkuser
               </button>
             </div>
-            {userModules.length > 0 && (
+            {fetchedModules.length > 0 && (
               <div>
                 <div className="form-row">
                   <p>
-                    User already assigned to <u>{userModules.join(", ")}</u>{" "}
-                    module(s)
+                    For this user the following list of module(s) are assigned : <u>{fetchedModules.join(", ")}</u>{" "}
                   </p>
                 </div>
+              </div>
+            )}
+             {error && (
+              <div className="form-row">
+                <p className="error-message">{error}</p>
               </div>
             )}
           </div>

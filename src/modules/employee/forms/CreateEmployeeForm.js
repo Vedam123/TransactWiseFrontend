@@ -14,9 +14,9 @@ export default function CreateEmployeeForm() {
     name: "",
     dob: "",
     doj: "",
-    manager: "",
-    supervisor: "",
-    role: "",
+    manager_id: "",
+    supervisor_id: "",
+    designation_id: "",
     salary: "",
     pic: null,
   });
@@ -48,12 +48,19 @@ export default function CreateEmployeeForm() {
         const employees = response.data;
         setManagerOptions(employees);
 
-        logger.info(`[${new Date().toLocaleTimeString()}] Fetching employees and designations...`);
+        logger.info(
+          `[${new Date().toLocaleTimeString()}] Fetching employees and designations...`
+        );
 
         setSupervisorOptions(employees);
-        logger.info(`[${new Date().toLocaleTimeString()}] Employees data fetched successfully.`);
+        logger.info(
+          `[${new Date().toLocaleTimeString()}] Employees data fetched successfully.`
+        );
       } catch (error) {
-        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching employees:`, error);
+        logger.error(
+          `[${new Date().toLocaleTimeString()}] Error fetching employees:`,
+          error
+        );
       }
     };
 
@@ -71,14 +78,16 @@ export default function CreateEmployeeForm() {
           headers,
         });
         const designations = response.data;
-        const designationNames = designations.map(
-          (designation) => designation.designation_name
-        );
-        setDesignationOptions(designationNames);
+        setDesignationOptions(designations);
 
-        logger.info(`[${new Date().toLocaleTimeString()}] Designations data fetched successfully.`);
+        logger.info(
+          `[${new Date().toLocaleTimeString()}] Designations data fetched successfully.`
+        );
       } catch (error) {
-        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching designations:`, error);
+        logger.error(
+          `[${new Date().toLocaleTimeString()}] Error fetching designations:`,
+          error
+        );
       }
     };
 
@@ -93,7 +102,11 @@ export default function CreateEmployeeForm() {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
-    logger.debug(`[${new Date().toLocaleTimeString()}] ${e.target.name} value changed: ${e.target.value}`);
+    logger.debug(
+      `[${new Date().toLocaleTimeString()}] ${e.target.name} value changed: ${
+        e.target.value
+      }`
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -112,11 +125,13 @@ export default function CreateEmployeeForm() {
       formDataToSend.append("name", formData.name);
       formDataToSend.append("dob", formData.dob);
       formDataToSend.append("doj", formData.doj);
-      formDataToSend.append("manager", formData.manager);
-      formDataToSend.append("supervisor", formData.supervisor);
-      formDataToSend.append("role", formData.role);
+      formDataToSend.append("manager_id", formData.manager_id);
+      formDataToSend.append("supervisor_id", formData.supervisor_id);
+      formDataToSend.append("designation_id", formData.designation_id);
       formDataToSend.append("salary", formData.salary);
       formDataToSend.append("pic", formData.pic);
+
+      console.log("Form DAta ",formDataToSend.name)
 
       logger.info(`[${new Date().toLocaleTimeString()}] Creating employee...`);
 
@@ -126,23 +141,29 @@ export default function CreateEmployeeForm() {
         { headers }
       );
 
-      logger.info(`[${new Date().toLocaleTimeString()}] Employee created successfully:`, response.data);
+      logger.info(
+        `[${new Date().toLocaleTimeString()}] Employee created successfully:`,
+        response.data
+      );
 
       setFormData({
         name: "",
         dob: "",
         doj: "",
-        manager: "",
-        supervisor: "",
-        role: "",
+        manager_id: "",
+        supervisor_id: "",
+        designation_id: "",
         salary: "",
         pic: null,
       });
     } catch (error) {
-      logger.error(`[${new Date().toLocaleTimeString()}] Error creating employee:`, error);
+      logger.error(
+        `[${new Date().toLocaleTimeString()}] Error creating employee:`,
+        error
+      );
     }
   };
-  
+
   return (
     <div className="child-container menu-container">
       <h2 className="title">Create Employee</h2>
@@ -201,12 +222,12 @@ export default function CreateEmployeeForm() {
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
                 <div className="label-container">
-                  <label htmlFor="manager">Manager:</label>
+                  <label htmlFor="manager_id">Manager:</label>
                 </div>
                 <select
-                  id="manager"
-                  name="manager"
-                  value={formData.manager}
+                  id="manager_id"
+                  name="manager_id"
+                  value={formData.manager_id}
                   onChange={handleChange}
                   className="form-control input-field"
                 >
@@ -224,12 +245,12 @@ export default function CreateEmployeeForm() {
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
                 <div className="label-container">
-                  <label htmlFor="supervisor">Supervisor:</label>
+                  <label htmlFor="supervisor_id">Supervisor:</label>
                 </div>
                 <select
-                  id="supervisor"
-                  name="supervisor"
-                  value={formData.supervisor}
+                  id="supervisor_id"
+                  name="supervisor_id"
+                  value={formData.supervisor_id}
                   onChange={handleChange}
                   className="form-control input-field"
                 >
@@ -247,19 +268,22 @@ export default function CreateEmployeeForm() {
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
                 <div className="label-container">
-                  <label htmlFor="role">Designation:</label>
+                  <label htmlFor="designation_id">Designation:</label>
                 </div>
                 <select
-                  id="role"
-                  name="role"
-                  value={formData.role}
+                  id="designation_id"
+                  name="designation_id"
+                  value={formData.designation_id}
                   onChange={handleChange}
                   className="form-control input-field"
                 >
                   <option value="">Select Designation</option>
-                  {designationOptions.map((designationName, index) => (
-                    <option key={index} value={designationName}>
-                      {designationName}
+                  {designationOptions.map((designation) => (
+                    <option
+                      key={designation.designation_id}
+                      value={designation.designation_id}
+                    >
+                      {designation.designation_name}
                     </option>
                   ))}
                 </select>

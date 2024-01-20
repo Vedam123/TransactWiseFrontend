@@ -6,6 +6,7 @@ import DocumentationContainer from "../utilities/DocumentationContainer";
 import UserRolesMenu from "./menus/UserRolesMenu";
 import PermissionsMenu from "./menus/PermissionsMenu";
 import DisplayCard from "../utilities/DisplayCard";
+import logger from "../utilities/Logs/logger"; // Import your logger module here
 
 // Define an array of components to render
 const componentsToRender = [UserRolesMenu, PermissionsMenu];
@@ -16,7 +17,7 @@ const componentsToRender2 = [UserRolesPage];
 export default function UserRolesPage() {
   useEffect(() => {
     // Log component rendering
-    console.log(`[${new Date().toLocaleTimeString()}] UserRolePage component rendered.`);
+    logger.info(`[${new Date().toLocaleTimeString()}] UserRolePage component rendered.`);
   }, []);
 
   return (
