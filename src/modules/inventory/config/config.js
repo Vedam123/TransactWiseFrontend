@@ -37,7 +37,7 @@ export const INSPECTION_STATUS = [
   //{ name: "In Progress", short_name: "IP", sequence: 30, toinspect: true },
   { name: "Inspected", short_name: "INS", sequence: 40,  toputaway: true},
  // { name: "Put Away", short_name: "PA", sequence: 50, putaway:true},
-  { name: "Pending", short_name: "PEN", sequence: 60,toputaway: true },
+  { name: "Inspecting", short_name: "PEN", sequence: 60,toputaway: true },
   { name: "Closed", short_name: "DN", sequence: 70  }
 ];
 
