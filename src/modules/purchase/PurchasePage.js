@@ -1,46 +1,56 @@
 import React from "react";
-import PurchaseMenu from "./menus/PurchaseMenu";
 import "../utilities/css/appcss.css";
 import RotatingImage from "../utilities/RotatingImage";
 import BottomContainer from "../utilities/BottomContainer";
 import DocumentationContainer from "../utilities/DocumentationContainer";
-import DisplayCard from "../utilities/DisplayCard";
-import logger from "../utilities/Logs/logger"; // Import your logger module here
+import PurchaseOrdersPage from "./purchaseorders/PurchaseOrdersPage";
+import logger from "../utilities/Logs/logger";
 
 export default function PurchasePage() {
-  // Log the rendering of the PurchasePage component with timestamp
-  logger.info(`[${new Date().toLocaleTimeString()}] PurchasePage component is rendering`);
+  // Log the component rendering with timestamp
+  logger.info(`[${new Date().toLocaleTimeString()}] PurchasePage component is rendering.`);
+
+  // Define the list of components to render
+  const componentsToRender = [
+    PurchaseOrdersPage,
+  ];
+
+  const componentsToRender2 = [PurchasePage];
+
+  // Function to render components in rows
+  const renderComponentsInRows = (components, componentsPerColumn) => {
+    const rows = [];
+    for (let i = 0; i < components.length; i += componentsPerColumn) {
+      const row = components.slice(i, i + componentsPerColumn);
+      rows.push(row);
+    }
+    return rows;
+  };
+
+  // Set the number of components per row
+  const componentsPerColumn = 2;
+
+  // Render components in rows
+  const rowsOfComponents = renderComponentsInRows(componentsToRender, componentsPerColumn);
 
   return (
     <div className="page-container">
-      <h1 className="title">Purchase Module</h1>
-
+      {/* Log the page title with timestamp */}
+      <h1 className="title">Purchase  Functions</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
-          <h2 className="title">Menu</h2>
           <div className="menu-list-container">
-            {/* DisplayCard for Purchase Reqs */}
-            <DisplayCard title="Purchase Reqs" color="#FFD799">
-              {/* PurchaseMenu for Purchase Reqs */}
-              <PurchaseMenu group="Req" />
-            </DisplayCard>
-
-            {/* DisplayCard for RFQs */}
-            <DisplayCard title="RFQs" color="#FFD799">
-              {/* PurchaseMenu for RFQs */}
-              <PurchaseMenu group="RFQ" />
-            </DisplayCard>
-
-            {/* DisplayCard for POs */}
-            <DisplayCard title="POs" color="#FFD799">
-              {/* PurchaseMenu for POs */}
-              <PurchaseMenu group="PO" />
-            </DisplayCard>
+            {rowsOfComponents.map((row, rowIndex) => (
+              <div key={rowIndex} className="row-container">
+                {row.map((Component, columnIndex) => (
+                  <Component key={columnIndex} />
+                ))}
+              </div>
+            ))}
           </div>
         </div>
-        <DocumentationContainer />
+        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
       </div>
-
       <RotatingImage />
       <BottomContainer />
     </div>

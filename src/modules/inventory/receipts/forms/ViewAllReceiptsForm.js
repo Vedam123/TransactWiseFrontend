@@ -50,7 +50,8 @@ function ViewAllReceiptsForm() {
           <thead>
             <tr>
               <th>Receipt Type</th>
-              <th>Transaction Number</th>
+              <th>Transaction</th>
+              <th>Transaction Header</th>              
               <th>Receipt ID</th>
               <th>Item Code</th>
               <th>Quantity</th>
@@ -65,6 +66,7 @@ function ViewAllReceiptsForm() {
               <tr key={receipt.receipt_id}>
                 <td>{receipt.receipt_name}</td>
                 <td>{receipt.transaction_number}</td>
+                <td>{receipt.transaction_header_number}</td>                
                 <td>{receipt.receipt_id}</td>
                 <td>{receipt.item_code} ({receipt.item_name})</td>
                 <td>{receipt.quantity}</td>

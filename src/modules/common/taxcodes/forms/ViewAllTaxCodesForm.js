@@ -62,6 +62,7 @@ function ViewAllTaxCodesForm() {
               <th>Tax Rate (%)</th>
               <th>Tax Applicability</th>
               <th>Tax Authority</th>
+              <th>Status</th>              
             </tr>
           </thead>
           <tbody>
@@ -73,6 +74,7 @@ function ViewAllTaxCodesForm() {
                 <td>{tax.tax_rate}</td>
                 <td>{tax.tax_applicability}</td>
                 <td>{tax.tax_authority}</td>
+                <td>{tax.status === 1 ? 'Active' : 'Not Active'}</td>
               </tr>
             ))}
           </tbody>

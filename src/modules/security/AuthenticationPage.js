@@ -73,6 +73,7 @@ import ViewAllBinsPage from "../inventory/bins/ViewAllBinsPage";
 
 import ViewAllReceiptsPage from "../inventory/receipts/ViewAllReceiptsPage";
 import CreateReceiptPage from "../inventory/receipts/CreateReceiptPage";
+import CreatePOReceiptPage from "../inventory/receipts/CreatePOReceiptPage";
 
 import ViewAllItemInventoriesPage from "../inventory/transactions/ViewAllItemInventoriesPage";
 import SearchItemInventoryPage from "../inventory/transactions/SearchItemInventoryPage";
@@ -88,7 +89,9 @@ import UOMConversionPage from "../inventory/handling/UOMConversionPage";
 import MoveInventoryPage from "../inventory/handling/MoveInventoryPage";
 import ItemUOMConsolidationPage from "../inventory/handling/ItemUOMConsolidationPage";
 
-
+import ViewAllPurchaseOrdersPage from "../purchase/purchaseorders/ViewAllPurchaseOrdersPage";
+import PurchaseOrdersSearchPage from "../purchase/purchaseorders/PurchaseOrdersSearchPage";
+import CreatePOPage from "../purchase/purchaseorders/CreatePOPage"; 
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
@@ -333,7 +336,7 @@ function AuthenticationPage() {
             <Route path="/get-bins" element={<ViewAllBinsPage />} />
 
             <Route path="/get-receipts" element={<ViewAllReceiptsPage />} />
-            <Route path="/create-receipt" element={<CreateReceiptPage />} />
+            <Route path="/misllenious-receipt" element={<CreateReceiptPage />} />
 
 
             <Route path="/get-item-transactions" element={<ViewAllItemInventoriesPage />} />
@@ -351,6 +354,20 @@ function AuthenticationPage() {
             
             <Route path="/item-transaction-consolidation" element={<ItemUOMConsolidationPage />} />
         
+        
+            <Route
+              path="/purchase-order-results/:searchInput"
+              element={<ViewAllPurchaseOrdersPage />}
+            />
+            <Route path="/purchase-order-results" element={<ViewAllPurchaseOrdersPage />} />
+            <Route
+              path="/get-purchase-orders" 
+              element={<PurchaseOrdersSearchPage />}
+            />
+
+          <Route path="/purchase-order-receipt" element={<CreatePOReceiptPage />} />
+
+          <Route path="/create-purchase-order" element={<CreatePOPage />} />
 
           </Routes>
         </PermissionsContext.Provider>

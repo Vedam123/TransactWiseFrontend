@@ -4,20 +4,20 @@ import useButtonBehavior from "../../../utilities/button/useButtonBehavior";
 import behaviorOptions from "../../../utilities/button/behaviorOptions";
 import ButtonComponent from "../../../utilities/ButtonComponent";
 import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
-import { BACKEND_PRODUCT_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants
+import { BACKEND_PURCHASE_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants
 import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
-export default function ReceiptsMenu() {
+export default function PurchaseOrdersMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
-  const ProductPermissions = ModulePermissions({ moduleName: BACKEND_PRODUCT_MODULE_NAME });
+  const ProductPermissions = ModulePermissions({ moduleName: BACKEND_PURCHASE_MODULE_NAME });
   const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } = ProductPermissions;
 
   const menuItems = [
-    { path: "/misllenious-receipt", text: "Misllenious Receipt", canRender: canCreateModule },
-    { path: "/purchase-order-receipt", text: "Purchase Order Receipt", canRender: canDeleteModule },
-    { path: "/update-receipts", text: "Update receipts", canRender: canUpdateModule },
-    { path: "/get-Receipts", text: "Get Receipts", canRender: canViewModule },
+    { path: "/create-purchase-order", text: "Create PO", canRender: canCreateModule },
+    { path: "/delete-purchase-order", text: "Delete PO", canRender: canDeleteModule },
+    { path: "/update-purchase-order", text: "Modify PO", canRender: canUpdateModule },
+    { path: "/get-purchase-orders", text: "View POs", canRender: canViewModule },
   ];
 
   const handleMenuItemClick = (path) => {
@@ -33,7 +33,7 @@ export default function ReceiptsMenu() {
   };
 
   // Log the component rendering with timestamp
-  logger.info(`[${new Date().toLocaleTimeString()}] Receipts component is rendering.`);
+  logger.info(`[${new Date().toLocaleTimeString()}] POs component is rendering.`);
 
   return (
       <div className="menu-list">
@@ -45,7 +45,6 @@ export default function ReceiptsMenu() {
               buttonText={item.text}
               onClick={() => {
                 handleMenuItemClick(item.path);
-                // Log the button click action with timestamp
                 logger.info(`[${new Date().toLocaleTimeString()}] Clicked button: ${item.text}`);
               }}
             />

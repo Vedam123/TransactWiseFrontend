@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { API_URL, BACKEND_COMMON_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS } from "../../../admin/setups/ConstDecl";
+import {
+  API_URL,
+  BACKEND_COMMON_MODULE_NAME,
+  MODULE_LEVEL_CREATE_ACCESS,
+} from "../../../admin/setups/ConstDecl";
+import { BUSINESS_PARTNERT_STATUS } from "../../setups/config";
 import axios from "axios";
 import "../../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
@@ -28,7 +33,7 @@ export default function CreatePartnerForm() {
   });
 
   const [currencyOptions, setCurrencyOptions] = useState([]);
-  const statusOptions = ["Active", "Inactive", "Dormant"];
+  const statusOptions = BUSINESS_PARTNERT_STATUS.map((status) => status.name);
 
   const hasRequiredAccess = CheckModuleAccess(
     BACKEND_COMMON_MODULE_NAME,
@@ -49,15 +54,20 @@ export default function CreatePartnerForm() {
           headers: generateHeaders(),
         });
         const currencies = response.data.currencies;
-        console.log(currencies)
+        console.log(currencies);
         const currencyCodes = currencies.map(
           (currency) => currency.currencycode
         );
-        console.log('Mapped',currencyCodes)
+        console.log("Mapped", currencyCodes);
         setCurrencyOptions(currencies);
-        logger.info(`[${new Date().toLocaleTimeString()}] Currency data fetched successfully`); // Log when currency data is fetched successfully
+        logger.info(
+          `[${new Date().toLocaleTimeString()}] Currency data fetched successfully`
+        ); // Log when currency data is fetched successfully
       } catch (error) {
-        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching currencies`, error); // Log error when fetching currencies fails
+        logger.error(
+          `[${new Date().toLocaleTimeString()}] Error fetching currencies`,
+          error
+        ); // Log error when fetching currencies fails
       }
     };
 
@@ -69,8 +79,8 @@ export default function CreatePartnerForm() {
     const userid = localStorage.getItem("userid");
 
     return {
-      'Authorization': `Bearer ${token}`,
-      'UserId': userid,
+      Authorization: `Bearer ${token}`,
+      UserId: userid,
       // Add other headers if needed
     };
   };
@@ -113,7 +123,10 @@ export default function CreatePartnerForm() {
         }
       );
 
-      logger.info(`[${new Date().toLocaleTimeString()}] Partner data created successfully`, response.data); // Log when partner data is created successfully
+      logger.info(
+        `[${new Date().toLocaleTimeString()}] Partner data created successfully`,
+        response.data
+      ); // Log when partner data is created successfully
       setFormData({
         partnertype: "",
         partnername: "",
@@ -133,7 +146,10 @@ export default function CreatePartnerForm() {
         partnerimage: null,
       });
     } catch (error) {
-      logger.error(`[${new Date().toLocaleTimeString()}] Error creating partner data`, error); // Log error when creating partner data fails
+      logger.error(
+        `[${new Date().toLocaleTimeString()}] Error creating partner data`,
+        error
+      ); // Log error when creating partner data fails
     }
   };
 
@@ -141,92 +157,93 @@ export default function CreatePartnerForm() {
     <div className="child-container menu-container">
       <h2 className="title">Create Partner</h2>
       <div className="child-container form-container">
-      {hasRequiredAccess ? (
-        <form onSubmit={handleSubmit}>
-          {/* Partner Type */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="partnertype">Partner Type:</label>
+        {hasRequiredAccess ? (
+          <form onSubmit={handleSubmit}>
+            {/* Partner Type */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="partnertype">Partner Type:</label>
+                </div>
+                <select
+                  id="partnertype"
+                  name="partnertype"
+                  value={formData.partnertype}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select Partner Type</option>
+                  <option value="Supplier">Supplier</option>
+                  <option value="Customer">Customer</option>
+                  <option value="Both">Both</option>
+                  <option value="Internal">Internal</option>
+                  <option value="All">All</option>
+                </select>
               </div>
-              <select
-                id="partnertype"
-                name="partnertype"
-                value={formData.partnertype}
-                onChange={handleChange}
-                className="form-control input-field"
-              >
-                <option value="">Select Partner Type</option>
-                <option value="Supplier">Supplier</option>
-                <option value="Customer">Customer</option>
-                <option value="Both">Both</option>
-                <option value="Internal">Internal</option>
-                <option value="All">All</option>
-              </select>
             </div>
-          </div>
-          {/* Partner Name */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="partnername">Partner Name:</label>
+            {/* Partner Name */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="partnername">Partner Name:</label>
+                </div>
+                <input
+                  type="text"
+                  id="partnername"
+                  name="partnername"
+                  value={formData.partnername}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                />
               </div>
-              <input
-                type="text"
-                id="partnername"
-                name="partnername"
-                value={formData.partnername}
-                onChange={handleChange}
-                className="form-control input-field"
-              />
             </div>
-          </div>
-          {/* Currency Code (LOV) */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="currency_id">Currency Code:</label>
+            {/* Currency Code (LOV) */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="currency_id">Currency Code:</label>
+                </div>
+                <select
+                  id="currency_id"
+                  name="currency_id"
+                  value={formData.currency_id}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select Currency Code</option>
+                  {currencyOptions.map((curr) => (
+                    <option key={curr.currency_id} value={curr.currency_id}>
+                      {curr.currencycode} ({curr.currencysymbol})
+                    </option>
+                  ))}
+                </select>
               </div>
-              <select
-                id="currency_id"
-                name="currency_id"
-                value={formData.currency_id}
-                onChange={handleChange}
-                className="form-control input-field"
-              >
-                <option value="">Select Currency Code</option>
-                {currencyOptions.map((curr) => (
-                  <option key={curr.currency_id} value={curr.currency_id}>
-                    {curr.currencycode} ({curr.currencysymbol})
-                  </option>
-                ))}
-              </select>
             </div>
-          </div>
-          {/* Status */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="status">Status:</label>
+            {/* Status */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="status">Status:</label>
+                </div>
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select Status</option>
+                  {statusOptions.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="form-control input-field"
-              >
-                <option value="">Select Status</option>
-                {statusOptions.map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
             </div>
-          </div>
-          {/* Address */}
-          <div className="address-fieldset">
+
+            {/* Address */}
+            <div className="address-fieldset">
               <legend>Address</legend>
               <div className="address-fields">
                 <div className="form-row">
@@ -303,9 +320,9 @@ export default function CreatePartnerForm() {
                   />
                 </div>
               </div>
-          </div>
+            </div>
 
-          <div className="contact-fieldset">
+            <div className="contact-fieldset">
               <legend>Contact Information</legend>
               {/* Contact Person */}
               <div className="form-group col-md-6 mb-2">
@@ -357,93 +374,97 @@ export default function CreatePartnerForm() {
                   />
                 </div>
               </div>
-          </div>
+            </div>
 
-          {/* Add more input fields for other partner attributes */}
-          {/* Example: Partner Name, Contact Person, Email, Phone, etc. */}
-          {/* Tax ID */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="taxid">Tax ID:</label>
-              </div>
-              <input
-                type="text"
-                id="taxid"
-                name="taxid"
-                value={formData.taxid}
-                onChange={handleChange}
-                className="form-control input-field"
-              />
-            </div>
-          </div>
-          {/* Registration Number */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="registrationnumber">Registration Number:</label>
-              </div>
-              <input
-                type="text"
-                id="registrationnumber"
-                name="registrationnumber"
-                value={formData.registrationnumber}
-                onChange={handleChange}
-                className="form-control input-field"
-              />
-            </div>
-          </div>
-          {/* Additional Information */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="additionalinfo">Additional Information:</label>
-              </div>
-              <textarea
-                id="additionalinfo"
-                name="additionalinfo"
-                value={formData.additionalinfo}
-                onChange={handleChange}
-                className="form-control input-field"
-              />
-            </div>
-          </div>
-          {/* Partner Image */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="partnerimage">Partner Image:</label>
-              </div>
-              <div className="custom-file">
+            {/* Add more input fields for other partner attributes */}
+            {/* Example: Partner Name, Contact Person, Email, Phone, etc. */}
+            {/* Tax ID */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="taxid">Tax ID:</label>
+                </div>
                 <input
-                  type="file"
-                  id="partnerimage"
-                  name="partnerimage"
+                  type="text"
+                  id="taxid"
+                  name="taxid"
+                  value={formData.taxid}
                   onChange={handleChange}
-                  className="custom-file-input"
+                  className="form-control input-field"
                 />
-                {formData.partnerimage && (
-                  <img
-                    src={URL.createObjectURL(formData.partnerimage)}
-                    alt="Selected Partner"
-                    className="selected-image"
-                  />
-                )}
               </div>
             </div>
-          </div>
-          {/* Submit button */}
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <button type="submit" className="btn btn-primary">
-                Create Partner
-              </button>
+            {/* Registration Number */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="registrationnumber">
+                    Registration Number:
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  id="registrationnumber"
+                  name="registrationnumber"
+                  value={formData.registrationnumber}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                />
+              </div>
             </div>
-          </div>
-        </form>
-      ) : (
-        <div>You do not have permission to view this module</div>
-      )}
+            {/* Additional Information */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="additionalinfo">
+                    Additional Information:
+                  </label>
+                </div>
+                <textarea
+                  id="additionalinfo"
+                  name="additionalinfo"
+                  value={formData.additionalinfo}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                />
+              </div>
+            </div>
+            {/* Partner Image */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="partnerimage">Partner Image:</label>
+                </div>
+                <div className="custom-file">
+                  <input
+                    type="file"
+                    id="partnerimage"
+                    name="partnerimage"
+                    onChange={handleChange}
+                    className="custom-file-input"
+                  />
+                  {formData.partnerimage && (
+                    <img
+                      src={URL.createObjectURL(formData.partnerimage)}
+                      alt="Selected Partner"
+                      className="selected-image"
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+            {/* Submit button */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <button type="submit" className="btn btn-primary">
+                  Create Partner
+                </button>
+              </div>
+            </div>
+          </form>
+        ) : (
+          <div>You do not have permission to view this module</div>
+        )}
       </div>
     </div>
   );

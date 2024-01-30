@@ -177,6 +177,7 @@ export default function UpdateInspectionForm() {
             (inspection) => inspection.transaction_number
           );
         logger.info("Updated Transaction Numbers:", updatedTransactionNumbers);
+        console.log("Updated Transaction Numbers:", updatedTransactionNumbers);
 
         setTransactionNumbers(updatedTransactionNumbers);
       } catch (error) {
@@ -245,7 +246,7 @@ export default function UpdateInspectionForm() {
         inspection_id: selectedInspection.inspection_id,
         item_id: selectedInspection.item_id,
         transaction_type: formData.transaction_type,
-        transaction_number: formData.transaction_number,
+        transaction_number: parseInt(formData.transaction_number),
         inspection_location_id: selectedInspection.inspection_location_id,
         inspection_name: formData.inspection_name,
         accepted_quantity: isNaN(acceptedQuantity) ? 0 : acceptedQuantity,
@@ -255,11 +256,13 @@ export default function UpdateInspectionForm() {
         accepted_qty_details: formData.accepted_qty_details,
         rejected_qty_details: formData.rejected_qty_details,
         comments: formData.comments,
+        transaction_header_number: parseInt(selectedInspection.transaction_header_number),
         // updated_by: 1201
       };
 
       // Log update request
       logger.info("Update Request:", updateRequest);
+      console.log("Update Request:", updateRequest);
 
       // Call the PUT API to update inspection
       const response = await axios.put(
@@ -304,7 +307,7 @@ export default function UpdateInspectionForm() {
   };
   return (
     <div className="child-container menu-container">
-      <h2 className="title">Update Inspection</h2>
+      <h2 className="title">Perform Inspection</h2>
       <div className="child-container form-container">
         <form onSubmit={handleSubmit}>
           {/* Transaction Type field */}

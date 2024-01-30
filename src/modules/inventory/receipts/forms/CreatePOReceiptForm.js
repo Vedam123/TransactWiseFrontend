@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../../admin/setups/ConstDecl";
-import { RECEIPT_STATUS, MISLLENIOUS_RECEIPT } from "../../config/config";
+import { RECEIPT_STATUS, PO_RECEIPT } from "../../config/config";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 import {
   BACKEND_INVENTORY_MODULE_NAME,
@@ -9,7 +9,17 @@ import {
 } from "../../../admin/setups/ConstDecl";
 import logger from "../../../utilities/Logs/logger";
 
-export default function CreateReceiptForm() {
+const generateHeaders = () => {
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userid");
+
+  return {
+    Authorization: `Bearer ${token}`,
+    UserId: userId,
+  };
+};
+
+export default function CreatePOReceiptForm() {
   const [formData, setFormData] = useState({
     receiving_location_id: "",
     quantity: 0,
@@ -23,42 +33,44 @@ export default function CreateReceiptForm() {
     type_short: "",
   });
 
-  const [items, setItems] = useState([]);
-  const [uoms, setUoms] = useState([]);
+  const resetFormWhenPOChanges = () => {
+    setFormData({
+      receiving_location_id: "",
+      quantity: 0,
+      uom_id: "",
+      comments: "",
+      item_id: "",
+      inspect: false,
+      status: "",
+      inspection_location_id: null,
+      type_short: "",
+    });
+  };
+
   const [locations, setLocations] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [purchaseOrderHeaders, setPurchaseOrderHeaders] = useState([]);
+  const [purchaseOrderLines, setPurchaseOrderLines] = useState([]);
+  const [selectedSingleRow, setSelectedSingleRow] = useState("");
+  const [itemId, setSelectedItemId] = useState("");
+  const [lineId, setSelectedLineId] = useState("");
+  // eslint-disable-next-line 
+  const [transaction_num, setSelectTransactionNumber] = useState("");  
+
   const hasRequiredAccess = CheckModuleAccess(
     BACKEND_INVENTORY_MODULE_NAME,
     MODULE_LEVEL_CREATE_ACCESS
   );
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        // Fetch items
-        const itemsResponse = await axios.get(`${API_URL}/list_items`, {
-          headers: generateHeaders(),
-        });
-        setItems(itemsResponse.data.items);
-
-        // Fetch UOMs
-        const uomsResponse = await axios.get(`${API_URL}/list_uoms`, {
-          headers: generateHeaders(),
-        });
-        setUoms(uomsResponse.data.uom);
-
-        // Fetch locations
-        const locationsResponse = await axios.get(`${API_URL}/get_locations`, {
-          headers: generateHeaders(),
-        });
-        setLocations(locationsResponse.data.location_list);
-      } catch (error) {
-        logger.error(`Error fetching data:`, error);
-      }
-    }
-
+    fetchPurchaseOrderHeaders();
     fetchData();
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      transaction_number: generateUniqueNumber(), // Set transaction_number using the generated unique number
+    }));
+    // eslint-disable-next-line
   }, []);
 
   const generateUniqueNumber = () => {
@@ -66,46 +78,58 @@ export default function CreateReceiptForm() {
     return timestamp.substring(timestamp.length - 5);
   };
 
-  useEffect(() => {
-    // Generate a unique 5-digit number using timestamp for transaction_number
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      transaction_number: generateUniqueNumber(), // Set transaction_number using the generated unique number
-    }));
-  }, []); // Run once on component mount
+  async function fetchData() {
+    try {
+      const locationsResponse = await axios.get(`${API_URL}/get_locations`, {
+        headers: generateHeaders(),
+      });
+      setLocations(locationsResponse.data.location_list);
+      logger.debug(
+        `[${new Date().toLocaleTimeString()}] Fetched locations:`,
+        locationsResponse.data
+      );
+    } catch (error) {
+      logger.error(
+        `[${new Date().toLocaleTimeString()}] Error fetching locations:`,
+        error
+      );
+    }
+  }
 
-  const generateHeaders = () => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userid");
+  async function fetchPurchaseOrderHeaders() {
+    try {
+      const response = await axios.get(
+        `${API_URL}/get_purchase_order_headers?status=${PO_RECEIPT.status}`,
+        {
+          headers: generateHeaders(),
+        }
+      );
+      setPurchaseOrderHeaders(response.data);
+      logger.debug(
+        `[${new Date().toLocaleTimeString()}] Fetched purchase order headers:`,
+        response.data
+      );
+    } catch (error) {
+      logger.error(
+        `[${new Date().toLocaleTimeString()}] Error fetching purchase order headers:`,
+        error
+      );
+    }
+  }
 
-    return {
-      Authorization: `Bearer ${token}`,
-      UserId: userId,
-    };
-  };
-
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value, type, checked } = e.target;
-
+    
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    const selectedStatus = RECEIPT_STATUS.find(
-      (status) => status.name === value
-    );
-    if (selectedStatus) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        inspect: selectedStatus.toinspect || false,
-      }));
-    }
-
     if (name === "status" && value === "To Inspect") {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
+        inspect : true,
         receiving_location_id: "", // Clear receiving_location_id
       }));
     } else {
@@ -114,13 +138,116 @@ export default function CreateReceiptForm() {
         [name]: value,
       }));
     }
+
+    if (name === "transaction_number") {
+      resetFormWhenPOChanges();
+      setPurchaseOrderLines([]);
+      setSelectedLineId("");
+      setSelectedSingleRow("");
+      setSelectTransactionNumber(value);
+      //logger.debu("purchaseOrderHeaders selected",purchaseOrderHeaders)
+      try {
+        const response = await axios.get(
+          `${API_URL}/get_purchase_order_lines?header_id=${value}&status=${PO_RECEIPT.status}`,
+          {
+            headers: generateHeaders(),
+          }
+        );
+        setPurchaseOrderLines(response.data);
+        logger.debug(
+          `[${new Date().toLocaleTimeString()}] Fetched purchase order lines for transaction number:`,
+          response.data
+        );
+      } catch (error) {
+        logger.error(
+          `[${new Date().toLocaleTimeString()}] Error fetching purchase order lines:`,
+          error
+        );
+      }
+    }
+
+    if (name === "item_id") {
+      setSelectedLineId(value);
+      try {
+        const selectedItem = purchaseOrderLines.find(
+          (line) => line.line_id.toString() === value.toString()
+        );
+        logger.debug(
+          `[${new Date().toLocaleTimeString()}] Purchase order lines situation after item id selection:`,
+          purchaseOrderLines
+        );
+        logger.debug(
+          `[${new Date().toLocaleTimeString()}] Selected item value of item_id:`,
+          value
+        );
+        logger.debug(
+          `[${new Date().toLocaleTimeString()}] Selected item:`,
+          selectedItem
+        );
+        setSelectedSingleRow(selectedItem); // Update selectedSingleRow here
+        if (selectedItem != null) {
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            quantity: selectedItem.quantity, // Set quantity
+            uom_id: selectedItem.uom_id, // Set uom_id
+            abbreviation: selectedItem.abbreviation,
+            uom_name: selectedItem.uom_name,
+          }));
+          setSelectedItemId(selectedItem.item_id);
+        } else {
+          logger.info(
+            `[${new Date().toLocaleTimeString()}] Selected item not found in purchase order lines`
+          );
+        }
+      } catch (error) {
+        logger.error(
+          `[${new Date().toLocaleTimeString()}] Error updating quantity based on item_id:`,
+          error
+        );
+      }
+
+      const selectedStatus = RECEIPT_STATUS.find(
+        (status) => status.name === value
+      );
+      if (selectedStatus) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          inspect: selectedStatus.toinspect || false,
+        }));
+      }
+      if (name === "status" && value === "To Inspect") {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: value,
+          inspect: true, // Set inspect to true when status is 'To Inspect'
+          receiving_location_id: "", // Clear receiving_location_id
+        }));
+      } else {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: value,
+        }));
+      }
+      
+      if (name === "inspection_location_id") {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: value,
+          receiving_location_id: value,
+        }));
+      }
+
+    }
+
+  
+
     if (name === "inspection_location_id") {
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
-        receiving_location_id: value,
+        receiving_location_id:value
       }));
-    }
+    } 
   };
 
   const handleCheckboxChange = (e) => {
@@ -134,38 +261,27 @@ export default function CreateReceiptForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !formData.transaction_number ||
-      parseInt(formData.transaction_number) === 0
-    ) {
-      setErrorMessage(" KEERTHANA Transaction number cannot be empty or 0.");
+    if (!transaction_num ) {
+      setErrorMessage("Transaction number cannot be empty or 0.");
+      setSuccessMessage("");
+      return;
+    }
+     // Validate if Inspect is required but not selected or inspection_location_id is not selected
+     if (formData.status === 'To Inspect' && (!formData.inspect || !formData.inspection_location_id)) {
+      setErrorMessage("Please select inspection location and check Inspect checkbox.");
       setSuccessMessage("");
       return;
     }
 
-    // Validate if Inspect is required but not selected or inspection_location_id is not selected
-    if (
-      formData.status === "To Inspect" &&
-      (!formData.inspect || !formData.inspection_location_id)
-    ) {
-      setErrorMessage(
-        "Please select inspection location and check Inspect checkbox."
-      );
-      setSuccessMessage("");
-      return;
-    }
-    
     try {
-      const transaction_header_number = parseInt(formData.transaction_number);
-      const transaction_number = parseInt(formData.transaction_number);
-      const formDataToSend = {
-        ...formData,
-        transaction_number,
-        transaction_header_number,
-      };
-      formDataToSend.type_short = MISLLENIOUS_RECEIPT.short;
-      formDataToSend.receipt_name = MISLLENIOUS_RECEIPT.name; // Set receipt_name based on MISLLENIOUS_RECEIPT
-
+      const po_line_id =  parseInt(lineId, 10)
+      const transaction_header_number = parseInt(purchaseOrderHeaders.find(header => header.header_id === parseInt(transaction_num, 10))?.po_num, 10);
+      const transaction_number = po_line_id
+      const formDataToSend = { ...formData, po_line_id,transaction_number,transaction_header_number};
+      formDataToSend.type_short = PO_RECEIPT.short;
+      formDataToSend.receipt_name = PO_RECEIPT.name;
+      formDataToSend.item_id = itemId; // Set item_id to the selected itemId
+      logger.debug("Form Data to be Sent",formDataToSend);
       const response = await axios.post(
         `${API_URL}/create_receipt`,
         formDataToSend,
@@ -173,54 +289,67 @@ export default function CreateReceiptForm() {
           headers: generateHeaders(),
         }
       );
-
       setSuccessMessage("Receipt created successfully!");
       setErrorMessage("");
-      logger.debug("Response data ",response.data);
       resetForm();
+      logger.debug(
+        `[${new Date().toLocaleTimeString()}] Receipt created successfully:`,
+        response.data
+      );
     } catch (error) {
-      console.error("Error creating receipt:", error);
+      logger.error(
+        `[${new Date().toLocaleTimeString()}] Error creating receipt:`,
+        error
+      );
       setErrorMessage(`Error creating receipt: ${error.message}`);
       setSuccessMessage("");
     }
   };
 
+  const resetAllStates = () => {
+    setLocations([]);
+    setSuccessMessage("");
+    setErrorMessage("");
+    setPurchaseOrderHeaders([]);
+    setPurchaseOrderLines([]);
+    setSelectedSingleRow("");
+    setSelectedItemId("");
+    setSelectedLineId("");
+    setSelectTransactionNumber("");
+  };
+
   const resetForm = () => {
-    setFormData({
-      receiving_location_id: "",
-      quantity: 0,
-      uom_id: "",
-      comments: "",
-      item_id: "",
-      inspect: false,
-      transaction_number: "",
-      status: "",
-      inspection_location_id: null,
-      type_short: "",
-    });
+    resetFormWhenPOChanges();
+    resetAllStates();
   };
 
   return (
     <div className="child-container menu-container">
-      <h2 className="title">Misllenious Receipt</h2>
+      <h2 className="title">Purchase Order Receipt</h2>
       <div className="child-container form-container">
         {hasRequiredAccess ? (
           <form onSubmit={handleSubmit}>
             {/* Transaction Number field (Display Only) */}
+            {/* Transaction Number field (Display Only) */}
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
                 <div className="label-container">
-                  <label
-                    htmlFor="transaction_number"
-                    style={{ fontWeight: "bold" }}
-                  >
-                    Receipt Number:{" "}
-                    <span style={{ color: "blue" }}>
-                      {formData.transaction_number}
-                    </span>
-                  </label>
+                  <label htmlFor="transaction_number">PO Number:</label>
                 </div>
-                {/* Rest of your code */}
+                <select
+                  id="transaction_number"
+                  name="transaction_number"
+                  value={formData.transaction_number}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select PO Number</option>
+                  {purchaseOrderHeaders.map((header) => (
+                    <option key={header.header_id} value={header.header_id}>
+                      {header.po_num}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -238,9 +367,9 @@ export default function CreateReceiptForm() {
                   className="form-control input-field"
                 >
                   <option value="">Select Item</option>
-                  {items.map((item) => (
-                    <option key={item.item_id} value={item.item_id}>
-                      {item.item_code} ({item.item_name})
+                  {purchaseOrderLines.map((line) => (
+                    <option key={line.line_id} value={line.line_id}>
+                      {line.item_code} ({line.item_name})
                     </option>
                   ))}
                 </select>
@@ -258,12 +387,11 @@ export default function CreateReceiptForm() {
                   id="quantity"
                   name="quantity"
                   value={formData.quantity}
-                  onChange={handleChange}
+                  readOnly // Make the quantity field read-only
                   className="form-control input-field"
                 />
               </div>
             </div>
-
             {/* UOM field */}
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
@@ -273,19 +401,20 @@ export default function CreateReceiptForm() {
                 <select
                   id="uom_id"
                   name="uom_id"
-                  value={formData.uom_id}
+                  value={formData.uom_id || ""}
                   onChange={handleChange}
                   className="form-control input-field"
                 >
-                  <option value="">Select UOM</option>
-                  {uoms.map((uom) => (
-                    <option key={uom.uom_id} value={uom.uom_id}>
-                      {uom.abbreviation} ({uom.uom_name})
+                  <option value="">Select Unit of Measure</option>
+                  {selectedSingleRow && (
+                    <option value={selectedSingleRow.uom_id}>
+                      {`${selectedSingleRow.abbreviation} (${selectedSingleRow.uom_name})`}
                     </option>
-                  ))}
+                  )}
                 </select>
               </div>
             </div>
+
             {/* Status field */}
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
@@ -308,9 +437,9 @@ export default function CreateReceiptForm() {
                 </select>
               </div>
             </div>
-
-             {/* Comments field */}
-             <div className="form-group col-md-6 mb-2">
+           
+            {/* Comments field */}
+            <div className="form-group col-md-6 mb-2">
               <div className="form-row">
                 <div className="label-container">
                   <label htmlFor="comments">Batch & SNo range:</label>
@@ -325,7 +454,8 @@ export default function CreateReceiptForm() {
                 />
               </div>
             </div>
-            {/* Receiving Location field */}
+
+             {/* Receiving Location field */}
               <div className="form-group col-md-6 mb-2">
                 <div className="form-row">
                   <div className="label-container">
@@ -352,7 +482,6 @@ export default function CreateReceiptForm() {
                   </select>
                 </div>
               </div>
-
             {/* Inspect field */}
             {formData.status === "To Inspect" && (
               <div className="form-group col-md-6 mb-2">
@@ -371,8 +500,7 @@ export default function CreateReceiptForm() {
                 </div>
               </div>
             )}
-
-            {formData.inspect && (
+             {formData.status === "To Inspect" && (
               <div className="form-group col-md-6 mb-2">
                 <div className="form-row">
                   <div className="label-container">

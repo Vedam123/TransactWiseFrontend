@@ -509,3 +509,52 @@
 .date-input {
   width: 200% !important;
 }
+
+.po-line-modal-content {
+  width: 1800px; /* Adjust width as needed */
+  max-width: 90%; /* Ensure modal is responsive */
+  size:"xl";
+}
+
+.po-line-button-container {
+  display: inline-flex;
+  gap: 8px; /* Adjust the gap between buttons as needed */
+}
+
+/* Modal title */
+.po-line-modal-title-custom {
+  background-color: rgba(153, 48, 223, 0.865);
+}
+
+
+
+/* Table rows */
+.po-line-table-row-custom:nth-child(even) {
+  background-color: lightorange;
+}
+
+.po-line-table-row-custom-even {
+  color: rgb(240, 169, 169);
+}
+
+.po-line-table-row-custom-odd {
+  background-color: white; /* or any other color for odd rows */
+}
+
+.po-line-table-container {
+  max-width: 100%;
+  overflow-x: auto;
+  font-size: 12px; /* Adjust the font size as needed */
+  text-align: center;
+}
+
+.po-line-table {
+  width: 100%; /* Ensure the table takes full width of its container */
+}
+
+/* Table header */
+.po-line-table-header-custom th {
+  background-color: gray;
+  color: white;
+  font-size: 14px; /* Adjust the font size as needed */
+}

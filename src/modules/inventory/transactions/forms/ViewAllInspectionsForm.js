@@ -60,6 +60,8 @@ function ViewAllInspections() {
               <tr>
                 <th>Inspection ID</th>
                 <th>Inspection Name</th>
+                <th>Transaction Number</th>
+                <th>Transaction header</th>                              
                 <th>Item Code</th>
                 <th>Item Name</th>
                 <th>uom</th>  
@@ -76,6 +78,8 @@ function ViewAllInspections() {
                 <tr key={inspection.inspection_id}>
                   <td>{inspection.inspection_id}</td>
                   <td>{inspection.inspection_name}</td>
+                  <td>{inspection.transaction_number}</td>
+                  <td>{inspection.transaction_header_number}</td>                  
                   <td>{inspection.item_code}</td>
                   <td>{inspection.item_name}</td>
                   <td>{inspection.uom_name}</td>
