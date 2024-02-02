@@ -28,7 +28,7 @@ export const RECEIPT_STATUS = [
   { name: "Inspected", short_name: "INS", sequence: 40,  toputaway: true},
  // { name: "Pending", short_name: "PEN", sequence: 50 , toputaway: true},
    { name: "Put Away", short_name: "PA", sequence: 60, putaway:true },
-  { name: "Closed", short_name: "DN", sequence: 70 }
+ // { name: "Closed", short_name: "DN", sequence: 70 }
 ];
 
 export const INSPECTION_STATUS = [
@@ -37,8 +37,8 @@ export const INSPECTION_STATUS = [
   //{ name: "In Progress", short_name: "IP", sequence: 30, toinspect: true },
   { name: "Inspected", short_name: "INS", sequence: 40,  toputaway: true},
  // { name: "Put Away", short_name: "PA", sequence: 50, putaway:true},
-  { name: "Inspecting", short_name: "PEN", sequence: 60,toputaway: true },
-  { name: "Closed", short_name: "DN", sequence: 70  }
+  { name: "Inspecting", short_name: "PEN", sequence: 60,toinspect: true },
+  //{ name: "Closed", short_name: "DN", sequence: 70  }
 ];
 
 export const PUT_AWAY_TRANSACTIONS_TYPES = [

@@ -1,5 +1,6 @@
 import React from "react";
 import AccountsPage from "./accounts/AccountsPage";
+import JournalPage from "./journal/JournalPage";
 import "../utilities/css/appcss.css";
 import RotatingImage from "../utilities/RotatingImage";
 import BottomContainer from "../utilities/BottomContainer";
@@ -11,7 +12,7 @@ export default function FinancePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Finance component is rendering.`);
 
   // Define the list of components to render
-  const componentsToRender = [AccountsPage];
+  const componentsToRender = [AccountsPage,JournalPage];
 
   const componentsToRender2 = [FinancePage];
 

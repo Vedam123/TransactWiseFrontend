@@ -18,3 +18,29 @@ export const ACCOUNT_TYPES = [
     "Groceries Expense",
     "Purchase"
   ];
+
+  export const JOURNAL_TYPES = [
+    { name: "General Journal", code: "GEN", description: "Various transactions", sequence: 10 },
+    { name: "Sales Journal", code: "SAL", description: "Sales transactions", sequence: 20 },
+    { name: "Purchase Journal", code: "PUR", description: "Purchases of inventory or supplies", sequence: 30 },
+    { name: "Cash Receipts Journal", code: "CASH-R", description: "Cash received", sequence: 40 },
+    { name: "Cash Disbursements Journal", code: "CASH-D", description: "Cash payments", sequence: 50 },
+    { name: "Payroll Journal", code: "PAY", description: "Payroll transactions", sequence: 60 },
+    { name: "Adjusting Journal", code: "ADJ", description: "Adjusting entries", sequence: 70 },
+    { name: "Closing Journal", code: "CLOS", description: "Closing entries", sequence: 80 }
+  ];
+
+
+  export const JOURNAL_STATUS = [
+    { name: "New", code: "NEW", description: "Created but not processed.", sequence: 10 },
+    { name: "In Progress", code: "IP", description: "Under review/edit.", sequence: 20 },
+    { name: "Approved", code: "APPROVED", description: "Reviewed and approved.", sequence: 30 },
+    { name: "Posted", code: "POSTED", description: "Posted to ledger.", sequence: 40 },
+    { name: "Rejected", code: "REJECTED", description: "Rejected and not posted.", sequence: 50 },
+    { name: "Pending", code: "PENDING", description: "Awaiting action/approval.", sequence: 60 },
+    { name: "Completed", code: "COMPLETED", description: "Processing complete.", sequence: 70 },
+    { name: "Cancelled", code: "CANCELLED", description: "Cancelled and not processed.", sequence: 80 },
+    { name: "Error", code: "ERROR", description: "Processing error.", sequence: 90 }
+];
+
+  

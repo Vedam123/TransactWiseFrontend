@@ -93,6 +93,8 @@ import ViewAllPurchaseOrdersPage from "../purchase/purchaseorders/ViewAllPurchas
 import PurchaseOrdersSearchPage from "../purchase/purchaseorders/PurchaseOrdersSearchPage";
 import CreatePOPage from "../purchase/purchaseorders/CreatePOPage"; 
 
+import SearchJournalPage from "../finance/journal/SearchJournalPage";
+
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
 
@@ -354,7 +356,9 @@ function AuthenticationPage() {
             
             <Route path="/item-transaction-consolidation" element={<ItemUOMConsolidationPage />} />
         
-        
+            <Route path="/get-journals" element={<SearchJournalPage />} />
+
+            JournalResultsForm
             <Route
               path="/purchase-order-results/:searchInput"
               element={<ViewAllPurchaseOrdersPage />}
