@@ -541,6 +541,14 @@
   background-color: white; /* or any other color for odd rows */
 }
 
+.jo-line-table-row-custom-even {
+  color: rgb(240, 169, 169);
+}
+
+.jo-line-table-row-custom-odd {
+  background-color: white; /* or any other color for odd rows */
+}
+
 .po-line-table-container {
   max-width: 100%;
   overflow-x: auto;
@@ -557,4 +565,17 @@
   background-color: gray;
   color: white;
   font-size: 14px; /* Adjust the font size as needed */
+}
+
+.jo-line-table-header-custom th {
+  background-color: gray;
+  color: white;
+  font-size: 14px; /* Adjust the font size as needed */
+}
+
+.jo-line-table-container {
+  max-width: 100%;
+  overflow-x: auto;
+  font-size: 12px; /* Adjust the font size as needed */
+  text-align: center;
 }

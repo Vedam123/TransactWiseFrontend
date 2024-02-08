@@ -32,15 +32,17 @@ export const ACCOUNT_TYPES = [
 
 
   export const JOURNAL_STATUS = [
-    { name: "New", code: "NEW", description: "Created but not processed.", sequence: 10 },
-    { name: "In Progress", code: "IP", description: "Under review/edit.", sequence: 20 },
-    { name: "Approved", code: "APPROVED", description: "Reviewed and approved.", sequence: 30 },
-    { name: "Posted", code: "POSTED", description: "Posted to ledger.", sequence: 40 },
-    { name: "Rejected", code: "REJECTED", description: "Rejected and not posted.", sequence: 50 },
-    { name: "Pending", code: "PENDING", description: "Awaiting action/approval.", sequence: 60 },
-    { name: "Completed", code: "COMPLETED", description: "Processing complete.", sequence: 70 },
-    { name: "Cancelled", code: "CANCELLED", description: "Cancelled and not processed.", sequence: 80 },
-    { name: "Error", code: "ERROR", description: "Processing error.", sequence: 90 }
+    { name: "New", code: "NEW", description: "Created but not processed.", sequence: 10, display:true},
+    { name: "In Progress", code: "IP", description: "Under review/edit.", sequence: 20, display:false},
+    { name: "Approved", code: "APPROVED", description: "Reviewed and approved.", sequence: 30, display:true },
+    { name: "Posted", code: "POSTED", description: "Posted to ledger.", sequence: 40, display:false },
+    { name: "Rejected", code: "REJECTED", description: "Rejected and not posted.", sequence: 50 , display:true},
+    { name: "Pending", code: "PENDING", description: "Awaiting action/approval.", sequence: 60 , display:false},
+    { name: "Completed", code: "COMPLETED", description: "Processing complete.", sequence: 70, display:false },
+    { name: "Cancelled", code: "CANCELLED", description: "Cancelled and not processed.", sequence: 80 , display:true},
+    { name: "Error", code: "ERROR", description: "Processing error.", sequence: 90 , display:false}
 ];
+
+export const JO_SEQUENCE_PREFIX = 200
 
   

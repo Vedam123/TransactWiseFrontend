@@ -3,18 +3,18 @@ import RotatingImage from "../../utilities/RotatingImage";
 import BottomContainer from "../../utilities/BottomContainer";
 import DocumentationContainer from "../../utilities/DocumentationContainer";
 import logger from "../../utilities/Logs/logger"; // Import your logger module here
-import SearchJournalForm from "./forms/SearchJournalForm";
+import CreateJournalForm from "./forms/CreateJournalForm";
 //import JournalResultsForm from "./forms/JournalResultsForm";
 
-function SearchJournalPage() {
-  logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Journal Page`);
+function CreateJournalPage() {
+  logger.info(`[${new Date().toLocaleTimeString()}] Rendering Create Journal Page`);
 
-const componentsToRender = [SearchJournalForm];
-const componentsToRender2 = [SearchJournalPage];
+const componentsToRender = [CreateJournalForm];
+const componentsToRender2 = [CreateJournalPage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Journal Search Page</h1>
+      <h1 className="title">Create Journals</h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
@@ -28,4 +28,4 @@ const componentsToRender2 = [SearchJournalPage];
   );
 }
 
-export default SearchJournalPage;
+export default CreateJournalPage;

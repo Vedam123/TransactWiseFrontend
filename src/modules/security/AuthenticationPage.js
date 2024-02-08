@@ -91,12 +91,13 @@ import ItemUOMConsolidationPage from "../inventory/handling/ItemUOMConsolidation
 
 import ViewAllPurchaseOrdersPage from "../purchase/purchaseorders/ViewAllPurchaseOrdersPage";
 import PurchaseOrdersSearchPage from "../purchase/purchaseorders/PurchaseOrdersSearchPage";
-import CreatePOPage from "../purchase/purchaseorders/CreatePOPage"; 
+import CreatePOPage from "../purchase/purchaseorders/CreatePOPage";
+import CreateJournalPage from "../finance/journal/CreateJournalPage"
 
 import SearchJournalPage from "../finance/journal/SearchJournalPage";
+import JournalResultsForm from "../finance/journal/forms/JournalResultsForm";
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
-
 
 function AuthenticationPage() {
   const { token, removeToken, setToken } = useToken();
@@ -105,7 +106,7 @@ function AuthenticationPage() {
   const [name, setName] = useState("");
   const [emp_img, setImage] = useState("");
   const [refresh_token, setRefreshToken] = useState("");
-
+  //const [journalResults, setJournalResults] = useState([]); 
 
   const nameWithSpace = name + "\u00a0";
   const useridWithSpace = loggedInUserid + "\u00a0";
@@ -125,7 +126,9 @@ function AuthenticationPage() {
     setRefreshToken(refresh_token);
 
     // Log successful login
-    logger.info(`[${new Date().toLocaleTimeString()}] User logged in: ${username}`);
+    logger.info(
+      `[${new Date().toLocaleTimeString()}] User logged in: ${username}`
+    );
   };
 
   useEffect(() => {
@@ -169,7 +172,9 @@ function AuthenticationPage() {
           setUserPermissions(filteredPermissions);
 
           // Log user permissions retrieval
-          logger.info(`[${new Date().toLocaleTimeString()}] User permissions retrieved for User ID: ${storedUserId}`);
+          logger.info(
+            `[${new Date().toLocaleTimeString()}] User permissions retrieved for User ID: ${storedUserId}`
+          );
         } catch (error) {
           console.error("Error fetching user permissions:", error);
         }
@@ -194,7 +199,9 @@ function AuthenticationPage() {
     fetchUserPermissions();
 
     // Log component rendering
-    logger.info(`[${new Date().toLocaleTimeString()}] AuthenticationPage component rendered.`);
+    logger.info(
+      `[${new Date().toLocaleTimeString()}] AuthenticationPage component rendered.`
+    );
   }, [token, loggedInUserid, name, emp_img, refresh_token]);
   return (
     <BrowserRouter>
@@ -208,7 +215,7 @@ function AuthenticationPage() {
         </div>
       ) : (
         <PermissionsContext.Provider value={userPermissions}>
-          <TokenExpirationChecker /> 
+          <TokenExpirationChecker />
           <header className="logout_page-container">
             <div className="left-header">
               <UserName
@@ -219,9 +226,9 @@ function AuthenticationPage() {
               <Link to="/">Home</Link>
             </div>
             <div className="right-header">
-              <Logout token={removeToken} /> {/* Pass the navigate function to Logout */}
+              <Logout token={removeToken} />{" "}
+              {/* Pass the navigate function to Logout */}
             </div>
-
           </header>
           <Routes>
             <Route path="/Login" element={<LoginForm />} />
@@ -244,7 +251,7 @@ function AuthenticationPage() {
               element={<AssignUserModules />}
             />
             <Route path="/common-module" element={<CommonPage />} />
-            
+
             <Route path="/currencies-page" element={<CurrenciesPage />} />
             <Route path="/taxcodes-page" element={<TaxCodesPage />} />
             <Route path="/exchangerates-page" element={<ExchangeRatesPage />} />
@@ -252,25 +259,43 @@ function AuthenticationPage() {
             <Route path="/bom-page" element={<BOMPage />} />
 
             <Route path="/bom-explosion" element={<ViewBOMExplodePage />} />
-            <Route path="/bom" element={<ViewBOMModelPage />} />            
+            <Route path="/bom" element={<ViewBOMModelPage />} />
             <Route path="/list-uoms" element={<ViewAllUOMsPage />} />
 
             <Route path="/legal-entities" element={<LegalEntityPage />} />
-            <Route path="/get-legal-entities" element={<ViewAllLegalEntities />} />
-            <Route path="/create-legalentity" element={<CreateLegalEntityPage />} />
+            <Route
+              path="/get-legal-entities"
+              element={<ViewAllLegalEntities />}
+            />
+            <Route
+              path="/create-legalentity"
+              element={<CreateLegalEntityPage />}
+            />
 
             <Route path="/group-companies" element={<GroupCompaniesPage />} />
-            <Route path="/get-group-companies" element={<ViewAllGroupCompaniesPage />} />
-            <Route path="/create-group-company" element={<CreateGroupCompaniesPage />} />
+            <Route
+              path="/get-group-companies"
+              element={<ViewAllGroupCompaniesPage />}
+            />
+            <Route
+              path="/create-group-company"
+              element={<CreateGroupCompaniesPage />}
+            />
 
             <Route path="/companies" element={<CompaniesPage />} />
             <Route path="/get-companies" element={<ViewAllCompaniesPage />} />
             <Route path="/create-company" element={<CreateCompaniesPage />} />
 
             <Route path="/departments" element={<DepartmentsPage />} />
-            <Route path="/get-departments" element={<ViewAllDepartmentsPage />} />
-            <Route path="/create-department" element={<CreateDepartmentsPage />} />
-            
+            <Route
+              path="/get-departments"
+              element={<ViewAllDepartmentsPage />}
+            />
+            <Route
+              path="/create-department"
+              element={<CreateDepartmentsPage />}
+            />
+
             <Route
               path="/list-currencies"
               element={<ViewAllCurrenciesPage />}
@@ -338,41 +363,69 @@ function AuthenticationPage() {
             <Route path="/get-bins" element={<ViewAllBinsPage />} />
 
             <Route path="/get-receipts" element={<ViewAllReceiptsPage />} />
-            <Route path="/misllenious-receipt" element={<CreateReceiptPage />} />
+            <Route
+              path="/misllenious-receipt"
+              element={<CreateReceiptPage />}
+            />
 
+            <Route
+              path="/get-item-transactions"
+              element={<ViewAllItemInventoriesPage />}
+            />
+            <Route
+              path="/search-item-transactions"
+              element={<SearchItemInventoryPage />}
+            />
 
-            <Route path="/get-item-transactions" element={<ViewAllItemInventoriesPage />} />
-            <Route path="/search-item-transactions" element={<SearchItemInventoryPage />} />
+            <Route
+              path="/get-inspections"
+              element={<ViewAllInspectionsPage />}
+            />
+            <Route
+              path="/update-inspection"
+              element={<UpdateInspectionPage />}
+            />
 
-            <Route path="/get-inspections" element={<ViewAllInspectionsPage />} />
-            <Route path="/update-inspection" element={<UpdateInspectionPage />} />        
-
-            <Route path="/perform-putaway" element={<PutAwayPage />} />  
+            <Route path="/perform-putaway" element={<PutAwayPage />} />
 
             <Route path="/modify-user" element={<ModifyUserPage />} />
 
-            <Route path="/item-inventory-conversion" element={<UOMConversionPage />} />
+            <Route
+              path="/item-inventory-conversion"
+              element={<UOMConversionPage />}
+            />
             <Route path="/move-inventory" element={<MoveInventoryPage />} />
-            
-            <Route path="/item-transaction-consolidation" element={<ItemUOMConsolidationPage />} />
-        
-            <Route path="/get-journals" element={<SearchJournalPage />} />
 
-            JournalResultsForm
+            <Route
+              path="/item-transaction-consolidation"
+              element={<ItemUOMConsolidationPage />}
+            />
+
+            <Route path="/get-journals" element={<SearchJournalPage />} />
+            <Route path="/get-journal-results/:journalParameters" element={<JournalResultsForm />} />
+            <Route path="/get-journal-results" element={<JournalResultsForm />} />
+            <Route path="/create-journal" element={<CreateJournalPage />} />
+
+
             <Route
               path="/purchase-order-results/:searchInput"
               element={<ViewAllPurchaseOrdersPage />}
             />
-            <Route path="/purchase-order-results" element={<ViewAllPurchaseOrdersPage />} />
             <Route
-              path="/get-purchase-orders" 
+              path="/purchase-order-results"
+              element={<ViewAllPurchaseOrdersPage />}
+            />
+            <Route
+              path="/get-purchase-orders"
               element={<PurchaseOrdersSearchPage />}
             />
 
-          <Route path="/purchase-order-receipt" element={<CreatePOReceiptPage />} />
+            <Route
+              path="/purchase-order-receipt"
+              element={<CreatePOReceiptPage />}
+            />
 
-          <Route path="/create-purchase-order" element={<CreatePOPage />} />
-
+            <Route path="/create-purchase-order" element={<CreatePOPage />} />
           </Routes>
         </PermissionsContext.Provider>
       )}

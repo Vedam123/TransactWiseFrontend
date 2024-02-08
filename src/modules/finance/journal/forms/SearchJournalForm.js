@@ -1,236 +1,48 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import {
   API_URL,
   BACKEND_INVENTORY_MODULE_NAME,
   MODULE_LEVEL_VIEW_ACCESS,
 } from "../../../admin/setups/ConstDecl";
+import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 import "../../../utilities/css/appcss.css";
-import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess"; // Import your permission checker
-
-// Import your logger utility here
 import logger from "../../../utilities/Logs/logger";
-// ... (existing imports)
 
-function ABC({ updateSearchJournal }) {
-  const [itemCode, setItemCode] = useState("");
-  const [FoundInventory, setFoundInventory] = useState([]);
-  const [itemList, setItemList] = useState([]);
-  const [binList, setBinList] = useState([]); // Add this line
-  const [rackList, setRackList] = useState([]);
-  const [rowList, setRowList] = useState([]);
-  const [aisleList, setAisleList] = useState([]);
-  const [zoneList, setZoneList] = useState([]);
-  const [locationList, setLocationList] = useState([]);
-  const [warehouseList, setWarehouseList] = useState([]);
-  const [additionalInfo, setAdditionalInfo] = useState("");
+function SearchJournalForm() {
+  const [companyList, setCompanyList] = useState([]);
+  const [departmentList, setDepartmentList] = useState([]);
+  const [referenceTypeList, setReferenceTypeList] = useState([]);
+  const [referenceIdList, setReferenceIdList] = useState([]);
+  const [statusList, setStatusList] = useState([]);
+  const [currencyList, setCurrencyList] = useState([]);
+  const [journalTypes, setJournalTypes] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedJournalType , setSelectJournaltype]  = useState("");
+  const [selectedReferenceType , setSelectedReferenceType]  = useState("");
+  const navigate = useNavigate();
 
-  // ... (existing state and useEffect)
 
-  const [transactionNumber, setTransactionNumber] = useState("");
-  const [selectedBin, setSelectedBin] = useState("");
-  const [selectedRack, setSelectedRack] = useState("");
-
-  const [selectedRow, setSelectedRow] = useState("");
-  const [selectedAisle, setSelectedAisle] = useState("");
-  const [selectedZone, setSelectedZone] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedWarehouse, setSelectedWarehouse] = useState("");
-
-  const handleRackChange = (event) => {
-    setSelectedRack(event.target.value);
-  };
-
-  const handleRowChange = (event) => {
-    setSelectedRow(event.target.value);
-  };
-  const handleAisleChange = (event) => {
-    setSelectedAisle(event.target.value);
-  };
-  const handleZoneChange = (event) => {
-    setSelectedZone(event.target.value);
-  };
-  const handleLocationChange = (event) => {
-    setSelectedLocation(event.target.value);
-  };
-  const handleWarehouseChange = (event) => {
-    setSelectedWarehouse(event.target.value);
-  };
-
-  const fetchRacks = async () => {
-    try {
-      const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
-
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-        UserId: userid,
-      };
-
-      const response = await axios.get(`${API_URL}/get_racks`, { headers });
-      setRackList(response.data.rack_list);
-    } catch (error) {
-      logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching racks:`,
-        error
-      );
-      alert("Error fetching racks");
-    }
-  };
-
-  const fetchBins = async () => {
-    try {
-      const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
-
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-        UserId: userid,
-      };
-
-      const response = await axios.get(`${API_URL}/get_bins`, { headers });
-      setBinList(response.data.bin_list);
-    } catch (error) {
-      logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching bins:`,
-        error
-      );
-      alert("Error fetching bins");
-    }
-  };
-
-  const fetchRows = async () => {
-    try {
-      const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
-
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-        UserId: userid,
-      };
-
-      const response = await axios.get(`${API_URL}/get_invrows`, { headers });
-      setRowList(response.data.invrows_list);
-    } catch (error) {
-      logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching rows:`,
-        error
-      );
-      alert("Error fetching rows");
-    }
-  };
-
-  const fetchAisles = async () => {
-    try {
-      const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
-
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-        UserId: userid,
-      };
-
-      const response = await axios.get(`${API_URL}/get_aisles`, { headers });
-      setAisleList(response.data.aisle_list);
-    } catch (error) {
-      logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching aisles:`,
-        error
-      );
-      alert("Error fetching aisles");
-    }
-  };
-
-  const fetchZones = async () => {
-    try {
-      const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
-
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-        UserId: userid,
-      };
-
-      const response = await axios.get(`${API_URL}/get_zones`, { headers });
-      setZoneList(response.data.zone_list);
-    } catch (error) {
-      logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching zones:`,
-        error
-      );
-      alert("Error fetching zones");
-    }
-  };
-
-  const fetchLocations = async () => {
-    try {
-      const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
-
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-        UserId: userid,
-      };
-
-      const response = await axios.get(`${API_URL}/get_locations`, { headers });
-      setLocationList(response.data.location_list);
-    } catch (error) {
-      logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching locations:`,
-        error
-      );
-      alert("Error fetching locations");
-    }
-  };
-
-  const fetchWarehouses = async () => {
-    try {
-      const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
-
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-        UserId: userid,
-      };
-
-      const response = await axios.get(`${API_URL}/get_warehouses`, {
-        headers,
-      });
-      setWarehouseList(response.data.warehouse_list);
-    } catch (error) {
-      logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching warehouses:`,
-        error
-      );
-      alert("Error fetching warehouses");
-    }
-  };
+  const [data, setData] = useState({ journal_headers_list: [] });
+ // eslint-disable-next-line
+  const [referenceId, setReferenceId] = useState("");
+  const [companyid, setCompanyId] = useState("");
+  const [journaltype, setJournalType] = useState("");
+  const [source_number, setSourceNumber] = useState("");
+  const [journal_number, setJournalNumber] = useState("");  
+  
+  // eslint-disable-next-line
+  const [status, setSelectedStatus] = useState("");
+  const [showExistingFields, setShowExistingFields] = useState(false);
 
   const hasRequiredAccess = CheckModuleAccess(
     BACKEND_INVENTORY_MODULE_NAME,
     MODULE_LEVEL_VIEW_ACCESS
   );
 
-  useEffect(() => {
-    if (!hasRequiredAccess) {
-      // Optionally, handle the case where access is not granted
-      logger.warn(
-        `[${new Date().toLocaleTimeString()}] Access denied to Search item component.`
-      );
-      return;
-    }
-
-    fetchItemList();
-    fetchBins(); // Fetch bins when the component mounts
-    fetchRacks(); // Fetch racks when the component mounts
-    fetchRows(); // Fetch racks when the component mounts
-    fetchAisles(); // Fetch racks when the component mounts
-    fetchZones(); // Fetch racks when the component mounts
-    fetchLocations(); // Fetch racks when the component mounts
-    fetchWarehouses(); // Fetch racks when the component mounts
-  }, [hasRequiredAccess]);
-
-  const fetchItemList = async () => {
+  const fetchJournalHeaders = async () => {
     try {
       const authToken = localStorage.getItem("token");
       const userid = localStorage.getItem("loggedInUserid");
@@ -240,318 +52,459 @@ function ABC({ updateSearchJournal }) {
         UserId: userid,
       };
 
-      const response = await axios.get(`${API_URL}/list_items`, { headers });
-      setItemList(response.data.items);
-    } catch (error) {
-      logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching item lists:`,
-        error
-      );
-      alert("Error fetching item lists");
-    }
-  };
-
-  const handleTransactionNumberChange = (event) => {
-    setTransactionNumber(event.target.value);
-  };
-  const handleAdditionalInfoChange = (event) => {
-    setAdditionalInfo(event.target.value);
-  };
-  const handleItemCodeChange = (event) => {
-    setItemCode(event.target.value);
-  };
-  const handleBinChange = (event) => {
-    setSelectedBin(event.target.value);
-  };
-
-  const handleFoundInventory = async () => {
-    try {
-      const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
-
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-        UserId: userid,
-      };
-
-      const params = {
-        item_code: itemCode || null,
-        transaction_id: transactionNumber || null,
-        bin_name: selectedBin || null, // Include bin_name only if selectedBin is not null
-        rack_name: selectedRack || null,
-        row_name: selectedRow || null,
-        aisle_name: selectedAisle || null,
-        zone_name: selectedZone || null,
-        location_name: selectedLocation || null,
-        warehouse_name: selectedWarehouse || null,
-        additional_info: additionalInfo || null,
-      };
-
-      // Remove null values from the params object
-      Object.keys(params).forEach(
-        (key) => params[key] === null && delete params[key]
-      );
-
-      const response = await axios.get(`${API_URL}/get_item_inventory`, {
-        headers,
-        params,
+      const response = await axios.get(`${API_URL}/get_journal_headers`, {
+        headers: headers,
       });
-      console.log("The Response", response.data.item_inventory_list);
-      if (response.data.item_inventory_list) {
-        updateSearchJournal(response.data.item_inventory_list);
-      } else {
-        logger.warn(
-          `[${new Date().toLocaleTimeString()}] No data available for Item: ${itemCode}`
+      const responseData = response.data;
+      setData(responseData);
+
+      const uniqueCompanies = [
+        ...new Set(responseData.journal_headers_list.map((item) => item.company_id)),
+      ];
+      const companies = uniqueCompanies.map((companyId) => {
+        const company = responseData.journal_headers_list.find(
+          (item) => item.company_id === companyId
         );
-        updateSearchJournal([]);
-        alert("No data available for the Item.");
-      }
+        return {
+          company_id: company.company_id,
+          company_name: company.company_name,
+        };
+      });
+      setCompanyList(companies);
     } catch (error) {
-      logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching item inventory:`,
-        error
-      );
-      setFoundInventory([]);
-      alert("Error fetching item inventory");
+      logger.error("Error fetching journal headers:", error);
+      alert("Error fetching journal headers");
     }
   };
 
+  useEffect(() => {
+    fetchJournalHeaders();
+  }, []);
+
+  /*useEffect(() => {
+    //console.log("Updated Journal Results:", journalParameters);
+  }, [journalParameters]);*/
+
+  const handleCompanyChange = (e) => {
+    const selectedCompanyId = parseInt(e.target.value.trim(), 10);
+    setSelectedCompany(selectedCompanyId);
+    setSelectedDepartment(""); // Reset department
+    setJournalTypes([]); // Reset journal types
+    setReferenceTypeList([]); // Reset reference types
+    setReferenceIdList([]); // Reset reference ids
+    setStatusList([]); // Reset statuses
+    setCurrencyList([]); // Reset currencies
+
+    const sectId = parseInt(selectedCompanyId, 10);
+    const filteredDepartments = data.journal_headers_list.filter(
+      (item) => item.company_id === sectId
+    );
+
+    const departments = filteredDepartments.map((item) => ({
+      department_id: item.department_id,
+      department_name: item.department_name,
+    }));
+
+    setDepartmentList(departments);
+  };
+
+  const handleDepartmentChange = (e) => {
+    const selectedDepartmentId = parseInt(e.target.value.trim(), 10);
+    setSelectedDepartment(selectedDepartmentId);
+    setJournalTypes([]); // Reset journal types
+    setReferenceTypeList([]); // Reset reference types
+    setReferenceIdList([]); // Reset reference ids
+    setStatusList([]); // Reset statuses
+    setCurrencyList([]); // Reset currencies
+
+    const filteredJournalTypes = data.journal_headers_list.filter(
+      (item) => item.department_id === selectedDepartmentId
+    );
+
+    const types = filteredJournalTypes.map((item) => ({
+      company_id: item.company_id,
+      department_id: item.department_id,
+      journal_type: item.journal_type,
+    }));
+
+    setJournalTypes(types);
+  };
+
+  const handleJournalTypeChange = (e) => {
+    const selectedJournalType = e.target.value;
+    setReferenceTypeList([]); // Reset reference types
+    setReferenceIdList([]); // Reset reference ids
+    setStatusList([]); // Reset statuses
+    setCurrencyList([]); // Reset currencies
+    setSelectJournaltype(selectedJournalType)
+    // Filter the data to get journal headers with the selected journal type
+    const filteredJournalHeaders = data.journal_headers_list.filter(
+      (item) => item.journal_type === selectedJournalType
+    );
+    const uniqueReferenceTypes = [
+      ...new Set(filteredJournalHeaders.map((item) => item.reference_type)),
+    ];
+    const referenceTypes = uniqueReferenceTypes.map((type, index) => ({
+      id: index,
+      name: type,
+    }));
+
+    // Update the state to set the filtered reference types
+    setReferenceTypeList(referenceTypes);
+  };
+
+  const handleReferenceTypeChange = (e) => {
+    const selectedReferenceType = e.target.value;
+    setSelectedReferenceType(selectedReferenceType)
+    setReferenceIdList([]); // Reset reference ids
+    setStatusList([]); // Reset statuses
+    setCurrencyList([]); // Reset currencies
+
+    // Filter the data to get journal headers with the selected reference type
+    const filteredJournalHeaders = data.journal_headers_list.filter(
+      (item) => item.reference_type === selectedReferenceType
+    );
+
+    // Extract unique reference ids from the filtered journal headers
+    const uniqueReferenceIds = [
+      ...new Set(filteredJournalHeaders.map((item) => item.reference_id)),
+    ];
+    const referenceIds = uniqueReferenceIds.map((id, index) => ({
+      id: index,
+      value: id,
+    }));
+
+    // Update the state to set the filtered reference ids
+    setReferenceIdList(referenceIds);
+  };
+
+  const handleReferenceIdChange = (e) => {
+    const selectedReferenceId = parseInt(e.target.value.trim(), 10);
+    setStatusList([]); // Reset statuses
+    setCurrencyList([]); // Reset currencies
+
+    // Filter the data to get journal headers with the selected reference id
+    const filteredJournalHeaders = data.journal_headers_list.filter(
+      (item) => item.reference_id === selectedReferenceId
+    );
+
+    // Extract unique statuses from the filtered journal headers
+    const uniqueStatuses = [
+      ...new Set(filteredJournalHeaders.map((item) => item.status)),
+    ];
+    const statuses = uniqueStatuses.map((status, index) => ({
+      id: index,
+      value: status,
+    }));
+
+    // Update the state to set the filtered statuses
+    setStatusList(statuses);
+  };
+
+  const handleStatusChange = (e) => {
+    const selectedStatus = e.target.value;
+    setCurrencyList([]); // Reset currencies
+
+    // Filter the data to get journal headers with the selected status and company_id
+    const filteredJournalHeaders = data.journal_headers_list.filter(
+      (item) => item.status === selectedStatus && item.company_id === selectedCompany
+    );
+
+    // Extract unique currencies from the filtered journal headers
+    const uniqueCurrencies = [
+      ...new Set(filteredJournalHeaders.map((item) => item.currencyname)),
+    ];
+    const currencies = uniqueCurrencies.map((currency, index) => {
+      // Find the first item in filteredJournalHeaders with the currencyname
+      const currencyItem = filteredJournalHeaders.find(
+        (item) => item.currencyname === currency
+      );
+      return {
+        id: index,
+        value: currency,
+        currencycode: currencyItem.currencycode,
+        currencysymbol: currencyItem.currencysymbol,
+      };
+    });
+
+    // Update the state to set the filtered currencies
+    setCurrencyList(currencies);
+  };
+
+  const handleCompanyIdChange = (e) => {
+    setCompanyId(e.target.value);
+  };
+
+  
+  const handleJournalTypeIdChange = (e) => {
+    setJournalType(e.target.value);
+  };
+
+  const handleSourceNumberChange = (e) => {
+    setSourceNumber(e.target.value);
+  };
+
+
+  const handleJournalNumberChange = (e) => {
+    setJournalNumber(e.target.value);
+  };
+
+  
+
+  
+ 
+  const handleCheckboxChange = () => {
+    setShowExistingFields((prev) => !prev);
+  };
+
+  const handleButtonClick = async () => {
+    try {
+      let requestUrl ="";
+      if (showExistingFields) {
+        requestUrl += [
+          selectedCompany && `company_id=${selectedCompany}`,
+          selectedDepartment && `department_id=${selectedDepartment}`,
+          selectedJournalType && `journal_type=${selectedJournalType}`,
+          selectedReferenceType && `reference_type=${selectedReferenceType}`,
+          referenceId && `reference_id=${referenceId}`,
+          status && `status=${status}`,
+        ].filter(Boolean).join("&");
+      } else {
+        requestUrl += [
+          companyid && `company_id=${companyid}`,
+          journaltype && `journal_type=${journaltype}`,
+          source_number && `source_number=${source_number}`,
+          journal_number && `journal_number=${journal_number}`,          
+        ].filter(Boolean).join("&");
+      }
+
+      navigate(`/get-journal-results/${requestUrl}`)
+    
+    } catch (error) {
+      logger.error("Error fetching journal headers:", error);
+      alert("Error fetching journal headers");
+    }
+  };
+  
+  
   return (
-    <div>
+    <div className="child-container menu-container">
+      <h2 className="title">Find Journal</h2>
       {hasRequiredAccess ? (
         <div className="child-container form-container">
-          {/* ... (existing JSX) */}
-
           <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="transactionNumber">Transaction Number:</label>
-              </div>
-              <input
-                type="text"
-                id="transactionNumber"
-                value={transactionNumber}
-                onChange={handleTransactionNumberChange}
-                className="form-control input-field"
-              />
-            </div>
+            <input
+              type="checkbox"
+              id="chooseBy"
+              onChange={handleCheckboxChange}
+              checked={showExistingFields}
+            />
+            <label htmlFor="chooseBy">Journal Data by Selection</label>
           </div>
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="itemCode">Item:</label>
-              </div>
-              <select
-                id="itemCode"
-                value={itemCode}
-                onChange={handleItemCodeChange}
-                className="form-control input-field"
-              >
-                <option value="">Select an item code</option>
-                {itemList.map((item) => (
-                  <option key={item.item_id} value={item.item_code}>
-                    {item.item_code} - {item.item_name} - {item.item_id}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="selectedBin">Select Bin:</label>
-              </div>
-              <select
-                id="selectedBin"
-                value={selectedBin}
-                onChange={handleBinChange}
-                className="form-control input-field"
-              >
-                <option value="">Select a bin</option>
-                {binList.map((bin) => (
-                  <option key={bin.bin_id} value={bin.bin_name}>
-                    {bin.bin_name} - {bin.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="selectedRack">Select Rack:</label>
-              </div>
-              <select
-                id="selectedRack"
-                value={selectedRack}
-                onChange={handleRackChange}
-                className="form-control input-field"
-              >
-                <option value="">Select a Rack</option>
-                {rackList.map((rack) => (
-                  <option key={rack.rack_id} value={rack.rack_name}>
-                    {rack.rack_name} - {rack.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="selectedRack">Select Row:</label>
-              </div>
-              <select
-                id="selectedRack"
-                value={selectedRow}
-                onChange={handleRowChange}
-                className="form-control input-field"
-              >
-                <option value="">Select a Row</option>
-                {rowList.map((row) => (
-                  <option key={row.row_id} value={row.row_name}>
-                    {row.row_name} - {row.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="selectedRack">Select aisle:</label>
-              </div>
-              <select
-                id="selectedRack"
-                value={selectedAisle}
-                onChange={handleAisleChange}
-                className="form-control input-field"
-              >
-                <option value="">Select a Aisle</option>
-                {aisleList.map((aisle) => (
-                  <option key={aisle.aisle_id} value={aisle.aisle_name}>
-                    {aisle.aisle_name} - {aisle.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="selectedRack">Select Zone:</label>
-              </div>
-              <select
-                id="selectedRack"
-                value={selectedZone}
-                onChange={handleZoneChange}
-                className="form-control input-field"
-              >
-                <option value="">Select a Zone</option>
-                {zoneList.map((zone) => (
-                  <option key={zone.zone_id} value={zone.zone_name}>
-                    {zone.zone_name} - {zone.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="selectedRack">Select Location:</label>
-              </div>
-              <select
-                id="selectedRack"
-                value={selectedLocation}
-                onChange={handleLocationChange}
-                className="form-control input-field"
-              >
-                <option value="">Select a Location</option>
-                {locationList.map((location) => (
-                  <option
-                    key={location.location_id}
-                    value={location.location_name}
+          {showExistingFields ? (
+            <>
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="company">Company:</label>
+                  </div>
+                  <select
+                    id="company"
+                    onChange={handleCompanyChange}
+                    className="form-control input-field"
                   >
-                    {location.location_name} - {location.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="selectedRack">Select Warehouse:</label>
+                    <option value="">Select a Company</option>
+                    {companyList.map((company) => (
+                      <option key={company.company_id} value={company.company_id}>
+                        {company.company_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <select
-                id="selectedRack"
-                value={selectedWarehouse}
-                onChange={handleWarehouseChange}
-                className="form-control input-field"
-              >
-                <option value="">Select a Warehouse</option>
-                {warehouseList.map((warehouse) => (
-                  <option
-                    key={warehouse.warehouse_id}
-                    value={warehouse.warehouse_name}
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="department">Department:</label>
+                  </div>
+                  <select
+                    id="department"
+                    onChange={handleDepartmentChange}
+                    className="form-control input-field"
                   >
-                    {warehouse.warehouse_name} - {warehouse.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="additionalInfo">Additional Info:</label>
+                    <option value="">Select a Department</option>
+                    {departmentList.map((department) => (
+                      <option
+                        key={department.department_id}
+                        value={department.department_id}
+                      >
+                        {department.department_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <input
-                type="text"
-                id="additionalInfo"
-                value={additionalInfo}
-                onChange={handleAdditionalInfoChange}
-                className="form-control input-field"
-                readOnly
-              />
-            </div>
-          </div>
-
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="journalType">Journal Type:</label>
+                  </div>
+                  <select
+                    id="journalType"
+                    onChange={handleJournalTypeChange}
+                    className="form-control input-field"
+                  >
+                    <option value="">Select a Journal type</option>
+                    {journalTypes.map((item, index) => (
+                      <option key={index} value={item.journal_type}>
+                        {item.journal_type}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="referenceType">Reference Type:</label>
+                  </div>
+                  <select
+                    id="referenceType"
+                    className="form-control input-field"
+                    onChange={handleReferenceTypeChange}
+                  >
+                    <option value="">Select a Reference type</option>
+                    {referenceTypeList.map((referenceType) => (
+                      <option key={referenceType.id} value={referenceType.name}>
+                        {referenceType.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="referenceId">Reference ID:</label>
+                  </div>
+                  <select
+                    id="referenceId"
+                    onChange={handleReferenceIdChange}
+                    className="form-control input-field"
+                  >
+                    <option value="">Select a Reference id</option>
+                    {referenceIdList.map((referenceId) => (
+                      <option key={referenceId.id} value={referenceId.value}>
+                        {referenceId.value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="status">Status:</label>
+                  </div>
+                  <select id="status"  onChange={handleStatusChange} className="form-control input-field">
+                    <option value="">Select a status id</option>
+                    {statusList.map((status) => (
+                      <option key={status.id} value={status.value}>
+                        {status.value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="currency">Currency:</label>
+                  </div>
+                  <select id="currency" className="form-control input-field">
+                  <option value="">Select a status id</option>
+                    {currencyList.map((currency) => (
+                      <option key={currency.id} value={currency.id}>
+                        {currency.currencycode} {currency.currencysymbol}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="companyid">Company No</label>
+                  </div>
+                  <input
+                    type="text"
+                    id="companyid"
+                    value={companyid}
+                    onChange={handleCompanyIdChange}
+                    className="form-control input-field"
+                  />
+                </div>
+              </div>
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="journaltype">Journal type</label>
+                  </div>
+                  <input
+                    type="text"
+                    id="journaltype"
+                    value={journaltype}
+                    onChange={handleJournalTypeIdChange}
+                    className="form-control input-field"
+                  />
+                </div>
+              </div>
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="companyid">Source Transaction No</label>
+                  </div>
+                  <input
+                    type="text"
+                    id="source_number"
+                    value={source_number}
+                    onChange={handleSourceNumberChange}
+                    className="form-control input-field"
+                  />
+                </div>
+              </div>
+              <div className="form-group col-md-6 mb-2">
+                <div className="form-row">
+                  <div className="label-container">
+                    <label htmlFor="companyid">Journal Number</label>
+                  </div>
+                  <input
+                    type="text"
+                    id="journal_number"
+                    value={journal_number}
+                    onChange={handleJournalNumberChange}
+                    className="form-control input-field"
+                  />
+                </div>
+              </div>
+            </>
+          )}
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
-              <button
-                onClick={handleFoundInventory}
-                className="btn btn-primary"
-              >
-                Find Inventory
+              <button onClick={handleButtonClick} className="btn btn-primary">
+                Get Journal Headers
               </button>
             </div>
           </div>
-
-          <table className="table table-striped table-bordered">
-            {/* Render table headers here */}
-            <tbody>
-              {FoundInventory.map((item, index) => (
-                <tr key={index} className="table-row">
-                  {/* Render table row data here */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       ) : (
         <div>You do not have permission to view this module</div>
-      )}
+      )}      
     </div>
   );
 }
 
-export default ABC;
+export default SearchJournalForm;
