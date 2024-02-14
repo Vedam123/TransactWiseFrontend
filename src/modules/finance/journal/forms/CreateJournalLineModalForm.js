@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { API_URL } from "../../../admin/setups/ConstDecl";
 import { Modal, Button } from "react-bootstrap";
@@ -48,7 +48,7 @@ const CreateJournalLineModalForm = ({
   const [successMessage, setSuccessMessage] = useState("");
   const displayCurrency = currencySymbol ? currencySymbol : currencyCode;
 
-
+// eslint-disable-next-line
   useEffect(() => {
     fetchAccountsList(); // Fetch accounts list when component mounts
   }, []);

@@ -579,3 +579,8 @@
   font-size: 12px; /* Adjust the font size as needed */
   text-align: center;
 }
+
+.modal-body-scrollable {
+  max-height: 400px; /* Set maximum height for the modal body */
+  overflow-y: auto; /* Enable vertical scrolling */
+}

@@ -93,6 +93,7 @@ import ViewAllPurchaseOrdersPage from "../purchase/purchaseorders/ViewAllPurchas
 import PurchaseOrdersSearchPage from "../purchase/purchaseorders/PurchaseOrdersSearchPage";
 import CreatePOPage from "../purchase/purchaseorders/CreatePOPage";
 import CreateJournalPage from "../finance/journal/CreateJournalPage"
+import CreatePurchasePage from "../finance/purchaseinvoice/CreatePurchasePage";
 
 import SearchJournalPage from "../finance/journal/SearchJournalPage";
 import JournalResultsForm from "../finance/journal/forms/JournalResultsForm";
@@ -406,6 +407,7 @@ function AuthenticationPage() {
             <Route path="/get-journal-results" element={<JournalResultsForm />} />
             <Route path="/create-journal" element={<CreateJournalPage />} />
 
+            <Route path="/create-purchase-invoice" element={<CreatePurchasePage />} />
 
             <Route
               path="/purchase-order-results/:searchInput"
