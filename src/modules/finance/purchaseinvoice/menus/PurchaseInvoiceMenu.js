@@ -7,7 +7,7 @@ import ModulePermissions from "../../../security/modulepermissions/ModulePermiss
 import { BACKEND_PRODUCT_MODULE_NAME } from "../../../admin/setups/ConstDecl"; // Import your constants
 import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
-export default function PurchaseMenu() {
+export default function PurchaseInvoiceMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
   const ProductPermissions = ModulePermissions({ moduleName: BACKEND_PRODUCT_MODULE_NAME });
@@ -17,7 +17,7 @@ export default function PurchaseMenu() {
     { path: "/create-purchase-invoice", text: "Create Purchase Invoice", canRender: canCreateModule },
     { path: "/delete-purchase-invoice", text: "Delete Purchase Invoice", canRender: canDeleteModule },
     { path: "/update-purchase-invoice", text: "Update Purchase Invoice", canRender: canUpdateModule },
-    { path: "/get-purchase-invoices", text: "Get Purchase Invoices", canRender: canViewModule },
+    { path: "/search-purchase-invoices", text: "Get Purchase Invoices", canRender: canViewModule },
   ];
 
   const handleMenuItemClick = (path) => {

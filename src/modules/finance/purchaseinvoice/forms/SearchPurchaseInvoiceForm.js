@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
 import {
-  API_URL,
   BACKEND_INVENTORY_MODULE_NAME,
   MODULE_LEVEL_VIEW_ACCESS,
 } from "../../../admin/setups/ConstDecl";
@@ -10,7 +8,7 @@ import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAc
 import "../../../utilities/css/appcss.css";
 import logger from "../../../utilities/Logs/logger";
 
-function SearchPurchaseForm() {
+function SearchPurchaseInvoiceForm() {
   const [companyList, setCompanyList] = useState([]);
   const [departmentList, setDepartmentList] = useState([]);
   const [referenceTypeList, setReferenceTypeList] = useState([]);
@@ -30,8 +28,8 @@ function SearchPurchaseForm() {
   const [referenceId, setReferenceId] = useState("");
   const [companyid, setCompanyId] = useState("");
   const [Purchasetype, setPurchaseType] = useState("");
-  const [source_number, setSourceNumber] = useState("");
-  const [Purchase_number, setPurchaseNumber] = useState("");  
+  const [transaction_source, setTransactionSource] = useState("");
+  const [invoice_number, setInvoiceNumber] = useState("");  
   
   // eslint-disable-next-line
   const [status, setSelectedStatus] = useState("");
@@ -42,48 +40,6 @@ function SearchPurchaseForm() {
     MODULE_LEVEL_VIEW_ACCESS
   );
 
-  const fetchPurchaseHeaders = async () => {
-    try {
-      const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
-
-      const headers = {
-        Authorization: `Bearer ${authToken}`,
-        UserId: userid,
-      };
-
-      const response = await axios.get(`${API_URL}/get_Purchase_headers`, {
-        headers: headers,
-      });
-      const responseData = response.data;
-      setData(responseData);
-
-      const uniqueCompanies = [
-        ...new Set(responseData.Purchase_headers_list.map((item) => item.company_id)),
-      ];
-      const companies = uniqueCompanies.map((companyId) => {
-        const company = responseData.Purchase_headers_list.find(
-          (item) => item.company_id === companyId
-        );
-        return {
-          company_id: company.company_id,
-          company_name: company.company_name,
-        };
-      });
-      setCompanyList(companies);
-    } catch (error) {
-      logger.error("Error fetching Purchase headers:", error);
-      alert("Error fetching Purchase headers");
-    }
-  };
-
-  useEffect(() => {
-    fetchPurchaseHeaders();
-  }, []);
-
-  /*useEffect(() => {
-    //console.log("Updated Purchase Results:", PurchaseParameters);
-  }, [PurchaseParameters]);*/
 
   const handleCompanyChange = (e) => {
     const selectedCompanyId = parseInt(e.target.value.trim(), 10);
@@ -240,13 +196,13 @@ function SearchPurchaseForm() {
     setPurchaseType(e.target.value);
   };
 
-  const handleSourceNumberChange = (e) => {
-    setSourceNumber(e.target.value);
+  const handleTransactionNumberChange = (e) => {
+    setTransactionSource(e.target.value);
   };
 
 
-  const handlePurchaseNumberChange = (e) => {
-    setPurchaseNumber(e.target.value);
+  const handlePurchaseInvoiceNumberChange = (e) => {
+    setInvoiceNumber(e.target.value);
   };
 
   
@@ -258,6 +214,8 @@ function SearchPurchaseForm() {
   };
 
   const handleButtonClick = async () => {
+
+   // await fetchPurchaseHeaders();
     try {
       let requestUrl ="";
       if (showExistingFields) {
@@ -271,14 +229,12 @@ function SearchPurchaseForm() {
         ].filter(Boolean).join("&");
       } else {
         requestUrl += [
-          companyid && `company_id=${companyid}`,
-          Purchasetype && `Purchase_type=${Purchasetype}`,
-          source_number && `source_number=${source_number}`,
-          Purchase_number && `Purchase_number=${Purchase_number}`,          
+          transaction_source && `transaction_source=${transaction_source}`,
+          invoice_number && `invoice_number=${invoice_number}`,          
         ].filter(Boolean).join("&");
       }
 
-      navigate(`/get-Purchase-results/${requestUrl}`)
+      navigate(`/get-purchase-invoices/${requestUrl}`)
     
     } catch (error) {
       logger.error("Error fetching Purchase headers:", error);
@@ -299,7 +255,7 @@ function SearchPurchaseForm() {
               onChange={handleCheckboxChange}
               checked={showExistingFields}
             />
-            <label htmlFor="chooseBy">Purchase Data by Selection</label>
+            <label htmlFor="chooseBy">Purchase Invoice by Selection</label>
           </div>
           {showExistingFields ? (
             <>
@@ -434,16 +390,17 @@ function SearchPurchaseForm() {
             </>
           ) : (
             <>
+              
               <div className="form-group col-md-6 mb-2">
                 <div className="form-row">
                   <div className="label-container">
-                    <label htmlFor="companyid">Company No</label>
+                    <label htmlFor="companyid">Purchase Order No</label>
                   </div>
                   <input
                     type="text"
-                    id="companyid"
-                    value={companyid}
-                    onChange={handleCompanyIdChange}
+                    id="transaction_source"
+                    value={transaction_source}
+                    onChange={handleTransactionNumberChange}
                     className="form-control input-field"
                   />
                 </div>
@@ -451,41 +408,13 @@ function SearchPurchaseForm() {
               <div className="form-group col-md-6 mb-2">
                 <div className="form-row">
                   <div className="label-container">
-                    <label htmlFor="Purchasetype">Purchase type</label>
+                    <label htmlFor="companyid">Purchase Invoice Number</label>
                   </div>
                   <input
                     type="text"
-                    id="Purchasetype"
-                    value={Purchasetype}
-                    onChange={handlePurchaseTypeIdChange}
-                    className="form-control input-field"
-                  />
-                </div>
-              </div>
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <div className="label-container">
-                    <label htmlFor="companyid">Source Transaction No</label>
-                  </div>
-                  <input
-                    type="text"
-                    id="source_number"
-                    value={source_number}
-                    onChange={handleSourceNumberChange}
-                    className="form-control input-field"
-                  />
-                </div>
-              </div>
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <div className="label-container">
-                    <label htmlFor="companyid">Purchase Number</label>
-                  </div>
-                  <input
-                    type="text"
-                    id="Purchase_number"
-                    value={Purchase_number}
-                    onChange={handlePurchaseNumberChange}
+                    id="invoice_number"
+                    value={invoice_number}
+                    onChange={handlePurchaseInvoiceNumberChange}
                     className="form-control input-field"
                   />
                 </div>
@@ -507,4 +436,4 @@ function SearchPurchaseForm() {
   );
 }
 
-export default SearchPurchaseForm;
+export default SearchPurchaseInvoiceForm;

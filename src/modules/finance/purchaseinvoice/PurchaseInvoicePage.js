@@ -1,18 +1,18 @@
 import React from "react";
-import PurchaseMenu from "./menus/PurchaseMenu";
+import PurchaseInvoiceMenu from "./menus/PurchaseInvoiceMenu";
 import "../../utilities/css/appcss.css";
 import DisplayCard from "../../utilities/DisplayCard";
 import logger from "../../utilities/Logs/logger"; // Import your logger module here
 
-export default function PurchasePage() {
+export default function PurchaseInvoicePage() {
   // Log the component rendering with timestamp
-  logger.info(`[${new Date().toLocaleTimeString()}] Purchase is rendering.`);
+  logger.info(`[${new Date().toLocaleTimeString()}] Purchase Invoice Page rendering.`);
 
   return (
-    <DisplayCard title="Purchase" color="#FFD799">
+    <DisplayCard title="PurchaseInvoice" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
-          <PurchaseMenu />
+          <PurchaseInvoiceMenu />
         </div>
       </div>
     </DisplayCard>
