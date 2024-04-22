@@ -208,8 +208,7 @@
 .table-header {
   background-color: rgb(196, 19, 119) !important;
   text-shadow: 0 0 0 black !important;
-  /* Other styles */
-}
+} 
 
 .input-field {
   width: 50ch;
@@ -583,4 +582,8 @@
 .modal-body-scrollable {
   max-height: 400px; /* Set maximum height for the modal body */
   overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.editable-field {
+  background-color: white;
 }

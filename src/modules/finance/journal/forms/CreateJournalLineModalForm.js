@@ -26,6 +26,8 @@ const generateJOLineNumber = () => {
 const CreateJournalLineModalForm = ({
   showModalWindow,
   headerId,
+  companyId,
+  departmentId,
   journalNumber,
   status,
   currencyId,
@@ -48,28 +50,42 @@ const CreateJournalLineModalForm = ({
   const [successMessage, setSuccessMessage] = useState("");
   const displayCurrency = currencySymbol ? currencySymbol : currencyCode;
 
-// eslint-disable-next-line
+  // eslint-disable-next-line
   useEffect(() => {
     fetchAccountsList(); // Fetch accounts list when component mounts
+      // eslint-disable-next-line
   }, []);
 
-  // Function to fetch accounts list from API
-  const fetchAccountsList = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/get_accounts`, {
-        headers: generateHeaders(),
-      });
-      setAccountsList(response.data.accounts_list);
-    } catch (error) {
-      console.error("Error fetching accounts:", error);
-    }
-  };
+
+ 
+const fetchAccountsList = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/get_accounts`, {
+      headers: generateHeaders(),
+      params: {
+        company_id: companyId,
+        department_id: departmentId,
+        currency_id: currencyId
+      }
+    });
+    setAccountsList(response.data.accounts_list);
+  } catch (error) {
+    console.error("Error fetching accounts:", error);
+  }
+};
+
+  
   const handleClose = () => {
     const confirmation = window.confirm("Are you sure you want to close?");
     if (confirmation) {
       onClose();
     }
   };
+
+
+
+
+
   const handleCreateJournalLine = async () => {
     try {
       // Convert debit and credit values to float type numbers
@@ -184,7 +200,7 @@ const CreateJournalLineModalForm = ({
                           key={account.account_id}
                           value={account.account_id}
                         >
-                          {`${account.account_number} (${account.account_name})`}
+                          {`${account.account_number} (${account.account_type})`}
                         </option>
                       ))}
                     </select>

@@ -419,12 +419,14 @@ function AuthenticationPage() {
             <Route path="/create-purchase-invoice" element={<CreatePurchasePage />} />
             <Route path="/search-purchase-invoices" element={<SearchPurchaseInvoicePage />} />
             <Route path="/update-purchase-invoices" element={<SearchPOInvoiceToUpdatePage />} />
+            <Route path="/update-purchase-invoice-headers" element={<UpdatePOInvoiceHeaderPage />} />
             
 
             <Route path="/get-purchase-invoices/:PurchaseParameters" element={<PurchaseInvoiceResultsForm />} />
             <Route path="/get-purchase-invoices" element={<PurchaseInvoiceResultsForm />} />
 
-            <Route path="/update-po-invoice-headers/:PurchaseParameters" element={<UpdatePOInvoiceHeaderPage />} />
+            <Route path="/update-po-invoice-headers/:PurchaseParameters" element={<UpdatePOInvoiceHeaderForm />} />
+            <Route path="/update-po-invoice-headers" element={<UpdatePOInvoiceHeaderForm />} />
             
 
             <Route

@@ -42,6 +42,9 @@ export default function CreateJournalForm() {
   const [showModalWindow, setShowModal] = useState(false);
   const [selectedCurrencyId, setSelectedCurrencyId] = useState("");
 
+  const [selectedCompany, setSelectedCompany] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState([]);
+
   const hasRequiredAccess = CheckModuleAccess(
     BACKEND_FINANCE_MODULE_NAME,
     MODULE_LEVEL_CREATE_ACCESS
@@ -136,6 +139,17 @@ export default function CreateJournalForm() {
     if (name === "currency_id") {
       setSelectedCurrencyId(value);
     }
+
+    if (name === "company_id") {
+      setSelectedCompany(value);
+    }
+
+    if (name === "department_id") {
+      setSelectedDepartment(value);
+    }
+
+    
+
   };
 
   const handleSubmit = async (e) => {
@@ -382,6 +396,8 @@ export default function CreateJournalForm() {
               <CreateJournalLineModalForm
                 showModalWindow={showModalWindow}
                 headerId={successMessage.header_id}
+                companyId={selectedCompany}
+                departmentId={selectedDepartment}
                 journalNumber={successMessage.journal_number}
                 status={successMessage.status}
                 currencyId={successMessage.currency_id}

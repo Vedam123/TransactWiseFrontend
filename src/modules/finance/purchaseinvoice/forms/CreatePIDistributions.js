@@ -24,6 +24,8 @@ const generateDistTranNumber = () => {
 const CreatePIDistributions = ({
   showDistModalWindow,
   headerId,
+  companyId,
+  departmentId,
   currencyId,
   invoiceNumber,
   currencyCode,
@@ -54,22 +56,29 @@ const CreatePIDistributions = ({
     }
   };
 
+  // eslint-disable-next-line
   useEffect(() => {
-    const fetchAccountsList = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/get_accounts`, {
-          headers: generateHeaders(),
-        });
-        setAccounts(response.data.accounts_list);
-        return response.data.accounts_list;
-      } catch (error) {
-        console.error("Error fetching items:", error);
-        return [];
-      }
-    };
+    fetchAccountsList(); // Fetch accounts list when component mounts
+      // eslint-disable-next-line
+  }, [headerId,companyId,departmentId]);
 
-    fetchAccountsList();
-  }, [headerId]);
+  const fetchAccountsList = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/get_accounts`, {
+        headers: generateHeaders(),
+        params: {
+          company_id: companyId,
+          department_id: departmentId,
+          currency_id: currencyId
+    }
+      });
+      setAccounts(response.data.accounts_list);
+      return response.data.accounts_list;
+    } catch (error) {
+      console.error("Error fetching items:", error);
+      return [];
+    }
+  };
 
   const handleDebitAmountChange = (index, value) => {
     const updatedLines = [...lines];

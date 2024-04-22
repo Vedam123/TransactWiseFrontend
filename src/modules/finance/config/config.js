@@ -16,7 +16,16 @@ export const ACCOUNT_TYPES = [
     "Salary/Wages Income",
     "Rent/Mortgage Expense",
     "Groceries Expense",
-    "Purchase"
+    "Purchase",
+    "Tax Payable"
+  ];
+
+  export const ACCOUNT_CATEGORY = [
+    "Asset",
+    "Liability",
+    "Equity",
+    "Revenue",
+    "Expense"
   ];
 
   export const JOURNAL_TYPES = [
@@ -56,8 +65,47 @@ export const PURCHASE_INVOICE_STATUS = [
   { name: "Error", code: "ERROR", description: "Processing error.", sequence: 90 , display:false}
 ];
 
+export const UPDATABLE_PURCHASE_INVOICE_STATUS = [
+  { name: "New", code: "NEW", description: "Created but not processed.", sequence: 10, display:true},
+  { name: "In Progress", code: "IP", description: "Under review/edit.", sequence: 20, display:true},
+  { name: "Approved", code: "APPROVED", description: "Reviewed and approved.", sequence: 30, display:true },
+  { name: "Posted", code: "POSTED", description: "Posted to ledger.", sequence: 40, display:false },
+  { name: "Rejected", code: "REJECTED", description: "Rejected and not posted.", sequence: 50 , display:true},
+  { name: "Pending", code: "PENDING", description: "Awaiting action/approval.", sequence: 60 , display:true},
+  { name: "Completed", code: "COMPLETED", description: "Processing complete.", sequence: 70, display:false },
+  { name: "Cancelled", code: "CANCELLED", description: "Cancelled and not processed.", sequence: 80 , display:true},
+  { name: "Error", code: "ERROR", description: "Processing error.", sequence: 90 , display:false}
+];
+
+
+export const SALES_INVOICE_STATUS = [
+  { name: "New", code: "NEW", description: "Created but not processed.", sequence: 10, display: true },
+  { name: "In Progress", code: "IP", description: "Under review/edit.", sequence: 20, display: false },
+  { name: "Approved", code: "APPROVED", description: "Reviewed and approved.", sequence: 30, display: true },
+  { name: "Posted", code: "POSTED", description: "Posted to ledger.", sequence: 40, display: false },
+  { name: "Rejected", code: "REJECTED", description: "Rejected and not posted.", sequence: 50, display: true },
+  { name: "Pending", code: "PENDING", description: "Awaiting action/approval.", sequence: 60, display: false },
+  { name: "Completed", code: "COMPLETED", description: "Processing complete.", sequence: 70, display: false },
+  { name: "Cancelled", code: "CANCELLED", description: "Cancelled and not processed.", sequence: 80, display: true },
+  { name: "Error", code: "ERROR", description: "Processing error.", sequence: 90, display: false }
+];
+
+export const UPDATABLE_SALES_INVOICE_STATUS = [
+  { name: "New", code: "NEW", description: "Created but not processed.", sequence: 10, display: true },
+  { name: "In Progress", code: "IP", description: "Under review/edit.", sequence: 20, display: true },
+  { name: "Approved", code: "APPROVED", description: "Reviewed and approved.", sequence: 30, display: true },
+  { name: "Posted", code: "POSTED", description: "Posted to ledger.", sequence: 40, display: false },
+  { name: "Rejected", code: "REJECTED", description: "Rejected and not posted.", sequence: 50, display: true },
+  { name: "Pending", code: "PENDING", description: "Awaiting action/approval.", sequence: 60, display: true },
+  { name: "Completed", code: "COMPLETED", description: "Processing complete.", sequence: 70, display: false },
+  { name: "Cancelled", code: "CANCELLED", description: "Cancelled and not processed.", sequence: 80, display: true },
+  { name: "Error", code: "ERROR", description: "Processing error.", sequence: 90, display: false }
+];
+
+
 export const JO_SEQUENCE_PREFIX = 200
 export const PURCHASE_INVOICE_SQ_PREFIX = 12
+export const SALES_INVOICE_SQ_PREFIX = 12
 export const STANDARD_INV_TRANS_SOURCE = "MANUAL"
 
   

@@ -37,6 +37,9 @@ export default function CreatePurchaseForm() {
   const [selectedCurrencyId, setSelectedCurrencyId] = useState("");
   const [selectedTaxId, setSelectedTaxId] = useState("");  
   const [totalSum, setTotalSum] = useState(0); 
+
+  const [selectedCompany, setSelectedCompany] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState([]);
   
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
@@ -151,6 +154,14 @@ export default function CreatePurchaseForm() {
 
     if (name === "tax_id") {
       setSelectedTaxId(value);
+    }
+
+    if (name === "company_id") {
+      setSelectedCompany(value);
+    }
+
+    if (name === "department_id") {
+      setSelectedDepartment(value);
     }
   };
 
@@ -531,6 +542,8 @@ export default function CreatePurchaseForm() {
         <CreatePIDistributions
         showDistModalWindow={showDistModalWindow}
         headerId={invoiceHeader}
+        companyId={selectedCompany}
+        departmentId={selectedDepartment}
         currencyId={selectedCurrencyId}
         invoiceNumber={invoiceNumber}
         currencyCode={getCurrenyCode(selectedCurrencyId)} 

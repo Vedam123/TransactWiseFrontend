@@ -14,10 +14,10 @@ export default function PurchaseInvoiceMenu() {
   const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } = ProductPermissions;
 
   const menuItems = [
-    { path: "/create-purchase-invoice", text: "Create Purchase Invoice", canRender: canCreateModule },
-    { path: "/delete-purchase-invoice", text: "Delete Purchase Invoice", canRender: canDeleteModule },
-    { path: "/update-purchase-invoice", text: "Update Purchase Invoice", canRender: canUpdateModule },
-    { path: "/search-purchase-invoices", text: "Get Purchase Invoices", canRender: canViewModule },
+    { path: "/create-purchase-invoice", text: "New Invoice", canRender: canCreateModule },
+    { path: "/delete-purchase-invoice", text: "Delete Invoice", canRender: canDeleteModule },
+    { path: "/update-purchase-invoices", text: "Update", canRender: canUpdateModule },
+    { path: "/search-purchase-invoices", text: "Get Invoices", canRender: canViewModule },
   ];
 
   const handleMenuItemClick = (path) => {

@@ -3,18 +3,18 @@ import RotatingImage from "../../utilities/RotatingImage";
 import BottomContainer from "../../utilities/BottomContainer";
 import DocumentationContainer from "../../utilities/DocumentationContainer";
 import logger from "../../utilities/Logs/logger"; // Import your logger module here
-import UpdatePurchaseForm from "./forms/UpdatePurchaseForm";
+import SearchPOInvoiceToUpdateForm from "./forms/SearchPOInvoiceToUpdateForm";
 //import PurchaseResultsForm from "./forms/PurchaseResultsForm";
 
-function UpdatePurchasePage() {
-  logger.info(`[${new Date().toLocaleTimeString()}] Rendering Create Purchase Page`);
+function SearchPOInvoiceToUpdatePage() {
+  logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Purchase Invoice Page`);
 
-const componentsToRender = [UpdatePurchaseForm];
-const componentsToRender2 = [UpdatePurchasePage];
+const componentsToRender = [SearchPOInvoiceToUpdateForm];
+const componentsToRender2 = [SearchPOInvoiceToUpdatePage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Purchases</h1>
+      <h1 className="title">Find PO Invoice to Update </h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
@@ -28,4 +28,4 @@ const componentsToRender2 = [UpdatePurchasePage];
   );
 }
 
-export default UpdatePurchasePage;
+export default SearchPOInvoiceToUpdatePage;
