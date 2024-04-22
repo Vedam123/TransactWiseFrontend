@@ -15,40 +15,50 @@ function useToken() {
   function getToken() {
     const refreshToken = localStorage.getItem(refreshTokenKey);
     const userln = localStorage.getItem("loggedInUsername");
+  
     if (refreshToken) {
-      const payload1 = JSON.parse(atob(refreshToken.split(".")[1]));
-      const refreshtokenexpiry = new Date(payload1.exp * 1000);
-
-      const currentTime = new Date();
-      if (refreshtokenexpiry < currentTime) {
-        const userToken = localStorage.getItem(userTokenKey);
-        
-        if (userToken) {
-          localStorage.removeItem(userTokenKey);
+      try {
+        const payload1 = JSON.parse(atob(refreshToken.split(".")[1]));
+        const refreshtokenexpiry = new Date(payload1.exp * 1000);
+  
+        const currentTime = new Date();
+        if (refreshtokenexpiry < currentTime) {
+          const userToken = localStorage.getItem(userTokenKey);
+          if (userToken) {
+            localStorage.removeItem(userTokenKey);
+          }
+          if (userln) {
+            localStorage.removeItem("loggedInUsername");
+          }
+          localStorage.removeItem(refreshTokenKey);
+          return null; // Return null if refresh token is expired
         }
-        if (userln) {
-          localStorage.removeItem("loggedInUsername");
-        }
-        localStorage.removeItem(refreshTokenKey);
-        return null; // Return null if refresh token is expired
+      } catch (error) {
+        console.error("Error decoding refresh token:", error);
+        return null;
       }
     }
+  
     const userToken = localStorage.getItem(userTokenKey);
-
+    
     if (userToken) {
-      const payload = JSON.parse(atob(userToken.split(".")[1]));
-      const expirationTime = new Date(payload.exp * 1000);
-      const currentTime = new Date();
-
-      if (expirationTime < currentTime) {
-        localStorage.removeItem(userTokenKey);
-        return null; // Return null if access token is expired
+      try {
+        const payload = JSON.parse(atob(userToken.split(".")[1]));
+        const expirationTime = new Date(payload.exp * 1000);
+        const currentTime = new Date();
+  
+        if (expirationTime < currentTime) {
+          localStorage.removeItem(userTokenKey);
+          return null; // Return null if access token is expired
+        }
+      } catch (error) {
+        console.error("Error decoding user token:", error);
+        return null;
       }
     }
-
+  
     return userToken;
   }
-
   const [token, setToken] = useState(getToken());
   const [username, setUsername] = useState(""); // Add username state
 
