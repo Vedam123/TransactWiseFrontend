@@ -95,13 +95,21 @@ import CreatePOPage from "../purchase/purchaseorders/CreatePOPage";
 import CreateJournalPage from "../finance/journal/CreateJournalPage"
 
 import CreatePurchasePage from "../finance/purchaseinvoice/CreatePurchasePage";
+import CreateSalesPage from "../finance/salesinvoice/CreateSalesPage";
 
 import SearchPurchaseInvoicePage from "../finance/purchaseinvoice/SearchPurchaseInvoicePage";
 import SearchPOInvoiceToUpdatePage from "../finance/purchaseinvoice/SearchPOInvoiceToUpdatePage";
 import UpdatePOInvoiceHeaderPage from "../finance/purchaseinvoice/UpdatePOInvoiceHeaderPage";
+import UpdateSOInvoiceHeaderPage from "../finance/salesinvoice/UpdateSOInvoiceHeaderPage";
 
 import PurchaseInvoiceResultsForm from "../finance/purchaseinvoice/forms/PurchaseInvoiceResultsForm";
-import UpdatePOInvoiceHeaderForm from "../finance/purchaseinvoice/forms/UpdatePOInvoiceHeaderForm";
+//import UpdatePOInvoiceHeaderForm from "../finance/purchaseinvoice/forms/UpdatePOInvoiceHeaderForm";
+import SearchSOInvoiceToUpdatePage from "../finance/salesinvoice/SearchSOInvoiceToUpdatePage";
+
+
+
+import SearchSalesInvoicePage from "../finance/salesinvoice/SearchSalesInvoicePage";
+import SalesInvoiceResultsForm from "../finance/salesinvoice/forms/SalesInvoiceResultsForm";
 
 
 import SearchJournalPage from "../finance/journal/SearchJournalPage";
@@ -417,18 +425,23 @@ function AuthenticationPage() {
             <Route path="/create-journal" element={<CreateJournalPage />} />
 
             <Route path="/create-purchase-invoice" element={<CreatePurchasePage />} />
+            <Route path="/create-sales-invoice" element={<CreateSalesPage />} />
             <Route path="/search-purchase-invoices" element={<SearchPurchaseInvoicePage />} />
             <Route path="/update-purchase-invoices" element={<SearchPOInvoiceToUpdatePage />} />
-            <Route path="/update-purchase-invoice-headers" element={<UpdatePOInvoiceHeaderPage />} />
             
 
             <Route path="/get-purchase-invoices/:PurchaseParameters" element={<PurchaseInvoiceResultsForm />} />
             <Route path="/get-purchase-invoices" element={<PurchaseInvoiceResultsForm />} />
 
-            <Route path="/update-po-invoice-headers/:PurchaseParameters" element={<UpdatePOInvoiceHeaderForm />} />
-            <Route path="/update-po-invoice-headers" element={<UpdatePOInvoiceHeaderForm />} />
-            
+            <Route path="/update-po-invoice-headers/:PurchaseParameters" element={<UpdatePOInvoiceHeaderPage />} />
 
+            <Route path="/update-so-invoice-headers/:SalesParameters" element={<UpdateSOInvoiceHeaderPage />} />
+
+            <Route path="/search-sales-invoices" element={<SearchSalesInvoicePage />} />
+            <Route path="/get-sales-invoices/:SalesParameters" element={<SalesInvoiceResultsForm />} />
+            <Route path="/get-sales-invoices" element={<SalesInvoiceResultsForm />} />
+            <Route path="/update-sales-invoices" element={<SearchSOInvoiceToUpdatePage />} />   
+            
             <Route
               path="/purchase-order-results/:searchInput"
               element={<ViewAllPurchaseOrdersPage />}

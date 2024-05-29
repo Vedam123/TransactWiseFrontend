@@ -91,18 +91,25 @@ import ItemUOMConsolidationPage from "../inventory/handling/ItemUOMConsolidation
 
 import ViewAllPurchaseOrdersPage from "../purchase/purchaseorders/ViewAllPurchaseOrdersPage";
 import PurchaseOrdersSearchPage from "../purchase/purchaseorders/PurchaseOrdersSearchPage";
+import FindPOToUpdatePage from "../purchase/purchaseorders/FindPOToUpdatePage";
+import UpdatePurchaseOrderHeaderPage from "../purchase/purchaseorders/UpdatePurchaseOrderHeaderPage";
 import CreatePOPage from "../purchase/purchaseorders/CreatePOPage";
-import CreateJournalPage from "../finance/journal/CreateJournalPage"
+import CreateJournalPage from "../finance/journal/CreateJournalPage";
 
 import CreatePurchasePage from "../finance/purchaseinvoice/CreatePurchasePage";
+import CreateSalesPage from "../finance/salesinvoice/CreateSalesPage";
 
 import SearchPurchaseInvoicePage from "../finance/purchaseinvoice/SearchPurchaseInvoicePage";
 import SearchPOInvoiceToUpdatePage from "../finance/purchaseinvoice/SearchPOInvoiceToUpdatePage";
 import UpdatePOInvoiceHeaderPage from "../finance/purchaseinvoice/UpdatePOInvoiceHeaderPage";
+import UpdateSOInvoiceHeaderPage from "../finance/salesinvoice/UpdateSOInvoiceHeaderPage";
 
 import PurchaseInvoiceResultsForm from "../finance/purchaseinvoice/forms/PurchaseInvoiceResultsForm";
-import UpdatePOInvoiceHeaderForm from "../finance/purchaseinvoice/forms/UpdatePOInvoiceHeaderForm";
+//import UpdatePOInvoiceHeaderForm from "../finance/purchaseinvoice/forms/UpdatePOInvoiceHeaderForm";
+import SearchSOInvoiceToUpdatePage from "../finance/salesinvoice/SearchSOInvoiceToUpdatePage";
 
+import SearchSalesInvoicePage from "../finance/salesinvoice/SearchSalesInvoicePage";
+import SalesInvoiceResultsForm from "../finance/salesinvoice/forms/SalesInvoiceResultsForm";
 
 import SearchJournalPage from "../finance/journal/SearchJournalPage";
 import JournalResultsForm from "../finance/journal/forms/JournalResultsForm";
@@ -116,7 +123,7 @@ function AuthenticationPage() {
   const [name, setName] = useState("");
   const [emp_img, setImage] = useState("");
   const [refresh_token, setRefreshToken] = useState("");
-  //const [journalResults, setJournalResults] = useState([]); 
+  //const [journalResults, setJournalResults] = useState([]);
 
   const nameWithSpace = name + "\u00a0";
   const useridWithSpace = loggedInUserid + "\u00a0";
@@ -412,20 +419,65 @@ function AuthenticationPage() {
             />
 
             <Route path="/get-journals" element={<SearchJournalPage />} />
-            <Route path="/get-journal-results/:journalParameters" element={<JournalResultsForm />} />
-            <Route path="/get-journal-results" element={<JournalResultsForm />} />
+            <Route
+              path="/get-journal-results/:journalParameters"
+              element={<JournalResultsForm />}
+            />
+            <Route
+              path="/get-journal-results"
+              element={<JournalResultsForm />}
+            />
             <Route path="/create-journal" element={<CreateJournalPage />} />
 
-            <Route path="/create-purchase-invoice" element={<CreatePurchasePage />} />
-            <Route path="/search-purchase-invoices" element={<SearchPurchaseInvoicePage />} />
-            <Route path="/update-purchase-invoices" element={<SearchPOInvoiceToUpdatePage />} />
-            
+            <Route
+              path="/create-purchase-invoice"
+              element={<CreatePurchasePage />}
+            />
+            <Route path="/create-sales-invoice" element={<CreateSalesPage />} />
+            <Route
+              path="/search-purchase-invoices"
+              element={<SearchPurchaseInvoicePage />}
+            />
+            <Route
+              path="/update-purchase-invoices"
+              element={<SearchPOInvoiceToUpdatePage />}
+            />
 
-            <Route path="/get-purchase-invoices/:PurchaseParameters" element={<PurchaseInvoiceResultsForm />} />
-            <Route path="/get-purchase-invoices" element={<PurchaseInvoiceResultsForm />} />
+            <Route
+              path="/get-purchase-invoices/:PurchaseParameters"
+              element={<PurchaseInvoiceResultsForm />}
+            />
+            <Route
+              path="/get-purchase-invoices"
+              element={<PurchaseInvoiceResultsForm />}
+            />
 
-            <Route path="/update-po-invoice-headers/:PurchaseParameters" element={<UpdatePOInvoiceHeaderPage />} />
-            
+            <Route
+              path="/update-po-invoice-headers/:PurchaseParameters"
+              element={<UpdatePOInvoiceHeaderPage />}
+            />
+
+            <Route
+              path="/update-so-invoice-headers/:SalesParameters"
+              element={<UpdateSOInvoiceHeaderPage />}
+            />
+
+            <Route
+              path="/search-sales-invoices"
+              element={<SearchSalesInvoicePage />}
+            />
+            <Route
+              path="/get-sales-invoices/:SalesParameters"
+              element={<SalesInvoiceResultsForm />}
+            />
+            <Route
+              path="/get-sales-invoices"
+              element={<SalesInvoiceResultsForm />}
+            />
+            <Route
+              path="/update-sales-invoices"
+              element={<SearchSOInvoiceToUpdatePage />}
+            />
 
             <Route
               path="/purchase-order-results/:searchInput"
@@ -434,6 +486,11 @@ function AuthenticationPage() {
             <Route
               path="/purchase-order-results"
               element={<ViewAllPurchaseOrdersPage />}
+            />
+
+            <Route
+              path="/update-purchase-order-headers/:POParameters"
+              element={<UpdatePurchaseOrderHeaderPage />}
             />
             <Route
               path="/get-purchase-orders"
@@ -446,6 +503,11 @@ function AuthenticationPage() {
             />
 
             <Route path="/create-purchase-order" element={<CreatePOPage />} />
+
+            <Route
+              path="/update-purchase-order"
+              element={<FindPOToUpdatePage />}
+            />
           </Routes>
         </PermissionsContext.Provider>
       )}
