@@ -111,6 +111,14 @@ import SearchSOInvoiceToUpdatePage from "../finance/salesinvoice/SearchSOInvoice
 import SearchSalesInvoicePage from "../finance/salesinvoice/SearchSalesInvoicePage";
 import SalesInvoiceResultsForm from "../finance/salesinvoice/forms/SalesInvoiceResultsForm";
 
+import SalesPage from "../sales/SalesPage";
+import CreateSOPage from "../sales/salesorders/CreateSOPage";
+import SalesOrdersSearchPage from "../sales/salesorders/SalesOrdersSearchPage";
+import ViewAllSalesOrdersPage from "../sales/salesorders/ViewAllSalesOrdersPage";
+import UpdateSalesOrderHeaderPage from "../sales/salesorders/UpdateSalesOrderHeaderPage";
+import FindSOToUpdatePage from "../sales/salesorders/FindSOToUpdatePage";
+
+
 import SearchJournalPage from "../finance/journal/SearchJournalPage";
 import JournalResultsForm from "../finance/journal/forms/JournalResultsForm";
 
@@ -357,6 +365,8 @@ function AuthenticationPage() {
             <Route path="/products-module" element={<ProductsPage />} />
             <Route path="/purchase-module" element={<PurchasePage />} />
 
+            <Route path="/sales-module" element={<SalesPage />} />
+
             <Route
               path="/partner-results/:searchType/:searchInput"
               element={<PartnerResults />}
@@ -503,6 +513,32 @@ function AuthenticationPage() {
             />
 
             <Route path="/create-purchase-order" element={<CreatePOPage />} />
+
+
+            <Route path="/create-sales-order" element={<CreateSOPage />} />
+            <Route
+              path="/get-sales-orders"
+              element={<SalesOrdersSearchPage />}
+            />
+
+            <Route
+              path="/sales-order-results/:searchInput"
+              element={<ViewAllSalesOrdersPage />}
+            />
+            <Route
+              path="/sales-order-results"
+              element={<ViewAllSalesOrdersPage />}
+            />
+
+            <Route
+              path="/update-sales-order-headers/:SOParameters"
+              element={<UpdateSalesOrderHeaderPage />}
+            />
+
+            <Route
+              path="/update-sales-order"
+              element={<FindSOToUpdatePage />}
+            />
 
             <Route
               path="/update-purchase-order"

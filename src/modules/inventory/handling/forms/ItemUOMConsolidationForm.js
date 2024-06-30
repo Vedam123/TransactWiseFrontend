@@ -54,7 +54,7 @@ export default function ItemUOMConsolidationForm() {
   const fetchData = async () => {
     try {
       // Fetch items
-      const itemsResponse = await axios.get(`${API_URL}/get_item_inventory`, {
+      const itemsResponse = await axios.get(`${API_URL}/get_item_inventory?status=No`, {
         headers: generateHeaders(),
       });
       setItems(itemsResponse.data.item_inventory_list);
