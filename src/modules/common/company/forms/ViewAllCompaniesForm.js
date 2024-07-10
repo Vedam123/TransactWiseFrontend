@@ -70,6 +70,7 @@ function ViewAllCompaniesForm() {
               <th>Local Currency</th>
               <th>Home Currency</th>
               <th>Reporting Currency</th>
+              <th>Default Account Group</th>
               <th>Default Tax Group</th>
             </tr>
           </thead>
@@ -82,6 +83,7 @@ function ViewAllCompaniesForm() {
                 <td>{company.local_currency_code}({company.local_currency_symbol})</td>
                 <td>{company.home_currency_code}({company.home_currency_symbol})</td>
                 <td>{company.reporting_currency_code}({company.reporting_currency_symbol})</td>
+                <td>{company.default_account_header_name}</td>                  
                 <td>{company.company_tax_codes_description}</td>                
               </tr>
             ))}

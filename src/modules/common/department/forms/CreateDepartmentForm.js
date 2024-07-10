@@ -4,8 +4,6 @@ import { API_URL, BACKEND_COMMON_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS } from 
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 import logger from "../../../utilities/Logs/logger";
 
-// ... (previous imports)
-
 export default function CreateDepartmentForm() {
   const [formData, setFormData] = useState({
     company_id: "",
@@ -14,6 +12,7 @@ export default function CreateDepartmentForm() {
     description: "",
     created_by: "",
     updated_by: "",
+    account_group_id: "", // New state for account group ID
   });
 
   const [groupCompanies, setGroupCompanies] = useState([]);
@@ -21,6 +20,9 @@ export default function CreateDepartmentForm() {
 
   const [employees, setEmployees] = useState([]);
   const [loadingEmployees, setLoadingEmployees] = useState(true);
+
+  const [accountGroups, setAccountGroups] = useState([]);
+  const [loadingAccountGroups, setLoadingAccountGroups] = useState(true);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -72,6 +74,7 @@ export default function CreateDepartmentForm() {
         description: "",
         created_by: "",
         updated_by: "",
+        account_group_id: "", // Reset account group ID after successful submission
       });
     } catch (error) {
       logger.error(`[${new Date().toLocaleTimeString()}] Error creating Department`, error);
@@ -108,8 +111,28 @@ export default function CreateDepartmentForm() {
       }
     };
 
+    const fetchAccountGroups = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/get_default_account_headers`,
+          {
+            headers: generateHeaders(),
+          }
+        );
+        setAccountGroups(response.data.default_account_headers);
+      } catch (error) {
+        logger.error(
+          `[${new Date().toLocaleTimeString()}] Error fetching account groups:`,
+          error
+        );
+      } finally {
+        setLoadingAccountGroups(false);
+      }
+    };
+
     fetchGroupCompanies();
     fetchEmployees();
+    fetchAccountGroups();
   }, []);
 
   return (
@@ -193,6 +216,31 @@ export default function CreateDepartmentForm() {
                     employees.map((employee) => (
                       <option key={employee.empid} value={employee.empid}>
                         {employee.name}
+                      </option>
+                    ))
+                  )}
+                </select>
+              </div>
+            </div>
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="account_group_id">Account Group ID:</label>
+                </div>
+                <select
+                  id="account_group_id"
+                  name="account_group_id"
+                  value={formData.account_group_id}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select Account Group ID</option>
+                  {loadingAccountGroups ? (
+                    <option value="" disabled>Loading Account Groups...</option>
+                  ) : (
+                    accountGroups.map((group) => (
+                      <option key={group.header_id} value={group.header_id}>
+                        {group.header_name}
                       </option>
                     ))
                   )}

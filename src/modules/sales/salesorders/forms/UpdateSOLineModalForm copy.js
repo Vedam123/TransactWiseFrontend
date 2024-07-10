@@ -47,7 +47,6 @@ const UpdateSOLineModalForm = ({
       unit_price: 0,
       line_total: 0,
       uom_id: "",
-      notes: "", // Ensure notes field is initialized      
     },
   ]);
   const [successMessage, setSuccessMessage] = useState(null);
@@ -88,7 +87,6 @@ const UpdateSOLineModalForm = ({
           line_total: parseFloat(line.line_total),
           uom_id: line.uom_id,
           line_number: line.so_lnum,
-          notes: line.notes || "", // Ensure notes are handled          
           isModified: false,
         }));
         setLines(formattedLines);
@@ -144,7 +142,6 @@ const UpdateSOLineModalForm = ({
           unit_price: 0,
           line_total: 0,
           uom_id: "",
-          notes: "", // Ensure notes field is reset          
         },
       ]);
       onClose();
@@ -172,7 +169,6 @@ const UpdateSOLineModalForm = ({
   const handleNotesChange = (index, value) => {
     const updatedLines = [...lines];
     updatedLines[index].notes = value;
-    updatedLines[index].isModified = true;
     setLines(updatedLines);
   };  
 
@@ -183,36 +179,39 @@ const UpdateSOLineModalForm = ({
       const linesToUpdate = lines.filter(line => line.isModified || !line.line_id);
   
       const requestBody = {
-        header_id: Number(headerId),
+        header_id: headerId,
         lines: linesToUpdate.map((line) => {
-          const sanitizedLine = {
-            quantity: Number(line.quantity),
-            unit_price: Number(line.unit_price),
-            line_total: Number(line.line_total),
-            tax_id: Number(tax_id),
-            notes: line.notes || "", // Replace undefined with an empty string
-            uom_id: Number(line.uom_id),
-            status: headerStatus,
-            item_id: Number(line.item_id),
-          };
+          // Construct the line object based on whether it's modified or new
           if (line.line_id) {
             // For existing lines with line_id
             return {
-              ...sanitizedLine,
-              line_id: Number(line.line_id),
+              line_id: line.line_id,
+              quantity: line.quantity,
+              unit_price: line.unit_price,
+              line_total: line.line_total,
+              tax_id: tax_id,
+              notes: line.notes,
+              uom_id: line.uom_id,
+              status: headerStatus,
+              item_id: line.item_id
             };
           } else {
             // For new lines without line_id
             return {
-              ...sanitizedLine,
-              so_lnum: Number(line.line_number),
+              so_lnum: line.line_number,
+              quantity: line.quantity,
+              unit_price: line.unit_price,
+              line_total: line.line_total,
+              tax_id: tax_id,
+              notes: line.notes,
+              uom_id: line.uom_id,
+              status: headerStatus,
+              item_id: line.item_id
             };
           }
         }),
       };
-  
-      console.log("Request Body ", requestBody);
-  
+      console.log("Request Body ",requestBody)
       const response = await axios.put(
         `${API_URL}/update_sales_order_lines`,
         requestBody,
@@ -242,7 +241,8 @@ const UpdateSOLineModalForm = ({
       setIsSubmitting(false);
     }
   };
-
+  
+  
   const handleClear = async (index) => {
     if (lines.length === 1) {
       return;
@@ -378,16 +378,8 @@ const UpdateSOLineModalForm = ({
                     <select
                       value={line.uom_id}
                       onChange={(e) => {
-                        const updatedLines = lines.map((line, idx) => {
-                          if (idx === index) {
-                            return {
-                              ...line,
-                              uom_id: e.target.value,
-                              isModified: true, // Ensure this line is marked as modified
-                            };
-                          }
-                          return line;
-                        });
+                        const updatedLines = [...lines];
+                        updatedLines[index].uom_id = e.target.value;
                         setLines(updatedLines);
                       }}
                     >

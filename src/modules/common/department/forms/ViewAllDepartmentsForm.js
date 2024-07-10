@@ -64,7 +64,7 @@ function ViewAllDepartmentsForm() {
               <th>Department Name</th>
               <th>Description</th>
               <th>Manager Name</th>
-              <th>Company ID</th>
+              <th>Default Account Group</th>
               <th>Company Name</th>
             </tr>
           </thead>
@@ -75,7 +75,7 @@ function ViewAllDepartmentsForm() {
                 <td>{department.department_name}</td>
                 <td>{department.description}</td>
                 <td>{department.manager_name}</td>
-                <td>{department.company_id}</td>
+                <td>{department.default_account_header_name}</td>
                 <td>{department.company_name}</td>
               </tr>
             ))}
