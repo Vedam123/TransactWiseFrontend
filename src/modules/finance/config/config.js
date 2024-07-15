@@ -67,6 +67,7 @@ export const PURCHASE_INVOICE_STATUS = [
 
 export const UPDATABLE_PURCHASE_INVOICE_STATUS = [
   { name: "New", code: "NEW", description: "Created but not processed.", sequence: 10, display:true},
+  { name: "Draft", code: "DRAFT", description: "Created but not processed.", sequence: 11, display: true },  
   { name: "In Progress", code: "IP", description: "Under review/edit.", sequence: 20, display:true},
   { name: "Approved", code: "APPROVED", description: "Reviewed and approved.", sequence: 30, display:true },
   { name: "Posted", code: "POSTED", description: "Posted to ledger.", sequence: 40, display:false },

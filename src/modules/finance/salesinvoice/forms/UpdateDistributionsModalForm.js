@@ -6,7 +6,6 @@ import { Modal, Button } from "react-bootstrap";
 const generateHeaders = () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userid");
-
   return {
     Authorization: `Bearer ${token}`,
     UserId: userId,
@@ -19,7 +18,6 @@ const generateDistTranNumber = () => {
   const randomSuffix = Math.floor(Math.random() * 1000);
   const formattedRandomSuffix = String(randomSuffix).padStart(3, "0");
   const generateDistTranNum = `${timestampSuffix}${formattedRandomSuffix}`;
-
   return parseInt(generateDistTranNum);
 };
 
@@ -49,9 +47,6 @@ const UpdateDistributionsModalForm = ({
   const [accounts, setAccounts] = useState([]);
   const displayCurrency = currencySymbol ? currencySymbol : currencyCode;
 
-
-  
-
   useEffect(() => {
     const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount || 0), 0);
     const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount || 0), 0);
@@ -79,14 +74,7 @@ const UpdateDistributionsModalForm = ({
     }
   };
 
-  const handleAccountChange = (index, accountId) => {
-    const updatedLines = [...lines];
-    updatedLines[index].account_id = accountId;
-    updatedLines[index].dirty = true;
-    setLines(updatedLines);
-  };
-
-  const fetchAccountsList = async () => {
+  /*const fetchAccountsList = async () => {
     try {
       const response = await axios.get(`${API_URL}/get_accounts`, {
         headers: generateHeaders(),
@@ -96,18 +84,46 @@ const UpdateDistributionsModalForm = ({
           currency_id: currencyId
         }
       });
+      console.log("Company Id",companyId);
+      console.log("Department Id",departmentId);
+      console.log("Currency",currencyId);
+      console.log("Fetched Accounts",response.data.accounts_list);
       setAccounts(response.data.accounts_list);
     } catch (error) {
-      console.error("Error fetching items:", error);
+      console.error("Error fetching accounts:", error);
+    }
+  };*/
+
+    const fetchAccountsList = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/get_accounts`, {
+        headers: generateHeaders(),
+        params: {
+          currency_id: currencyId
+        }
+      });
+      console.log("Company Id",companyId);
+      console.log("Department Id",departmentId);
+      console.log("Currency",currencyId);
+      console.log("Fetched Accounts",response.data.accounts_list);
+      setAccounts(response.data.accounts_list);
+    } catch (error) {
+      console.error("Error fetching accounts:", error);
     }
   };
 
-  // eslint-disable-next-line
   useEffect(() => {
-    fetchAccountsList(); // Fetch accounts list when component mounts
+    fetchAccountsList();
     fetchDistributions();
-      // eslint-disable-next-line
-  }, [headerId,companyId,departmentId]);
+    // eslint-disable-next-line
+  }, [headerId, companyId, departmentId]);
+
+  const handleAccountChange = (index, accountId) => {
+    const updatedLines = [...lines];
+    updatedLines[index].account_id = accountId;
+    updatedLines[index].dirty = true;
+    setLines(updatedLines);
+  };
 
   const handleDebitAmountChange = (index, value) => {
     const updatedLines = [...lines];
@@ -126,10 +142,9 @@ const UpdateDistributionsModalForm = ({
   const handleSubmit = async () => {
     try {
       const hasUpdates = lines.some((line) => line.dirty);
-  
       const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount), 0);
       const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount), 0);
-  
+
       if (!hasUpdates) {
         if (totalDebitAmount !== totalCreditAmount) {
           const confirmation = window.confirm('Debit and credit amounts are not equal. Are you sure you want to proceed?');
@@ -138,30 +153,30 @@ const UpdateDistributionsModalForm = ({
           }
         }
       }
-  
+
       const isAnyFieldEmpty = lines.some((line) => !line.account_id || line.debitamount === "" || line.creditamount === "");
       if (isAnyFieldEmpty) {
         alert('Please fill in all fields.');
         return;
       }
-  
+
       if (totalDebitAmount !== totalCreditAmount) {
         const confirmation = window.confirm('Debit and credit amounts are not equal. Are you sure you want to proceed?');
         if (!confirmation) {
           return;
         }
       }
-  
+
       if (totalDebitAmount !== parseFloat(invoice_total)) {
         const confirmation = window.confirm('Total debit amount must be equal to invoice total. Are you sure you want to proceed?');
         if (!confirmation) {
           return;
         }
       }
-  
+
       const updatedLines = lines.filter((line) => line.line_id);
       const newLines = lines.filter((line) => !line.line_id);
-  
+
       if (newLines.length > 0) {
         const createResponse = await axios.post(
           `${API_URL}/distribute_sales_invoice_to_accounts`,
@@ -171,14 +186,14 @@ const UpdateDistributionsModalForm = ({
           })),
           { headers: generateHeaders() }
         );
-  
+
         if (createResponse.data.success) {
           console.log("New distribution lines created:", createResponse.data);
         } else {
           console.error("Error creating new distribution lines:", createResponse.data.message);
         }
       }
-  
+
       if (updatedLines.length > 0) {
         const updateResponse = await axios.put(
           `${API_URL}/update_sales_invoice_accounts`,
@@ -188,21 +203,20 @@ const UpdateDistributionsModalForm = ({
           },
           { headers: generateHeaders() }
         );
-  
+
         if (updateResponse.data.success) {
           console.log("Distribution lines updated:", updateResponse.data);
         } else {
           console.error("Error updating distribution lines:", updateResponse.data.message);
         }
       }
-  
+
       onSuccess("Successfully updated");
       onClose();
     } catch (error) {
       console.error("Error handling distribution lines:", error);
     }
   };
-  
 
   const handleClear = async (index) => {
     if (lines.length === 1) {
@@ -258,10 +272,9 @@ const UpdateDistributionsModalForm = ({
   };
 
   const handleClose = () => {
-    // Check if sum of debit amounts is equal to sum of credit amounts
     const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount), 0);
     const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount), 0);
-    
+
     if (totalDebitAmount !== totalCreditAmount) {
       const confirmation = window.confirm('Debit and credit amounts are not equal. Are you sure you want to close?');
       if (confirmation) {
@@ -269,8 +282,7 @@ const UpdateDistributionsModalForm = ({
       }
       return;
     }
-  
-    // Check if sum of debit amounts is equal to invoice_total
+
     if (totalDebitAmount !== parseFloat(invoice_total)) {
       const confirmation = window.confirm('Total debit amount must be equal to invoice total. Are you sure you want to close?');
       if (confirmation) {
@@ -279,12 +291,10 @@ const UpdateDistributionsModalForm = ({
       return;
     }
 
-      const confirmation = window.confirm("Are you sure you want to close?");
-      
-      if (confirmation) {
-        onClose();
-      }
-      return;
+    const confirmation = window.confirm("Are you sure you want to close?");
+    if (confirmation) {
+      onClose();
+    }
   };
 
   return (
@@ -355,7 +365,6 @@ const UpdateDistributionsModalForm = ({
                       onChange={(e) => handleCreditAmountChange(index, e.target.value)}
                     />
                   </td>
-
                   <td>
                     <button onClick={() => handleClear(index)} disabled={lines.length === 1}>
                       Remove
