@@ -18,6 +18,7 @@ export default function PurchaseInvoiceMenu() {
     { path: "/delete-purchase-invoice", text: "Delete Invoice", canRender: canDeleteModule },
     { path: "/update-purchase-invoices", text: "Update", canRender: canUpdateModule },
     { path: "/search-purchase-invoices", text: "Get Invoices", canRender: canViewModule },
+    { path: "/auto-create-purchase-invoices", text: "Auto Create Invoice", canRender: canViewModule },
   ];
 
   const handleMenuItemClick = (path) => {

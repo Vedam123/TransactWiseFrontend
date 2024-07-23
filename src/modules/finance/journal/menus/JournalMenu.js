@@ -18,6 +18,7 @@ export default function JournalMenu() {
     { path: "/delete-journal", text: "Delete Journal", canRender: canDeleteModule },
     { path: "/update-Journal", text: "Update Journal", canRender: canUpdateModule },
     { path: "/get-Journals", text: "Get Journals", canRender: canViewModule },
+    { path: "/auto-create-Journals", text: "Auto Create Journal", canRender: canViewModule },    
   ];
 
   const handleMenuItemClick = (path) => {

@@ -3,18 +3,17 @@ import RotatingImage from "../../utilities/RotatingImage";
 import BottomContainer from "../../utilities/BottomContainer";
 import DocumentationContainer from "../../utilities/DocumentationContainer";
 import logger from "../../utilities/Logs/logger"; // Import your logger module here
-import CreateSalesForm from "./forms/CreateSalesForm";
-//import PurchaseResultsForm from "./forms/PurchaseResultsForm";
+import AutoCreateInvoiceFromSOForm from "./forms/AutoCreateInvoiceFromSOForm";
 
-function CreateSalesPage() {
-  logger.info(`[${new Date().toLocaleTimeString()}] Rendering Create Sales Page`);
+function AutoCreateInvoiceFromSOPage() {
+  logger.info(`[${new Date().toLocaleTimeString()}] Rendering the Auto Sales Invoice Creation`);
 
-const componentsToRender = [CreateSalesForm];
-const componentsToRender2 = [CreateSalesPage];
+const componentsToRender = [AutoCreateInvoiceFromSOForm];
+const componentsToRender2 = [AutoCreateInvoiceFromSOPage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Sales</h1>
+      <h1 className="title">Auto Create Sales Invoice</h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
@@ -28,4 +27,4 @@ const componentsToRender2 = [CreateSalesPage];
   );
 }
 
-export default CreateSalesPage;
+export default AutoCreateInvoiceFromSOPage;

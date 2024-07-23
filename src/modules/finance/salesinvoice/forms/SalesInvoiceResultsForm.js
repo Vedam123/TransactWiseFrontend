@@ -222,12 +222,12 @@ export default function SalesInvoiceResultsForm() {
             <tbody>
               {SalesInvoiceLines.map((line, index) => (
                 <tr key={index}>
-                  <td key={line.line_number}>{line.line_number}</td>
-                  <td key={line.item_id}>{line.item_code}</td>
-                  <td key={line.quantity}>{line.quantity}</td>
-                  <td key={line.unit_price}>{line.unit_price}</td>
-                  <td key={line.line_total}>{line.line_total}</td>
-                  <td key={line.uom_id}>{line.uom_name}</td>
+                  <td key={index.line_number}>{line.line_number}</td>
+                  <td key={index.item_id}>{line.item_code}</td>
+                  <td key={index.quantity}>{line.quantity}</td>
+                  <td key={index.unit_price}>{line.unit_price}</td>
+                  <td key={index.line_total}>{line.line_total}</td>
+                  <td key={index.uom_id}>{line.uom_name}</td>
                   {/* Add more row data as needed */}
                 </tr>
               ))}
@@ -269,10 +269,10 @@ export default function SalesInvoiceResultsForm() {
             <tbody>
               {SalesInvoiceDistributions.map((line, index) => (
                 <tr key={index}>
-                  <td key={line.line_number}>{line.line_number}</td>
-                  <td key={line.account_id}>{line.account_number}</td>
-                  <td key={line.debitamount}>{line.debitamount}</td>
-                  <td key={line.creditamount}>{line.creditamount}</td>
+                  <td key={index.line_number}>{line.line_number}</td>
+                  <td key={index.account_id}>{line.account_number}</td>
+                  <td key={index.debitamount}>{line.debitamount}</td>
+                  <td key={index.creditamount}>{line.creditamount}</td>
                 </tr>
               ))}
             </tbody>

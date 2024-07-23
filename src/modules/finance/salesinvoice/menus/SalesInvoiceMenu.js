@@ -18,6 +18,7 @@ export default function SalesInvoiceMenu() {
     { path: "/delete-sales-invoice", text: "Delete Invoice", canRender: canDeleteModule },
     { path: "/update-sales-invoices", text: "Update", canRender: canUpdateModule },
     { path: "/search-sales-invoices", text: "Get Invoices", canRender: canViewModule },
+    { path: "/auto-create-invoices", text: "Auto Create Invoice", canRender: canViewModule },
   ];
 
   const handleMenuItemClick = (path) => {

@@ -40,8 +40,5 @@ export const SHIP_STATUS = [
   { name: "Shipped", short_name: "SHIPPED", sequence: 50 },
 ];
 
-
-
-
 export const SO_SEQUENCE_PREFIX = 200
 

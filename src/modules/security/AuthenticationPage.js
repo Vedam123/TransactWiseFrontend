@@ -95,6 +95,9 @@ import FindPOToUpdatePage from "../purchase/purchaseorders/FindPOToUpdatePage";
 import UpdatePurchaseOrderHeaderPage from "../purchase/purchaseorders/UpdatePurchaseOrderHeaderPage";
 import CreatePOPage from "../purchase/purchaseorders/CreatePOPage";
 import CreateJournalPage from "../finance/journal/CreateJournalPage";
+import AutoCreateJournalPage from "../finance/journal/AutoCreateJournalPage";
+
+
 
 import CreatePurchasePage from "../finance/purchaseinvoice/CreatePurchasePage";
 import CreateSalesPage from "../finance/salesinvoice/CreateSalesPage";
@@ -105,11 +108,12 @@ import UpdatePOInvoiceHeaderPage from "../finance/purchaseinvoice/UpdatePOInvoic
 import UpdateSOInvoiceHeaderPage from "../finance/salesinvoice/UpdateSOInvoiceHeaderPage";
 
 import PurchaseInvoiceResultsForm from "../finance/purchaseinvoice/forms/PurchaseInvoiceResultsForm";
-//import UpdatePOInvoiceHeaderForm from "../finance/purchaseinvoice/forms/UpdatePOInvoiceHeaderForm";
+import AutoPOInvoiceCreationPage from "../finance/purchaseinvoice/AutoPOInvoiceCreationPage";
 import SearchSOInvoiceToUpdatePage from "../finance/salesinvoice/SearchSOInvoiceToUpdatePage";
 
 import SearchSalesInvoicePage from "../finance/salesinvoice/SearchSalesInvoicePage";
 import SalesInvoiceResultsForm from "../finance/salesinvoice/forms/SalesInvoiceResultsForm";
+import AutoCreateInvoiceFromSOPage from "../finance/salesinvoice/AutoCreateInvoiceFromSOPage";
 
 import SalesPage from "../sales/SalesPage";
 import CreateSOPage from "../sales/salesorders/CreateSOPage";
@@ -118,9 +122,10 @@ import ViewAllSalesOrdersPage from "../sales/salesorders/ViewAllSalesOrdersPage"
 import UpdateSalesOrderHeaderPage from "../sales/salesorders/UpdateSalesOrderHeaderPage";
 import FindSOToUpdatePage from "../sales/salesorders/FindSOToUpdatePage";
 
-
 import SearchJournalPage from "../finance/journal/SearchJournalPage";
 import JournalResultsForm from "../finance/journal/forms/JournalResultsForm";
+
+import PickReleasePage from "../inventory/handling/PickReleasePage";
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
@@ -544,7 +549,28 @@ function AuthenticationPage() {
               path="/update-purchase-order"
               element={<FindPOToUpdatePage />}
             />
+
+            <Route
+              path="/pick-release"
+              element={<PickReleasePage />}
+            />
+
+            <Route
+              path="/auto-create-invoices"
+              element={<AutoCreateInvoiceFromSOPage />}
+            />
+
+            <Route
+              path="/auto-create-purchase-invoices"
+              element={<AutoPOInvoiceCreationPage />} />
+
+            <Route
+              path="/auto-create-Journals"
+              element={<AutoCreateJournalPage />} />
+
+
           </Routes>
+
         </PermissionsContext.Provider>
       )}
     </BrowserRouter>

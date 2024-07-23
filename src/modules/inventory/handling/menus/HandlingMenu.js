@@ -17,6 +17,7 @@ export default function HandlingMenu() {
     { path: "/item-inventory-conversion", text: "UOM Conversion", canRender: canCreateModule },
     { path: "/item-transaction-consolidation", text: "Item Consolidation", canRender: canCreateModule },
     { path: "/move-inventory", text: "Move Inventory", canRender: canCreateModule },
+    { path: "/pick-release", text: "Pick Release Inventory", canRender: canCreateModule },
   ];
 
   const handleMenuItemClick = (path) => {
