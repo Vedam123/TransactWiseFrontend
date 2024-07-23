@@ -119,6 +119,8 @@ function PutAwayForm() {
         .map((status) => status.name)
         .join(",");
 
+      console.log("Whaat are the receipts to fetch ",statusParam)
+
       const response = await axios.get(
         `${API_URL}/get_receipts_to_putaway?status_param=${statusParam}`,
         { headers }

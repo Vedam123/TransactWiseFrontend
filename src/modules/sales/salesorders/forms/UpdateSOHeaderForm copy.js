@@ -26,11 +26,6 @@ export default function UpdateSOHeaderForm() {
     so_date: "",
     payment_duedate: "",
     payment_terms: "",
-    shipping_method: "", // New field
-    billing_address: "", // New field
-    shipping_address: "", // New field
-    rep_id: "", // New field
-    comments: "", // New field
   });
 
   const [error, setError] = useState(null);
@@ -50,19 +45,14 @@ export default function UpdateSOHeaderForm() {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [soTotal, setSOTotal] = useState(0);
 
+
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("");
   const [selectedCurrencySymbol, setSelectedCurrencySymbol] = useState("");
   const [selectedTaxCode, setSelectedTaxCode] = useState("");
   const [selectedTaxRate, setSelectedTaxRate] = useState("");
 
-  const [selectedShippingMethod, setSelectedShippingMethod] = useState("");
-  const [selectedShippingAddress, setSelectedShippingAddress] = useState("");
-  const [selectedBillingAddress, setSelectedBillingAddress] = useState("");
-  const [selectedRepId, setSelectedRepId] = useState("");
-  const [selectedComments, setSelectedComments] = useState("");
 
-
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("")
 
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -111,12 +101,6 @@ export default function UpdateSOHeaderForm() {
           setSelectedTaxCode(firstSalesOrder.tax_code);
           setSelectedTaxRate(firstSalesOrder.tax_rate);
 
-          setSelectedShippingMethod(firstSalesOrder.shipping_method);
-          setSelectedBillingAddress(firstSalesOrder.billing_address);
-          setSelectedShippingAddress(firstSalesOrder.shipping_address);
-          setSelectedRepId(firstSalesOrder.rep_id);
-          setSelectedComments(firstSalesOrder.comments);
-
           console.log(firstSalesOrder);
           await Promise.all([
             getDepartments(firstSalesOrder.company_id),
@@ -140,11 +124,6 @@ export default function UpdateSOHeaderForm() {
               .split("T")[0],
             payment_duedate: firstSalesOrder.payment_duedate || "", // Added fields with default empty string
             payment_terms: firstSalesOrder.payment_terms || "", // Added fields with default empty string
-            shipping_method: firstSalesOrder.shipping_method || "", // New field
-            billing_address: firstSalesOrder.billing_address || "", // New field
-            shipping_address: firstSalesOrder.shipping_address || "", // New field
-            rep_id: firstSalesOrder.rep_id || "", // New field
-            comments: firstSalesOrder.comments || "", // New field
           });
 
           logger.info(
@@ -259,7 +238,7 @@ export default function UpdateSOHeaderForm() {
       setSelectedDepartment(value);
     }
 
-    if (name === "status") {
+      if (name === "status") {
       setSelectedStatus(value);
     }
   };
@@ -271,9 +250,7 @@ export default function UpdateSOHeaderForm() {
   const handleUpdateSOLinesSuccess = (response) => {
     const { message } = response.data;
 
-    setSuccessMessage(
-      `Header Id: ${salesHeader}, Message: ${message} , SO Total: ${soTotal}`
-    );
+    setSuccessMessage(`Header Id: ${salesHeader}, Message: ${message} , SO Total: ${soTotal}`);
 
     setTimeout(() => {
       setSuccessMessage(null);
@@ -305,18 +282,12 @@ export default function UpdateSOHeaderForm() {
         : null,
       tax_id: formData.tax_id ? parseInt(formData.tax_id, 10) : null,
       status: formData.status,
-      payment_terms: formData.payment_terms, // Added fields with default empty string
-      shipping_method: formData.shipping_method, // New field
-      billing_address: formData.billing_address, // New field
-      shipping_address: formData.shipping_address, // New field
-      rep_id: formData.rep_id, // New field
-      comments: formData.comments, // New field
       //total_amount: formData.total_amount,
     };
 
     console.log("Data send to back end ", updatedFormData);
     try {
-      console.log("Form data to update,", updatedFormData);
+      console.log("Form data to update,",updatedFormData)
       const response = await axios.put(
         `${API_URL}/update_sales_order_header?so_num=${selectedSONumber}`,
         updatedFormData,
@@ -567,106 +538,6 @@ export default function UpdateSOHeaderForm() {
 
               <div className="form-group col-md-6 mb-2">
                 <div className="form-row">
-                  <div className="label-container">
-                    <label htmlFor="payment_terms">Payment Terms:</label>
-                  </div>
-                  <input
-                    type="text"
-                    id="payment_terms"
-                    name="payment_terms"
-                    value={formData.payment_terms}
-                    onChange={handleChange}
-                    className="form-control input-field"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <div className="label-container">
-                    <label htmlFor="shipping_method">Shipping Method:</label>
-                  </div>
-                  <input
-                    type="text"
-                    id="shipping_method"
-                    name="shipping_method"
-                    value={formData.shipping_method}
-                    onChange={handleChange}
-                    className="form-control input-field"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <div className="label-container">
-                    <label htmlFor="billing_address">Billing Address:</label>
-                  </div>
-                  <input
-                    type="text"
-                    id="billing_address"
-                    name="billing_address"
-                    value={formData.billing_address}
-                    onChange={handleChange}
-                    className="form-control input-field"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <div className="label-container">
-                    <label htmlFor="shipping_address">Shipping Address:</label>
-                  </div>
-                  <input
-                    type="text"
-                    id="shipping_address"
-                    name="shipping_address"
-                    value={formData.shipping_address}
-                    onChange={handleChange}
-                    className="form-control input-field"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <div className="label-container">
-                    <label htmlFor="rep_id">Rep ID:</label>
-                  </div>
-                  <input
-                    type="text"
-                    id="rep_id"
-                    name="rep_id"
-                    value={formData.rep_id}
-                    onChange={handleChange}
-                    className="form-control input-field"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <div className="label-container">
-                    <label htmlFor="comments">Comments:</label>
-                  </div>
-                  <input
-                    type="text"
-                    id="comments"
-                    name="comments"
-                    value={formData.comments}
-                    onChange={handleChange}
-                    className="form-control input-field"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
                   <button
                     type="submit"
                     className="btn btn-primary"
@@ -678,21 +549,21 @@ export default function UpdateSOHeaderForm() {
               </div>
 
               <div className="form-group col-md-6 mb-2">
-                <div className="form-row">
-                  <button
-                    type="button"
-                    disabled={!isFormSubmitted && isFormDirty} // Enable if form is submitted or if any change is made to form fields
-                    onClick={() => handleUpdateLines()}
-                  >
-                    Lines
-                  </button>
-                </div>
+              <div className="form-row">
+                <button
+                  type="button"
+                  disabled={!isFormSubmitted && isFormDirty} // Enable if form is submitted or if any change is made to form fields
+                  onClick={() => handleUpdateLines()}
+                >
+                  Lines
+                </button>
               </div>
+            </div>
             </form>
           </div>
 
           {showLinesModalWindow && (
-            <UpdateSOLineModalForm
+            < UpdateSOLineModalForm
               showLinesModalWindow={showLinesModalWindow}
               headerId={salesHeader}
               currencyId={selectedCurrencyId}

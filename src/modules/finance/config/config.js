@@ -121,7 +121,7 @@ export const UPDATABLE_SALES_INVOICE_STATUS = [
 
 export const AUTO_SALES_INVOICE_CONFIG = {
   //so_order_status_filter: ["APPROVED", "PARTPICKED", "PICKED"],
-  so_order_status_filter: ["APPROVED"],  
+  so_order_status_filter: ["PICKED","PARTPICKED","APPROVED"],  
   so_new_status: "INVOICED",
   invoice_status: "DRAFT",
   account_types: {
@@ -165,7 +165,7 @@ export const AUTO_SALES_INVOICE_CONFIG = {
 export const AUTO_PURCHASE_INVOICE_CONFIG = {
   invoice_status: "DRAFT",
   po_new_status: "INVOICED",
-  po_order_status_filter: ["APPROVED"],
+  po_order_status_filter: ["APPROVED","RECEIVED"],
   payment_terms: "NET 20",
   account_types: {
     Credit: [

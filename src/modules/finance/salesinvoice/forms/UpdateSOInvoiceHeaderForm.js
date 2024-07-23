@@ -390,7 +390,7 @@ export default function UpdatePOInvoiceHeaderForm() {
       try {
         console.log("Before calling API");
         validateResponse = await axios.get(
-          `${API_URL}/validate_so_invoice?header_id=${invoiceHeader}`,
+          `${API_URL}/validate_sales_invoice?header_id=${invoiceHeader}`,
           { headers: generateHeaders() }
         );
   
@@ -431,6 +431,7 @@ export default function UpdatePOInvoiceHeaderForm() {
         const queryParams = new URLSearchParams(SalesParameters);
         apiUrl += `?${queryParams.toString()}`;
       }
+
       const response = await axios.put(apiUrl, formData, {
         headers: generateHeaders(),
       });

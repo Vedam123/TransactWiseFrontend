@@ -76,24 +76,41 @@ export default function AutoCreateJournalForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Convert empty input to an empty array
+    const invoicesArray = formData.invoices
+        .split(",")
+        .map((num) => num.trim())
+        .filter((num) => num !== "");
+
+    // Confirmation dialog if invoicesArray is empty
+    if (invoicesArray.length === 0) {
+        const userConfirmed = window.confirm(
+            "Are you sure you want to create a journal without any invoices?"
+        );
+        if (!userConfirmed) {
+            return;  // Exit if the user clicks "No"
+        }
+    }
+
     const requestData = {
-      ...formData,
-      invoices: formData.invoices.split(",").map(order => order.trim())
+        ...formData,
+        invoices: invoicesArray,
     };
 
-    console.log("Request data before calling API",requestData)
+    console.log("Request data before calling API", requestData);
 
     try {
-      const response = await axios.post(`${API_URL}/auto_create_journal`, requestData, {
-        headers: generateHeaders()
-      });
-      console.log(response.data);
-     // Reset form data upon successful submission
-     resetForm();      
+        const response = await axios.post(`${API_URL}/auto_create_journal`, requestData, {
+            headers: generateHeaders()
+        });
+        console.log(response.data);
+        // Reset form data upon successful submission
+        resetForm();
     } catch (error) {
-      console.error("Error creating journal:", error);
+        console.error("Error creating journal:", error);
     }
-  };
+};
 
 
   const resetForm = () => {
