@@ -39,6 +39,8 @@ const UpdateDistributionsModalForm = ({
     {
       line_number: generateDistTranNumber(),
       account_id: "",
+      account_category: "",
+      account_type: "",
       debitamount: 0,
       creditamount: 0,
     },
@@ -64,6 +66,8 @@ const UpdateDistributionsModalForm = ({
         header_id: distribution.header_id,
         line_number: distribution.line_number,
         account_id: distribution.account_id,
+        account_category: distribution.account_category, // added
+        account_type: distribution.account_type, // added
         debitamount: parseFloat(distribution.debitamount),
         creditamount: parseFloat(distribution.creditamount),
         dirty: false,
@@ -74,27 +78,7 @@ const UpdateDistributionsModalForm = ({
     }
   };
 
-  /*const fetchAccountsList = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/get_accounts`, {
-        headers: generateHeaders(),
-        params: {
-          company_id: companyId,
-          department_id: departmentId,
-          currency_id: currencyId
-        }
-      });
-      console.log("Company Id",companyId);
-      console.log("Department Id",departmentId);
-      console.log("Currency",currencyId);
-      console.log("Fetched Accounts",response.data.accounts_list);
-      setAccounts(response.data.accounts_list);
-    } catch (error) {
-      console.error("Error fetching accounts:", error);
-    }
-  };*/
-
-    const fetchAccountsList = async () => {
+  const fetchAccountsList = async () => {
     try {
       const response = await axios.get(`${API_URL}/get_accounts`, {
         headers: generateHeaders(),
@@ -102,16 +86,17 @@ const UpdateDistributionsModalForm = ({
           currency_id: currencyId
         }
       });
-      console.log("Company Id",companyId);
-      console.log("Department Id",departmentId);
-      console.log("Currency",currencyId);
-      console.log("Fetched Accounts",response.data.accounts_list);
+      console.log("Fetched Accounts:", response.data.accounts_list);
       setAccounts(response.data.accounts_list);
     } catch (error) {
       console.error("Error fetching accounts:", error);
     }
   };
-
+  
+  useEffect(() => {
+    console.log('Lines state changed:', lines);
+  }, [lines]);
+  
   useEffect(() => {
     fetchAccountsList();
     fetchDistributions();
@@ -119,11 +104,31 @@ const UpdateDistributionsModalForm = ({
   }, [headerId, companyId, departmentId]);
 
   const handleAccountChange = (index, accountId) => {
+    // Log the type and value of accountId
+    console.log('Selected Account ID:', accountId, 'Type:', typeof accountId);
+    
     const updatedLines = [...lines];
-    updatedLines[index].account_id = accountId;
-    updatedLines[index].dirty = true;
+  
+    // Convert accountId to a number if it's a string
+    const selectedAccount = accounts.find(account => account.account_id === parseInt(accountId, 10));
+  
+    if (selectedAccount) {
+      updatedLines[index].account_id = accountId;
+      updatedLines[index].account_category = selectedAccount.account_category;
+      updatedLines[index].account_type = selectedAccount.account_type;
+      updatedLines[index].dirty = true;
+      console.log(`Updated line ${index}:`, updatedLines[index]);
+    } else {
+      console.log(`Account with id ${accountId} not found`);
+    }
+    
     setLines(updatedLines);
+    console.log('Lines state after update:', updatedLines);
   };
+  
+  
+  
+  
 
   const handleDebitAmountChange = (index, value) => {
     const updatedLines = [...lines];
@@ -177,13 +182,16 @@ const UpdateDistributionsModalForm = ({
       const updatedLines = lines.filter((line) => line.line_id);
       const newLines = lines.filter((line) => !line.line_id);
 
+      console.log("New Lines ",newLines )
+      console.log("Update Lines ",updatedLines )
+
       if (newLines.length > 0) {
         const createResponse = await axios.post(
           `${API_URL}/distribute_sales_invoice_to_accounts`,
-          newLines.map((line) => ({
-            ...line,
+          {
             header_id: headerId,
-          })),
+            lines: newLines,
+          },
           { headers: generateHeaders() }
         );
 
@@ -264,6 +272,8 @@ const UpdateDistributionsModalForm = ({
     const newLine = {
       line_number: generateDistTranNumber(),
       account_id: "",
+      account_category: "",
+      account_type: "",
       debitamount: 0,
       creditamount: 0,
       dirty: true,
@@ -326,6 +336,8 @@ const UpdateDistributionsModalForm = ({
               <tr>
                 <th>Line No</th>
                 <th>Account</th>
+                <th>Category</th> {/* added */}
+                <th>Type</th> {/* added */}
                 <th>Debit {displayCurrency}</th>
                 <th>Credit {displayCurrency}</th>
                 <th>Actions</th>
@@ -351,6 +363,8 @@ const UpdateDistributionsModalForm = ({
                       ))}
                     </select>
                   </td>
+                  <td>{line.account_category}</td> {/* added */}
+                  <td>{line.account_type}</td> {/* added */}
                   <td>
                     <input
                       type="text"

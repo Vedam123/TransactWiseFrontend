@@ -41,6 +41,8 @@ const UpdateDistributionsModalForm = ({
     {
       line_number: generateDistTranNumber(),
       account_id: "",
+      account_category: "",
+      account_type: "",
       debitamount: 0,
       creditamount: 0,
     },
@@ -48,9 +50,6 @@ const UpdateDistributionsModalForm = ({
   const [debitCreditEqual, setDebitCreditEqual] = useState(true);
   const [accounts, setAccounts] = useState([]);
   const displayCurrency = currencySymbol ? currencySymbol : currencyCode;
-
-
-  
 
   useEffect(() => {
     const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount || 0), 0);
@@ -69,6 +68,8 @@ const UpdateDistributionsModalForm = ({
         header_id: distribution.header_id,
         line_number: distribution.line_number,
         account_id: distribution.account_id,
+        account_category: distribution.account_category, // added
+        account_type: distribution.account_type, // added
         debitamount: parseFloat(distribution.debitamount),
         creditamount: parseFloat(distribution.creditamount),
         dirty: false,
@@ -81,8 +82,15 @@ const UpdateDistributionsModalForm = ({
 
   const handleAccountChange = (index, accountId) => {
     const updatedLines = [...lines];
-    updatedLines[index].account_id = accountId;
-    updatedLines[index].dirty = true;
+    const selectedAccount = accounts.find(account => account.account_id === parseInt(accountId, 10));
+
+    if (selectedAccount) {
+      updatedLines[index].account_id = accountId;
+      updatedLines[index].account_category = selectedAccount.account_category;
+      updatedLines[index].account_type = selectedAccount.account_type;
+      updatedLines[index].dirty = true;
+    }
+    
     setLines(updatedLines);
   };
 
@@ -98,7 +106,7 @@ const UpdateDistributionsModalForm = ({
       });
       setAccounts(response.data.accounts_list);
     } catch (error) {
-      console.error("Error fetching items:", error);
+      console.error("Error fetching accounts:", error);
     }
   };
 
@@ -107,7 +115,7 @@ const UpdateDistributionsModalForm = ({
     fetchAccountsList(); // Fetch accounts list when component mounts
     fetchDistributions();
       // eslint-disable-next-line
-  }, [headerId,companyId,departmentId]);
+  }, [headerId, companyId, departmentId]);
 
   const handleDebitAmountChange = (index, value) => {
     const updatedLines = [...lines];
@@ -126,10 +134,10 @@ const UpdateDistributionsModalForm = ({
   const handleSubmit = async () => {
     try {
       const hasUpdates = lines.some(line => line.dirty);
-
+  
       const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount), 0);
       const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount), 0);
-
+  
       if (!hasUpdates) {
         if (totalDebitAmount !== totalCreditAmount) {
           const confirmation = window.confirm('Debit and credit amounts are not equal. Are you sure you want to close?');
@@ -139,15 +147,13 @@ const UpdateDistributionsModalForm = ({
           return;
         }
       }
-
+  
       const isAnyFieldEmpty = lines.some(line => !line.account_id || line.debitamount === "" || line.creditamount === "");
       if (isAnyFieldEmpty) {
         alert('Please fill in all fields.');
         return;
       }
-
-
-
+  
       if (totalDebitAmount !== totalCreditAmount) {
         const confirmation = window.confirm('Debit and credit amounts are not equal. Are you sure you want to close?');
         if (confirmation) {
@@ -155,7 +161,7 @@ const UpdateDistributionsModalForm = ({
         }
         return;
       }
-
+  
       if (totalDebitAmount !== parseFloat(invoice_total)) {
         const confirmation = window.confirm('Total debit amount must be equal to invoice total. Are you sure you want to close?');
         if (confirmation) {
@@ -163,51 +169,69 @@ const UpdateDistributionsModalForm = ({
         }
         return;
       }
-
-     
+  
+      // Separate updated lines from new lines
       const updatedLines = lines.filter(line => line.line_id);
       const newLines = lines.filter(line => !line.line_id);
-
+  
+      // Prepare payload for creating new lines
       if (newLines.length > 0) {
+        const createPayload = {
+          header_id: headerId,
+          lines: newLines.map(line => ({
+            line_number: line.line_number,
+            account_id: line.account_id,
+            debitamount: parseFloat(line.debitamount) || 0,
+            creditamount: parseFloat(line.creditamount) || 0,
+          })),
+        };
+  
         const createResponse = await axios.post(
           `${API_URL}/distribute_invoice_to_accounts`,
-          newLines.map(line => ({
-            ...line,
-            header_id: headerId,
-          })),
+          createPayload,
           { headers: generateHeaders() }
         );
-
+  
         if (createResponse.data.success) {
           console.log("New distribution lines created:", createResponse.data);
         } else {
           console.error("Error creating new distribution lines:", createResponse.data.message);
         }
       }
-
+  
+      // Prepare payload for updating existing lines
       if (updatedLines.length > 0) {
+        const updatePayload = {
+          header_id: headerId,
+          lines: updatedLines.map(line => ({
+            line_id: line.line_id,
+            line_number: line.line_number,
+            account_id: line.account_id,
+            debitamount: parseFloat(line.debitamount) || 0,
+            creditamount: parseFloat(line.creditamount) || 0,
+          })),
+        };
+  
         const updateResponse = await axios.put(
           `${API_URL}/update_invoice_accounts`,
-          {
-            header_id: headerId,
-            lines: updatedLines,
-          },
+          updatePayload,
           { headers: generateHeaders() }
         );
-
+  
         if (updateResponse.data.success) {
           console.log("Distribution lines updated:", updateResponse.data);
         } else {
           console.error("Error updating distribution lines:", updateResponse.data.message);
         }
       }
-
+  
       onSuccess("Successfully updated");
       onClose();
     } catch (error) {
       console.error("Error handling distribution lines:", error);
     }
   };
+  
 
   const handleClear = async (index) => {
     if (lines.length === 1) {
@@ -255,6 +279,8 @@ const UpdateDistributionsModalForm = ({
     const newLine = {
       line_number: generateDistTranNumber(),
       account_id: "",
+      account_category: "", // added
+      account_type: "", // added
       debitamount: 0,
       creditamount: 0,
       dirty: true,
@@ -284,12 +310,12 @@ const UpdateDistributionsModalForm = ({
       return;
     }
 
-      const confirmation = window.confirm("Are you sure you want to close?");
-      
-      if (confirmation) {
-        onClose();
-      }
-      return;
+    const confirmation = window.confirm("Are you sure you want to close?");
+    
+    if (confirmation) {
+      onClose();
+    }
+    return;
   };
 
   return (
@@ -304,7 +330,7 @@ const UpdateDistributionsModalForm = ({
       </Modal.Header>
       <Modal.Body>
         <div>
-          <b>Invoice Number:</b> {invoiceNumber} <br></br>
+          <b>Invoice Number:</b> {invoiceNumber} <br />
           <b>
             Invoice Amount:{" "}
             <span style={{ fontWeight: debitCreditEqual ? "bold" : "normal", color: debitCreditEqual ? "green" : "red" }}>
@@ -312,7 +338,7 @@ const UpdateDistributionsModalForm = ({
             </span>{" "}
             <br />
           </b>
-          <b>Tax Rate:</b> {tax_rate} % <br></br>
+          <b>Tax Rate:</b> {tax_rate} % <br />
         </div>
 
         <div className="invoice-line-table-container">
@@ -321,6 +347,8 @@ const UpdateDistributionsModalForm = ({
               <tr>
                 <th>Line No</th>
                 <th>Account</th>
+                <th>Account Category</th> {/* added */}
+                <th>Account Type</th> {/* added */}
                 <th>Debit {displayCurrency}</th>
                 <th>Credit {displayCurrency}</th>
                 <th>Actions</th>
@@ -346,6 +374,8 @@ const UpdateDistributionsModalForm = ({
                       ))}
                     </select>
                   </td>
+                  <td>{line.account_category}</td> {/* added */}
+                  <td>{line.account_type}</td> {/* added */}
                   <td>
                     <input
                       type="text"

@@ -35,7 +35,7 @@ export default function AutoPOInvoiceCreationForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  /*const handleSubmit = async (e) => {
     e.preventDefault();
   
     // Convert empty input to an empty array
@@ -82,7 +82,61 @@ export default function AutoPOInvoiceCreationForm() {
       );
       setSuccessMessage(null);
     }
+  };*/
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Convert empty input to an empty array
+    const purchaseOrderNumbersArray = formData.purchase_order_numbers
+      .split(",")
+      .map((num) => num.trim())
+      .filter((num) => num !== "")  // Filter out empty strings
+      .map((num) => parseInt(num, 10));
+  
+    // Confirmation dialog if purchaseOrderNumbersArray is empty
+    if (purchaseOrderNumbersArray.length === 0) {
+      const userConfirmed = window.confirm(
+        "Are you sure you want to create invoices for all purchase orders?"
+      );
+      if (!userConfirmed) {
+        return;  // Exit if the user clicks "No"
+      }
+    }
+  
+    const requestData = {
+      purchase_order_numbers: purchaseOrderNumbersArray,
+      ...AUTO_PURCHASE_INVOICE_CONFIG
+    };
+  
+    try {
+      const response = await axios.post(
+        `${API_URL}/auto_create_po_pi`,
+        requestData,
+        {
+          headers: generateHeaders(),
+        }
+      );
+      console.log(response.data);
+  
+      // Check if the response structure is as expected
+      if (response.data.invoices && response.data.invoices.length > 0 && response.data.invoices[0].header_response) {
+        setSuccessMessage(response.data.invoices[0].header_response.message);
+      } else {
+        setSuccessMessage("Purchase invoices created successfully.");
+      }
+      setErrorMessage(null);
+    } catch (error) {
+      console.error("Error creating purchase invoice:", error);
+      setErrorMessage(
+        error.response && error.response.data
+          ? error.response.data.message
+          : "An error occurred while creating the purchase invoice."
+      );
+      setSuccessMessage(null);
+    }
   };
+  
   
   return (
     <div className="child-container menu-container">
