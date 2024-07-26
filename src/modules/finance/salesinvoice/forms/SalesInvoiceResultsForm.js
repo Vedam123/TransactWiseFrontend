@@ -53,10 +53,10 @@ export default function SalesInvoiceResultsForm() {
         setResultData(response.data.sales_invoice_headers);
         setError(null);
         logger.info(
-          `[${new Date().toLocaleTimeString()}] The URL`,apiUrl
+          `[${new Date().toLocaleTimeString()}] The URL`, apiUrl
         );
         logger.info(
-          `[${new Date().toLocaleTimeString()}] Fetched Sales data successfully`,response.data.sales_invoice_headers
+          `[${new Date().toLocaleTimeString()}] Fetched Sales data successfully`, response.data.sales_invoice_headers
         );
       } catch (error) {
         setError("An error occurred while fetching data.");
@@ -130,7 +130,7 @@ export default function SalesInvoiceResultsForm() {
 
   return (
     <div>
-      <h1>Sales Inovice Headers</h1>
+      <h1>Sales Invoice Headers</h1>
       {error ? (
         <p>{error}</p>
       ) : (
@@ -180,7 +180,8 @@ export default function SalesInvoiceResultsForm() {
                 </td>
                 <td>
                   <button
-                    onClick={() => fetchSalesInvoiceDistributions(  pi.header_id,
+                    onClick={() => fetchSalesInvoiceDistributions(
+                      pi.header_id,
                       pi.currencycode,
                       pi.totalamount,
                       pi.invoice_number,
@@ -205,8 +206,8 @@ export default function SalesInvoiceResultsForm() {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <b>Invoice Number:</b> {invoiceNumber} <br></br>
-            <b>Invoice Amount:</b> {invoiceTotal} {currencyCode} <br></br>
+            <b>Invoice Number:</b> {invoiceNumber} <br />
+            <b>Invoice Amount:</b> {invoiceTotal} {currencyCode} <br />
           </div>
           <table className="table table-striped">
             <thead>
@@ -222,13 +223,12 @@ export default function SalesInvoiceResultsForm() {
             <tbody>
               {SalesInvoiceLines.map((line, index) => (
                 <tr key={index}>
-                  <td key={index.line_number}>{line.line_number}</td>
-                  <td key={index.item_id}>{line.item_code}</td>
-                  <td key={index.quantity}>{line.quantity}</td>
-                  <td key={index.unit_price}>{line.unit_price}</td>
-                  <td key={index.line_total}>{line.line_total}</td>
-                  <td key={index.uom_id}>{line.uom_name}</td>
-                  {/* Add more row data as needed */}
+                  <td key={line.line_number}>{line.line_number}</td>
+                  <td key={line.item_id}>{line.item_code}</td>
+                  <td key={line.quantity}>{line.quantity}</td>
+                  <td key={line.unit_price}>{line.unit_price}</td>
+                  <td key={line.line_total}>{line.line_total}</td>
+                  <td key={line.uom_id}>{line.uom_name}</td>
                 </tr>
               ))}
             </tbody>
@@ -254,14 +254,16 @@ export default function SalesInvoiceResultsForm() {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <b>Invoice Number:</b> {invoiceNumber} <br></br>
-            <b>Invoice Amount:</b> {invoiceTotal} {currencyCode} <br></br>
+            <b>Invoice Number:</b> {invoiceNumber} <br />
+            <b>Invoice Amount:</b> {invoiceTotal} {currencyCode} <br />
           </div>
           <table className="table table-striped">
             <thead>
               <tr>
                 <th>Line No</th>
                 <th>Account</th>
+                <th>Category</th> {/* Added Category column */}
+                <th>Type</th> {/* Added Type column */}
                 <th>Debit ({currencySymbol})</th>
                 <th>Credit ({currencySymbol})</th>
               </tr>
@@ -269,10 +271,12 @@ export default function SalesInvoiceResultsForm() {
             <tbody>
               {SalesInvoiceDistributions.map((line, index) => (
                 <tr key={index}>
-                  <td key={index.line_number}>{line.line_number}</td>
-                  <td key={index.account_id}>{line.account_number}</td>
-                  <td key={index.debitamount}>{line.debitamount}</td>
-                  <td key={index.creditamount}>{line.creditamount}</td>
+                  <td key={line.line_number}>{line.line_number}</td>
+                  <td key={line.account_id}>{line.account_number}</td>
+                  <td key={line.account_category}>{line.account_category}</td> {/* Added Category data */}
+                  <td key={line.account_type}>{line.account_type}</td> {/* Added Type data */}
+                  <td key={line.debitamount}>{line.debitamount}</td>
+                  <td key={line.creditamount}>{line.creditamount}</td>
                 </tr>
               ))}
             </tbody>

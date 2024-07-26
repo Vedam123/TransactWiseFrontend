@@ -8,7 +8,7 @@ import {
 } from "../../../admin/setups/ConstDecl";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 import logger from "../../../utilities/Logs/logger";
-import { Modal, Button } from "react-bootstrap"; // Import the Modal and Button components
+import { Modal, Button } from "react-bootstrap";
 
 export default function PurchaseInvoiceResultsForm() {
   const { PurchaseParameters } = useParams();
@@ -53,7 +53,7 @@ export default function PurchaseInvoiceResultsForm() {
           headers: generateHeaders(),
         });
         console.log(
-          "Reults of Purchase orders ",
+          "Results of Purchase orders ",
           response.data.purchase_invoice_headers
         );
         setResultData(response.data.purchase_invoice_headers);
@@ -133,7 +133,7 @@ export default function PurchaseInvoiceResultsForm() {
 
   return (
     <div>
-      <h1>Purchase Inovice Headers</h1>
+      <h1>Purchase Invoice Headers</h1>
       {error ? (
         <p>{error}</p>
       ) : (
@@ -183,7 +183,8 @@ export default function PurchaseInvoiceResultsForm() {
                 </td>
                 <td>
                   <button
-                    onClick={() => fetchPurchaseInvoiceDistributions(  pi.header_id,
+                    onClick={() => fetchPurchaseInvoiceDistributions(
+                      pi.header_id,
                       pi.currencycode,
                       pi.totalamount,
                       pi.invoice_number,
@@ -208,8 +209,8 @@ export default function PurchaseInvoiceResultsForm() {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <b>Invoice Number:</b> {invoiceNumber} <br></br>
-            <b>Invoice Amount:</b> {invoiceTotal} {currencyCode} <br></br>
+            <b>Invoice Number:</b> {invoiceNumber} <br />
+            <b>Invoice Amount:</b> {invoiceTotal} {currencyCode} <br />
           </div>
           <table className="table table-striped">
             <thead>
@@ -231,7 +232,6 @@ export default function PurchaseInvoiceResultsForm() {
                   <td key={line.unit_price}>{line.unit_price}</td>
                   <td key={line.line_total}>{line.line_total}</td>
                   <td key={line.uom_id}>{line.uom_name}</td>
-                  {/* Add more row data as needed */}
                 </tr>
               ))}
             </tbody>
@@ -257,14 +257,16 @@ export default function PurchaseInvoiceResultsForm() {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <b>Invoice Number:</b> {invoiceNumber} <br></br>
-            <b>Invoice Amount:</b> {invoiceTotal} {currencyCode} <br></br>
+            <b>Invoice Number:</b> {invoiceNumber} <br />
+            <b>Invoice Amount:</b> {invoiceTotal} {currencyCode} <br />
           </div>
           <table className="table table-striped">
             <thead>
               <tr>
                 <th>Line No</th>
                 <th>Account</th>
+                <th>Category</th> {/* Added Category column */}
+                <th>Type</th> {/* Added Type column */}
                 <th>Debit ({currencySymbol})</th>
                 <th>Credit ({currencySymbol})</th>
               </tr>
@@ -274,6 +276,8 @@ export default function PurchaseInvoiceResultsForm() {
                 <tr key={index}>
                   <td key={line.line_number}>{line.line_number}</td>
                   <td key={line.account_id}>{line.account_number}</td>
+                  <td key={line.account_category}>{line.account_category}</td> {/* Added Category data */}
+                  <td key={line.account_type}>{line.account_type}</td> {/* Added Type data */}
                   <td key={line.debitamount}>{line.debitamount}</td>
                   <td key={line.creditamount}>{line.creditamount}</td>
                 </tr>

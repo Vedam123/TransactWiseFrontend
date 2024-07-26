@@ -52,8 +52,8 @@ const UpdateDistributionsModalForm = ({
   useEffect(() => {
     const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount || 0), 0);
     const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount || 0), 0);
-    setDebitCreditEqual(totalDebitAmount === totalCreditAmount);
-  }, [lines]);
+    setDebitCreditEqual(totalDebitAmount === totalCreditAmount && totalDebitAmount === parseFloat(invoice_total));
+  }, [lines, invoice_total]);
 
   const fetchDistributions = async () => {
     try {
@@ -66,8 +66,8 @@ const UpdateDistributionsModalForm = ({
         header_id: distribution.header_id,
         line_number: distribution.line_number,
         account_id: distribution.account_id,
-        account_category: distribution.account_category, // added
-        account_type: distribution.account_type, // added
+        account_category: distribution.account_category,
+        account_type: distribution.account_type,
         debitamount: parseFloat(distribution.debitamount),
         creditamount: parseFloat(distribution.creditamount),
         dirty: false,
@@ -86,17 +86,12 @@ const UpdateDistributionsModalForm = ({
           currency_id: currencyId
         }
       });
-      console.log("Fetched Accounts:", response.data.accounts_list);
       setAccounts(response.data.accounts_list);
     } catch (error) {
       console.error("Error fetching accounts:", error);
     }
   };
-  
-  useEffect(() => {
-    console.log('Lines state changed:', lines);
-  }, [lines]);
-  
+
   useEffect(() => {
     fetchAccountsList();
     fetchDistributions();
@@ -104,43 +99,39 @@ const UpdateDistributionsModalForm = ({
   }, [headerId, companyId, departmentId]);
 
   const handleAccountChange = (index, accountId) => {
-    // Log the type and value of accountId
-    console.log('Selected Account ID:', accountId, 'Type:', typeof accountId);
-    
     const updatedLines = [...lines];
-  
-    // Convert accountId to a number if it's a string
     const selectedAccount = accounts.find(account => account.account_id === parseInt(accountId, 10));
-  
+
     if (selectedAccount) {
-      updatedLines[index].account_id = accountId;
-      updatedLines[index].account_category = selectedAccount.account_category;
-      updatedLines[index].account_type = selectedAccount.account_type;
-      updatedLines[index].dirty = true;
-      console.log(`Updated line ${index}:`, updatedLines[index]);
-    } else {
-      console.log(`Account with id ${accountId} not found`);
+      updatedLines[index] = {
+        ...updatedLines[index],
+        account_id: accountId,
+        account_category: selectedAccount.account_category,
+        account_type: selectedAccount.account_type,
+        dirty: true,
+      };
     }
-    
+
     setLines(updatedLines);
-    console.log('Lines state after update:', updatedLines);
   };
-  
-  
-  
-  
 
   const handleDebitAmountChange = (index, value) => {
     const updatedLines = [...lines];
-    updatedLines[index].debitamount = value;
-    updatedLines[index].dirty = true;
+    updatedLines[index] = {
+      ...updatedLines[index],
+      debitamount: value,
+      dirty: true,
+    };
     setLines(updatedLines);
   };
 
   const handleCreditAmountChange = (index, value) => {
     const updatedLines = [...lines];
-    updatedLines[index].creditamount = value;
-    updatedLines[index].dirty = true;
+    updatedLines[index] = {
+      ...updatedLines[index],
+      creditamount: value,
+      dirty: true,
+    };
     setLines(updatedLines);
   };
 
@@ -181,9 +172,6 @@ const UpdateDistributionsModalForm = ({
 
       const updatedLines = lines.filter((line) => line.line_id);
       const newLines = lines.filter((line) => !line.line_id);
-
-      console.log("New Lines ",newLines )
-      console.log("Update Lines ",updatedLines )
 
       if (newLines.length > 0) {
         const createResponse = await axios.post(
@@ -307,6 +295,9 @@ const UpdateDistributionsModalForm = ({
     }
   };
 
+  const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount), 0);
+  const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount), 0);
+
   return (
     <Modal
       show={showDistModalWindow}
@@ -319,15 +310,15 @@ const UpdateDistributionsModalForm = ({
       </Modal.Header>
       <Modal.Body>
         <div>
-          <b>Invoice Number:</b> {invoiceNumber} <br></br>
+          <b>Invoice Number:</b> {invoiceNumber} <br />
           <b>
             Invoice Amount:{" "}
             <span style={{ fontWeight: debitCreditEqual ? "bold" : "normal", color: debitCreditEqual ? "green" : "red" }}>
               {invoice_total} {currencyCode}
-            </span>{" "}
+            </span>
             <br />
           </b>
-          <b>Tax Rate:</b> {tax_rate} % <br></br>
+          <b>Tax Rate:</b> {tax_rate} % <br />
         </div>
 
         <div className="invoice-line-table-container">
@@ -336,8 +327,8 @@ const UpdateDistributionsModalForm = ({
               <tr>
                 <th>Line No</th>
                 <th>Account</th>
-                <th>Category</th> {/* added */}
-                <th>Type</th> {/* added */}
+                <th>Category</th>
+                <th>Type</th>
                 <th>Debit {displayCurrency}</th>
                 <th>Credit {displayCurrency}</th>
                 <th>Actions</th>
@@ -354,17 +345,14 @@ const UpdateDistributionsModalForm = ({
                     >
                       <option value="">Select Account</option>
                       {accounts.map((account) => (
-                        <option
-                          key={account.account_id}
-                          value={account.account_id}
-                        >
+                        <option key={account.account_id} value={account.account_id}>
                           {account.account_number} ({account.account_name})
                         </option>
                       ))}
                     </select>
                   </td>
-                  <td>{line.account_category}</td> {/* added */}
-                  <td>{line.account_type}</td> {/* added */}
+                  <td>{line.account_category}</td>
+                  <td>{line.account_type}</td>
                   <td>
                     <input
                       type="text"
@@ -390,6 +378,16 @@ const UpdateDistributionsModalForm = ({
                 <td colSpan="7">
                   <button onClick={handleAddNew}>Add Line</button>
                 </td>
+              </tr>
+              <tr>
+                <td colSpan="4" />
+                <td style={{ color: totalDebitAmount === parseFloat(invoice_total) ? "green" : "red" }}>
+                  <b>{totalDebitAmount} {displayCurrency}</b>
+                </td>
+                <td style={{ color: totalCreditAmount === parseFloat(invoice_total) ? "green" : "red" }}>
+                  <b>{totalCreditAmount} {displayCurrency}</b>
+                </td>
+                <td />
               </tr>
             </tbody>
           </table>
