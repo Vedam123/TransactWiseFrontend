@@ -59,15 +59,10 @@ const CreateSalesLineModalForm = ({
     }
   };
 
-  const roundToTwoDecimalPlaces = (value) => {
-    return parseFloat(value).toFixed(2);
-  };
-
   const calculateTotalLineAmount = (lines) => {
-    const total = lines.reduce((acc, line) => acc + parseFloat(line.line_total), 0);
-    setTotalLineAmount(roundToTwoDecimalPlaces(total));
+    const total = lines.reduce((acc, line) => acc + line.line_total, 0);
+    setTotalLineAmount(total);
   };
-  
 
   useEffect(() => {
 
@@ -101,32 +96,32 @@ const CreateSalesLineModalForm = ({
     };
     fetchItemsList();
     fetchUOMsList();
-   // eslint-disable-next-line
+
   }, [lines]);
 
   const handleQuantityChange = (index, value) => {
     const updatedLines = [...lines];
     updatedLines[index].quantity = value;
-    updatedLines[index].line_total = roundToTwoDecimalPlaces(value * updatedLines[index].unit_price);
+    updatedLines[index].line_total = value * updatedLines[index].unit_price;
     setLines(updatedLines);
     calculateTotalSum(updatedLines); // Update total sum
   };
-  
 
   const handleUnitPriceChange = (index, value) => {
     const updatedLines = [...lines];
     updatedLines[index].unit_price = value;
-    updatedLines[index].line_total = roundToTwoDecimalPlaces(value * updatedLines[index].quantity);
+    updatedLines[index].line_total = value * updatedLines[index].quantity;
     setLines(updatedLines);
     calculateTotalSum(updatedLines); // Update total sum
   };
-  
 
   const calculateTotalSum = (updatedLines) => {
-    const sum = updatedLines.reduce((total, line) => total + parseFloat(line.line_total), 0);
-    setTotalSum(roundToTwoDecimalPlaces(sum));
+    const sum = updatedLines.reduce(
+      (total, line) => total + line.line_total,
+      0
+    );
+    setTotalSum(sum);
   };
-  
 
   const validateForm = () => {
     const isAnyFieldEmpty = lines.some(
@@ -150,7 +145,7 @@ const CreateSalesLineModalForm = ({
       const updatedLinesWithHeaderId = lines.map((line) => ({
         ...line,
         header_id: headerId,
-        line_total: roundToTwoDecimalPlaces(line.quantity * line.unit_price),
+        line_total: line.quantity * line.unit_price,
         invoice_number: invoiceNumber,
       }));
   
@@ -195,14 +190,13 @@ const CreateSalesLineModalForm = ({
     if (lines.length === 1) {
       return;
     }
-  
+
     const updatedLines = [...lines];
-    const removedLineTotal = parseFloat(updatedLines[index].line_total); 
+    const removedLineTotal = updatedLines[index].line_total; 
     updatedLines.splice(index, 1);
     setLines(updatedLines);
-    setTotalLineAmount(roundToTwoDecimalPlaces(totalLineAmount - removedLineTotal));
+    setTotalLineAmount(totalLineAmount - removedLineTotal); 
   };
-  
 
   const handleAddNew = () => {
     setLines([
@@ -285,7 +279,8 @@ const CreateSalesLineModalForm = ({
                       onChange={(e) => handleUnitPriceChange(index, e.target.value)}
                     />
                   </td>
-                  <td>{roundToTwoDecimalPlaces(line.line_total)}</td>
+                  <td>{String(line.line_total)}</td>
+
                   <td>
                     <select
                       value={line.uom_id}

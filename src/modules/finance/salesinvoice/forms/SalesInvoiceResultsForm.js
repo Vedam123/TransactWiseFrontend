@@ -15,9 +15,12 @@ export default function SalesInvoiceResultsForm() {
   const [resultData, setResultData] = useState([]);
   const [error, setError] = useState(null);
   const [SalesInvoiceLines, setSalesInvoiceLines] = useState([]);
-  const [SalesInvoiceDistributions, setSalesInvoiceDistributions] = useState([]);
+  const [SalesInvoiceDistributions, setSalesInvoiceDistributions] = useState(
+    []
+  );
   const [showLinesModalWindow, setShowLinesModalWindow] = useState(false);
-  const [showDistributionModalWindow, setShowDistributionModalWindow] = useState(false);
+  const [showDistributionModalWindow, setShowDistributionModalWindow] =
+    useState(false);
   const [currencyCode, setCurrencyCode] = useState(false);
   const [currencySymbol, setCurrencySymbol] = useState(false);
   const [invoiceTotal, setInvoiceTotal] = useState(false);
@@ -52,11 +55,10 @@ export default function SalesInvoiceResultsForm() {
         });
         setResultData(response.data.sales_invoice_headers);
         setError(null);
+        logger.info(`[${new Date().toLocaleTimeString()}] The URL`, apiUrl);
         logger.info(
-          `[${new Date().toLocaleTimeString()}] The URL`, apiUrl
-        );
-        logger.info(
-          `[${new Date().toLocaleTimeString()}] Fetched Sales data successfully`, response.data.sales_invoice_headers
+          `[${new Date().toLocaleTimeString()}] Fetched Sales data successfully`,
+          response.data.sales_invoice_headers
         );
       } catch (error) {
         setError("An error occurred while fetching data.");
@@ -180,12 +182,15 @@ export default function SalesInvoiceResultsForm() {
                 </td>
                 <td>
                   <button
-                    onClick={() => fetchSalesInvoiceDistributions(
-                      pi.header_id,
-                      pi.currencycode,
-                      pi.totalamount,
-                      pi.invoice_number,
-                      pi.currencysymbol)}
+                    onClick={() =>
+                      fetchSalesInvoiceDistributions(
+                        pi.header_id,
+                        pi.currencycode,
+                        pi.totalamount,
+                        pi.invoice_number,
+                        pi.currencysymbol
+                      )
+                    }
                   >
                     Distribution
                   </button>
@@ -261,6 +266,7 @@ export default function SalesInvoiceResultsForm() {
             <thead>
               <tr>
                 <th>Line No</th>
+                <th>Is Tax Line</th>
                 <th>Account</th>
                 <th>Category</th> {/* Added Category column */}
                 <th>Type</th> {/* Added Type column */}
@@ -272,9 +278,16 @@ export default function SalesInvoiceResultsForm() {
               {SalesInvoiceDistributions.map((line, index) => (
                 <tr key={index}>
                   <td key={line.line_number}>{line.line_number}</td>
+                  <td key={line.is_tax_line}>
+                    {line.is_tax_line === 1 ? "True" : ""}
+                  </td>
                   <td key={line.account_id}>{line.account_number}</td>
-                  <td key={line.account_category}>{line.account_category}</td> {/* Added Category data */}
-                  <td key={line.account_type}>{line.account_type}</td> {/* Added Type data */}
+                  <td key={line.account_category}>
+                    {line.account_category}
+                  </td>{" "}
+                  {/* Added Category data */}
+                  <td key={line.account_type}>{line.account_type}</td>{" "}
+                  {/* Added Type data */}
                   <td key={line.debitamount}>{line.debitamount}</td>
                   <td key={line.creditamount}>{line.creditamount}</td>
                 </tr>

@@ -45,7 +45,6 @@ const UpdateDistributionsModalForm = ({
       account_type: "",
       debitamount: 0,
       creditamount: 0,
-      is_tax_line: false, // Added
       dirty: false,
     },
   ]);
@@ -84,20 +83,12 @@ const UpdateDistributionsModalForm = ({
         account_type: distribution.account_type, // added
         debitamount: parseFloat(distribution.debitamount),
         creditamount: parseFloat(distribution.creditamount),
-        is_tax_line: distribution.is_tax_line, // Added
         dirty: false,
       }));
       setLines(defaultLines);
     } catch (error) {
       console.error("Error fetching distributions:", error);
     }
-  };
-
-  const handleIsTaxLineChange = (index, value) => {
-    const updatedLines = [...lines];
-    updatedLines[index].is_tax_line = value;
-    updatedLines[index].dirty = true;
-    setLines(updatedLines);
   };
 
   const handleAccountChange = (index, accountId) => {
@@ -219,7 +210,6 @@ const UpdateDistributionsModalForm = ({
           header_id: headerId,
           lines: newLines.map((line) => ({
             line_number: line.line_number,
-            is_tax_line: line.is_tax_line,            
             account_id: line.account_id,
             debitamount: parseFloat(line.debitamount) || 0,
             creditamount: parseFloat(line.creditamount) || 0,
@@ -249,7 +239,6 @@ const UpdateDistributionsModalForm = ({
           lines: updatedLines.map((line) => ({
             line_id: line.line_id,
             line_number: line.line_number,
-            is_tax_line: line.is_tax_line,
             account_id: line.account_id,
             debitamount: parseFloat(line.debitamount) || 0,
             creditamount: parseFloat(line.creditamount) || 0,
@@ -416,7 +405,6 @@ const UpdateDistributionsModalForm = ({
             <thead className="invoice-line-table-header-custom">
               <tr>
                 <th>Line No</th>
-                <th>Is Tax Line</th> {/* New column for is_tax_line */}
                 <th>Account</th>
                 <th>Account Category</th> {/* added */}
                 <th>Account Type</th> {/* added */}
@@ -429,15 +417,6 @@ const UpdateDistributionsModalForm = ({
               {lines.map((line, index) => (
                 <tr key={index} className="table-row">
                   <td>{line.line_number}</td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={line.is_tax_line}
-                      onChange={(e) =>
-                        handleIsTaxLineChange(index, e.target.checked)
-                      }
-                    />
-                  </td>
                   <td>
                     <select
                       value={line.account_id}

@@ -140,25 +140,21 @@ const UpdatePurchaseLineModalForm = ({
 
   const handleQuantityChange = (index, value) => {
     const updatedLines = [...lines];
-    const quantity = parseFloat(value) || 0; // Convert to number or default to 0
-    updatedLines[index].quantity = quantity;
-    updatedLines[index].line_total = parseFloat((quantity * updatedLines[index].unit_price).toFixed(2)); // Round to 2 decimal places
+    updatedLines[index].quantity = value;
+    updatedLines[index].line_total = value * updatedLines[index].unit_price;
     updatedLines[index].isModified = true; // Mark line as modified
     setLines(updatedLines);
     calculateTotalLineAmount(updatedLines); // Update total amount
   };
-  
 
   const handleUnitPriceChange = (index, value) => {
     const updatedLines = [...lines];
-    const unitPrice = parseFloat(value) || 0; // Convert to number or default to 0
-    updatedLines[index].unit_price = unitPrice;
-    updatedLines[index].line_total = parseFloat((unitPrice * updatedLines[index].quantity).toFixed(2)); // Round to 2 decimal places
+    updatedLines[index].unit_price = value;
+    updatedLines[index].line_total = value * updatedLines[index].quantity;
     updatedLines[index].isModified = true; // Mark line as modified
     setLines(updatedLines);
     calculateTotalLineAmount(updatedLines); // Update total amount
   };
-  
 
   /*const calculateTotalSum = (updatedLines) => {
     const sum = updatedLines.reduce(
@@ -304,8 +300,8 @@ const UpdatePurchaseLineModalForm = ({
           const updatedLines = [...lines];
           updatedLines.splice(index, 1);
           setLines(updatedLines);
-          setTotalLineAmount(totalLineAmount - parseFloat(lineToDelete.line_total));
-          setInvoiceTotal(totalLineAmount - parseFloat(lineToDelete.line_total));
+          setTotalLineAmount(totalLineAmount - lineToDelete.line_total);
+          setInvoiceTotal(totalLineAmount - lineToDelete.line_total);
         } else {
           console.error("Error deleting invoice line:", response.data.message);
         }
@@ -315,7 +311,7 @@ const UpdatePurchaseLineModalForm = ({
     } else {
       // If the line doesn't have line_id, remove it directly from state
       const updatedLines = [...lines];
-      const removedLineTotal = parseFloat(updatedLines[index].line_total);
+      const removedLineTotal = updatedLines[index].line_total;
       updatedLines.splice(index, 1);
       setLines(updatedLines);
       setTotalLineAmount(totalLineAmount - removedLineTotal);
@@ -407,7 +403,7 @@ const UpdatePurchaseLineModalForm = ({
                       }
                     />
                   </td>
-                  <td>{line.line_total}</td>
+                  <td>{String(line.line_total)}</td>
 
                   <td>
                     <select

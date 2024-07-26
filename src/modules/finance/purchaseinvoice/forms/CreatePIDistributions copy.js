@@ -20,10 +20,10 @@ const generateDistTranNumber = () => {
   const formattedRandomSuffix = String(randomSuffix).padStart(3, "0");
   const generateDistTranNum = `${timestampSuffix}${formattedRandomSuffix}`;
 
-  return parseInt(generateDistTranNum);
+  return generateDistTranNum;
 };
 
-const CreateSIDistributions = ({
+const CreatePIDistributions = ({
   showDistModalWindow,
   headerId,
   companyId,
@@ -47,7 +47,6 @@ const CreateSIDistributions = ({
       account_type: "",
       debitamount: 0,
       creditamount: 0,
-      is_tax_line: false, // Default value for the new field
     },
   ]);
   const [successMessage, setSuccessMessage] = useState("");
@@ -65,19 +64,11 @@ const CreateSIDistributions = ({
 
   useEffect(() => {
     fetchAccountsList();
-    // eslint-disable-next-line
   }, [headerId, companyId, departmentId]);
 
   useEffect(() => {
     calculateTotals();
-    // eslint-disable-next-line
   }, [lines]);
-
-  const handleTaxLineChange = (index) => {
-    const updatedLines = [...lines];
-    updatedLines[index].is_tax_line = !updatedLines[index].is_tax_line;
-    setLines(updatedLines);
-  };
 
   const fetchAccountsList = async () => {
     try {
@@ -99,9 +90,7 @@ const CreateSIDistributions = ({
 
   const handleAccountChange = (index, accountId) => {
     const updatedLines = [...lines];
-    const selectedAccount = accounts.find(
-      (account) => account.account_id === parseInt(accountId, 10)
-    );
+    const selectedAccount = accounts.find(account => account.account_id === parseInt(accountId, 10));
 
     if (selectedAccount) {
       updatedLines[index].account_id = parseInt(accountId, 10); // Ensure account_id is an integer
@@ -125,14 +114,8 @@ const CreateSIDistributions = ({
   };
 
   const calculateTotals = () => {
-    const totalDebitAmount = lines.reduce(
-      (acc, line) => acc + parseFloat(line.debitamount || 0),
-      0
-    );
-    const totalCreditAmount = lines.reduce(
-      (acc, line) => acc + parseFloat(line.creditamount || 0),
-      0
-    );
+    const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount || 0), 0);
+    const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount || 0), 0);
 
     setDebitTotal(totalDebitAmount);
     setCreditTotal(totalCreditAmount);
@@ -140,49 +123,44 @@ const CreateSIDistributions = ({
 
   const handleDistributionLines = async () => {
     try {
-      const isAnyFieldEmpty = lines.some(
-        (line) =>
-          !line.account_id ||
-          line.debitamount === "" ||
-          line.creditamount === ""
-      );
+      // Check if all fields are populated
+      const isAnyFieldEmpty = lines.some(line => !line.account_id || line.debitamount === "" || line.creditamount === "");
       if (isAnyFieldEmpty) {
-        alert("Please fill in all fields.");
+        alert('Please fill in all fields.');
         return;
       }
 
-      const totalDebitAmount = lines.reduce(
-        (acc, line) => acc + parseFloat(line.debitamount),
-        0
-      );
-      const totalCreditAmount = lines.reduce(
-        (acc, line) => acc + parseFloat(line.creditamount),
-        0
-      );
+      // Check if sum of debit amounts is equal to sum of credit amounts
+      const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount), 0);
+      const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount), 0);
       if (totalDebitAmount !== totalCreditAmount) {
-        alert("Total debit amount must be equal to total credit amount.");
+        alert('Total debit amount must be equal to total credit amount.');
         return;
       }
 
+      // Check if sum of debit amounts is equal to invoice_total
       if (totalDebitAmount !== parseFloat(invoice_total)) {
-        alert("Total debit amount must be equal to invoice total.");
+        alert('Total debit amount must be equal to invoice total.');
         return;
       }
 
-      const updatedLinesWithHeaderId = {
-        header_id: headerId,
-        lines: lines.map((line) => ({
-          line_number: String(line.line_number), // Ensure line_number is a string
-          account_id: parseInt(line.account_id, 10), // Ensure account_id is an integer
-          debitamount: parseFloat(line.debitamount), // Ensure debitamount is a float
-          creditamount: parseFloat(line.creditamount), // Ensure creditamount is a float
-          is_tax_line: line.is_tax_line, // Include is_tax_line in the payload
-        })),
+      const updatedLinesWithHeaderId = lines.map((line) => ({
+        line_number: line.line_number,
+        account_id: parseInt(line.account_id, 10), // Ensure account_id is an integer
+        debitamount: parseFloat(line.debitamount), // Ensure debitamount is a float
+        creditamount: parseFloat(line.creditamount), // Ensure creditamount is a float
+      }));
+
+      const payload = {
+        header_id: headerId, // Add header_id at the root level
+        lines: updatedLinesWithHeaderId,
       };
 
+      console.log("JSON request:", payload);
+
       const response = await axios.post(
-        `${API_URL}/distribute_sales_invoice_to_accounts`,
-        updatedLinesWithHeaderId,
+        `${API_URL}/distribute_invoice_to_accounts`,
+        payload,
         { headers: generateHeaders() }
       );
 
@@ -190,16 +168,14 @@ const CreateSIDistributions = ({
         onClose();
         onSuccess(response);
         setSuccessMessage("Distributions created successfully.");
-        setLines([
-          {
-            line_number: generateDistTranNumber(),
-            account_id: "",
-            account_category: "",
-            account_type: "",
-            debitamount: 0,
-            creditamount: 0,
-          },
-        ]);
+        setLines([{
+          line_number: generateDistTranNumber(),
+          account_id: "",
+          account_category: "",
+          account_type: "",
+          debitamount: 0,
+          creditamount: 0,
+        }]);
       } else {
         console.error("Error creating invoice lines:", response.data.message);
       }
@@ -228,14 +204,12 @@ const CreateSIDistributions = ({
         account_type: "",
         debitamount: 0,
         creditamount: 0,
-        is_tax_line: false, // Default value for new lines        
       },
     ]);
   };
 
   const getTotalRowStyle = () => {
-    const totalsMatch =
-      debitTotal === creditTotal && debitTotal === parseFloat(invoice_total);
+    const totalsMatch = debitTotal === creditTotal && debitTotal === parseFloat(invoice_total);
     return { color: totalsMatch ? "green" : "red" };
   };
 
@@ -252,11 +226,7 @@ const CreateSIDistributions = ({
       <Modal.Body>
         <div>
           <b>Invoice Number:</b> {invoiceNumber} <br />
-          <b>Invoice Amount:</b>{" "}
-          <span style={getTotalRowStyle()}>
-            {invoice_total} {currencyCode}
-          </span>{" "}
-          <br />
+          <b>Invoice Amount:</b> <span style={getTotalRowStyle()}>{invoice_total} {currencyCode}</span> <br />
           <b>Tax Rate:</b> {tax_rate} % <br />
         </div>
 
@@ -265,7 +235,6 @@ const CreateSIDistributions = ({
             <thead className="invoice-line-table-header-custom">
               <tr>
                 <th>Line No</th>
-                <th>Tax Line</th> {/* Added Tax Line column */}
                 <th>Account</th>
                 <th>Category</th> {/* Added Category column */}
                 <th>Type</th> {/* Added Type column */}
@@ -276,21 +245,12 @@ const CreateSIDistributions = ({
             </thead>
             <tbody>
               {lines.map((line, index) => (
-                <tr key={`${line.line_number}-${index}`} className="table-row">
+                <tr key={index} className="table-row">
                   <td>{line.line_number}</td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={line.is_tax_line}
-                      onChange={() => handleTaxLineChange(index)}
-                    />
-                  </td>
                   <td>
                     <select
                       value={line.account_id}
-                      onChange={(e) =>
-                        handleAccountChange(index, e.target.value)
-                      }
+                      onChange={(e) => handleAccountChange(index, e.target.value)}
                     >
                       <option value="">Select Account</option>
                       {accounts.map((account) => (
@@ -303,8 +263,8 @@ const CreateSIDistributions = ({
                       ))}
                     </select>
                   </td>
-                  <td>{line.account_category}</td>
-                  <td>{line.account_type}</td>
+                  <td>{line.account_category}</td> {/* Display Category */}
+                  <td>{line.account_type}</td> {/* Display Type */}
                   <td>
                     <input
                       type="number"
@@ -365,4 +325,4 @@ const CreateSIDistributions = ({
   );
 };
 
-export default CreateSIDistributions;
+export default CreatePIDistributions;

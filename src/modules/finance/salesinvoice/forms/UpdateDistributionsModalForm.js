@@ -43,25 +43,40 @@ const UpdateDistributionsModalForm = ({
       account_type: "",
       debitamount: 0,
       creditamount: 0,
+      is_tax_line: false, // Default value for new lines
+      dirty: true,
     },
   ]);
+
   const [debitCreditEqual, setDebitCreditEqual] = useState(true);
   const [accounts, setAccounts] = useState([]);
   const displayCurrency = currencySymbol ? currencySymbol : currencyCode;
 
   useEffect(() => {
-    const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount || 0), 0);
-    const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount || 0), 0);
-    setDebitCreditEqual(totalDebitAmount === totalCreditAmount && totalDebitAmount === parseFloat(invoice_total));
+    const totalDebitAmount = lines.reduce(
+      (acc, line) => acc + parseFloat(line.debitamount || 0),
+      0
+    );
+    const totalCreditAmount = lines.reduce(
+      (acc, line) => acc + parseFloat(line.creditamount || 0),
+      0
+    );
+    setDebitCreditEqual(
+      totalDebitAmount === totalCreditAmount &&
+        totalDebitAmount === parseFloat(invoice_total)
+    );
   }, [lines, invoice_total]);
 
   const fetchDistributions = async () => {
     try {
-      const distributionsResponse = await axios.get(`${API_URL}/get_sales_invoice_distributions?header_id=${headerId}`, {
-        headers: generateHeaders(),
-      });
+      const distributionsResponse = await axios.get(
+        `${API_URL}/get_sales_invoice_distributions?header_id=${headerId}`,
+        {
+          headers: generateHeaders(),
+        }
+      );
       const distributions = distributionsResponse.data.sales_invoice_accounts;
-      const defaultLines = distributions.map(distribution => ({
+      const defaultLines = distributions.map((distribution) => ({
         line_id: distribution.line_id,
         header_id: distribution.header_id,
         line_number: distribution.line_number,
@@ -70,6 +85,7 @@ const UpdateDistributionsModalForm = ({
         account_type: distribution.account_type,
         debitamount: parseFloat(distribution.debitamount),
         creditamount: parseFloat(distribution.creditamount),
+        is_tax_line: distribution.is_tax_line || false, // Default to false if undefined
         dirty: false,
       }));
       setLines(defaultLines);
@@ -83,8 +99,8 @@ const UpdateDistributionsModalForm = ({
       const response = await axios.get(`${API_URL}/get_accounts`, {
         headers: generateHeaders(),
         params: {
-          currency_id: currencyId
-        }
+          currency_id: currencyId,
+        },
       });
       setAccounts(response.data.accounts_list);
     } catch (error) {
@@ -100,7 +116,9 @@ const UpdateDistributionsModalForm = ({
 
   const handleAccountChange = (index, accountId) => {
     const updatedLines = [...lines];
-    const selectedAccount = accounts.find(account => account.account_id === parseInt(accountId, 10));
+    const selectedAccount = accounts.find(
+      (account) => account.account_id === parseInt(accountId, 10)
+    );
 
     if (selectedAccount) {
       updatedLines[index] = {
@@ -138,33 +156,50 @@ const UpdateDistributionsModalForm = ({
   const handleSubmit = async () => {
     try {
       const hasUpdates = lines.some((line) => line.dirty);
-      const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount), 0);
-      const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount), 0);
+      const totalDebitAmount = lines.reduce(
+        (acc, line) => acc + parseFloat(line.debitamount),
+        0
+      );
+      const totalCreditAmount = lines.reduce(
+        (acc, line) => acc + parseFloat(line.creditamount),
+        0
+      );
 
       if (!hasUpdates) {
         if (totalDebitAmount !== totalCreditAmount) {
-          const confirmation = window.confirm('Debit and credit amounts are not equal. Are you sure you want to proceed?');
+          const confirmation = window.confirm(
+            "Debit and credit amounts are not equal. Are you sure you want to proceed?"
+          );
           if (!confirmation) {
             return;
           }
         }
       }
 
-      const isAnyFieldEmpty = lines.some((line) => !line.account_id || line.debitamount === "" || line.creditamount === "");
+      const isAnyFieldEmpty = lines.some(
+        (line) =>
+          !line.account_id ||
+          line.debitamount === "" ||
+          line.creditamount === ""
+      );
       if (isAnyFieldEmpty) {
-        alert('Please fill in all fields.');
+        alert("Please fill in all fields.");
         return;
       }
 
       if (totalDebitAmount !== totalCreditAmount) {
-        const confirmation = window.confirm('Debit and credit amounts are not equal. Are you sure you want to proceed?');
+        const confirmation = window.confirm(
+          "Debit and credit amounts are not equal. Are you sure you want to proceed?"
+        );
         if (!confirmation) {
           return;
         }
       }
 
       if (totalDebitAmount !== parseFloat(invoice_total)) {
-        const confirmation = window.confirm('Total debit amount must be equal to invoice total. Are you sure you want to proceed?');
+        const confirmation = window.confirm(
+          "Total debit amount must be equal to invoice total. Are you sure you want to proceed?"
+        );
         if (!confirmation) {
           return;
         }
@@ -186,7 +221,10 @@ const UpdateDistributionsModalForm = ({
         if (createResponse.data.success) {
           console.log("New distribution lines created:", createResponse.data);
         } else {
-          console.error("Error creating new distribution lines:", createResponse.data.message);
+          console.error(
+            "Error creating new distribution lines:",
+            createResponse.data.message
+          );
         }
       }
 
@@ -203,7 +241,10 @@ const UpdateDistributionsModalForm = ({
         if (updateResponse.data.success) {
           console.log("Distribution lines updated:", updateResponse.data);
         } else {
-          console.error("Error updating distribution lines:", updateResponse.data.message);
+          console.error(
+            "Error updating distribution lines:",
+            updateResponse.data.message
+          );
         }
       }
 
@@ -264,17 +305,26 @@ const UpdateDistributionsModalForm = ({
       account_type: "",
       debitamount: 0,
       creditamount: 0,
+      is_tax_line: false, // Default value for new lines      
       dirty: true,
     };
     setLines([...lines, newLine]);
   };
 
   const handleClose = () => {
-    const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount), 0);
-    const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount), 0);
+    const totalDebitAmount = lines.reduce(
+      (acc, line) => acc + parseFloat(line.debitamount),
+      0
+    );
+    const totalCreditAmount = lines.reduce(
+      (acc, line) => acc + parseFloat(line.creditamount),
+      0
+    );
 
     if (totalDebitAmount !== totalCreditAmount) {
-      const confirmation = window.confirm('Debit and credit amounts are not equal. Are you sure you want to close?');
+      const confirmation = window.confirm(
+        "Debit and credit amounts are not equal. Are you sure you want to close?"
+      );
       if (confirmation) {
         onClose();
       }
@@ -282,7 +332,9 @@ const UpdateDistributionsModalForm = ({
     }
 
     if (totalDebitAmount !== parseFloat(invoice_total)) {
-      const confirmation = window.confirm('Total debit amount must be equal to invoice total. Are you sure you want to close?');
+      const confirmation = window.confirm(
+        "Total debit amount must be equal to invoice total. Are you sure you want to close?"
+      );
       if (confirmation) {
         onClose();
       }
@@ -295,8 +347,14 @@ const UpdateDistributionsModalForm = ({
     }
   };
 
-  const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount), 0);
-  const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount), 0);
+  const totalDebitAmount = lines.reduce(
+    (acc, line) => acc + parseFloat(line.debitamount),
+    0
+  );
+  const totalCreditAmount = lines.reduce(
+    (acc, line) => acc + parseFloat(line.creditamount),
+    0
+  );
 
   return (
     <Modal
@@ -313,7 +371,12 @@ const UpdateDistributionsModalForm = ({
           <b>Invoice Number:</b> {invoiceNumber} <br />
           <b>
             Invoice Amount:{" "}
-            <span style={{ fontWeight: debitCreditEqual ? "bold" : "normal", color: debitCreditEqual ? "green" : "red" }}>
+            <span
+              style={{
+                fontWeight: debitCreditEqual ? "bold" : "normal",
+                color: debitCreditEqual ? "green" : "red",
+              }}
+            >
               {invoice_total} {currencyCode}
             </span>
             <br />
@@ -326,6 +389,7 @@ const UpdateDistributionsModalForm = ({
             <thead className="invoice-line-table-header-custom">
               <tr>
                 <th>Line No</th>
+                <th>Tax Line</th> {/* Add new header */}
                 <th>Account</th>
                 <th>Category</th>
                 <th>Type</th>
@@ -339,13 +403,30 @@ const UpdateDistributionsModalForm = ({
                 <tr key={index} className="table-row">
                   <td>{line.line_number}</td>
                   <td>
+                    <input
+                      type="checkbox"
+                      checked={line.is_tax_line}
+                      onChange={() => {
+                        const updatedLines = [...lines];
+                        updatedLines[index].is_tax_line =
+                          !updatedLines[index].is_tax_line;
+                        setLines(updatedLines);
+                      }}
+                    />
+                  </td>
+                  <td>
                     <select
                       value={line.account_id}
-                      onChange={(e) => handleAccountChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handleAccountChange(index, e.target.value)
+                      }
                     >
                       <option value="">Select Account</option>
                       {accounts.map((account) => (
-                        <option key={account.account_id} value={account.account_id}>
+                        <option
+                          key={account.account_id}
+                          value={account.account_id}
+                        >
                           {account.account_number} ({account.account_name})
                         </option>
                       ))}
@@ -357,18 +438,25 @@ const UpdateDistributionsModalForm = ({
                     <input
                       type="text"
                       value={line.debitamount}
-                      onChange={(e) => handleDebitAmountChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handleDebitAmountChange(index, e.target.value)
+                      }
                     />
                   </td>
                   <td>
                     <input
                       type="text"
                       value={line.creditamount}
-                      onChange={(e) => handleCreditAmountChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handleCreditAmountChange(index, e.target.value)
+                      }
                     />
                   </td>
                   <td>
-                    <button onClick={() => handleClear(index)} disabled={lines.length === 1}>
+                    <button
+                      onClick={() => handleClear(index)}
+                      disabled={lines.length === 1}
+                    >
                       Remove
                     </button>
                   </td>
@@ -381,11 +469,29 @@ const UpdateDistributionsModalForm = ({
               </tr>
               <tr>
                 <td colSpan="4" />
-                <td style={{ color: totalDebitAmount === parseFloat(invoice_total) ? "green" : "red" }}>
-                  <b>{totalDebitAmount} {displayCurrency}</b>
+                <td
+                  style={{
+                    color:
+                      totalDebitAmount === parseFloat(invoice_total)
+                        ? "green"
+                        : "red",
+                  }}
+                >
+                  <b>
+                    {totalDebitAmount} {displayCurrency}
+                  </b>
                 </td>
-                <td style={{ color: totalCreditAmount === parseFloat(invoice_total) ? "green" : "red" }}>
-                  <b>{totalCreditAmount} {displayCurrency}</b>
+                <td
+                  style={{
+                    color:
+                      totalCreditAmount === parseFloat(invoice_total)
+                        ? "green"
+                        : "red",
+                  }}
+                >
+                  <b>
+                    {totalCreditAmount} {displayCurrency}
+                  </b>
                 </td>
                 <td />
               </tr>

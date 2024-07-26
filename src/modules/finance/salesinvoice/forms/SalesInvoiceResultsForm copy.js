@@ -8,18 +8,16 @@ import {
 } from "../../../admin/setups/ConstDecl";
 import CheckModuleAccess from "../../../security/modulepermissions/CheckModuleAccess";
 import logger from "../../../utilities/Logs/logger";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap"; // Import the Modal and Button components
 
-export default function PurchaseInvoiceResultsForm() {
-  const { PurchaseParameters } = useParams();
+export default function SalesInvoiceResultsForm() {
+  const { SalesParameters } = useParams();
   const [resultData, setResultData] = useState([]);
   const [error, setError] = useState(null);
-  const [PurchaseInvoiceLines, setPurchaseInvoiceLines] = useState([]);
-  const [PurchaseInvoiceDistributions, setPurchaseInvoiceDistributions] =
-    useState([]);
+  const [SalesInvoiceLines, setSalesInvoiceLines] = useState([]);
+  const [SalesInvoiceDistributions, setSalesInvoiceDistributions] = useState([]);
   const [showLinesModalWindow, setShowLinesModalWindow] = useState(false);
-  const [showDistributionModalWindow, setShowDistributionModalWindow] =
-    useState(false);
+  const [showDistributionModalWindow, setShowDistributionModalWindow] = useState(false);
   const [currencyCode, setCurrencyCode] = useState(false);
   const [currencySymbol, setCurrencySymbol] = useState(false);
   const [invoiceTotal, setInvoiceTotal] = useState(false);
@@ -43,39 +41,36 @@ export default function PurchaseInvoiceResultsForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let apiUrl = `${API_URL}/get_po_invoices`;
+        let apiUrl = `${API_URL}/get_so_invoices`;
 
-        if (PurchaseParameters) {
-          console.log("The Purchase Parameters are ", PurchaseParameters);
-          const queryParams = new URLSearchParams(PurchaseParameters);
+        if (SalesParameters) {
+          const queryParams = new URLSearchParams(SalesParameters);
           apiUrl += `?${queryParams.toString()}`;
         }
-        console.log("The URL ", apiUrl);
         const response = await axios.get(apiUrl, {
           headers: generateHeaders(),
         });
-        console.log(
-          "Results of Purchase orders ",
-          response.data.purchase_invoice_headers
-        );
-        setResultData(response.data.purchase_invoice_headers);
+        setResultData(response.data.sales_invoice_headers);
         setError(null);
         logger.info(
-          `[${new Date().toLocaleTimeString()}] Fetched Purchase data successfully`
+          `[${new Date().toLocaleTimeString()}] The URL`, apiUrl
+        );
+        logger.info(
+          `[${new Date().toLocaleTimeString()}] Fetched Sales data successfully`, response.data.sales_invoice_headers
         );
       } catch (error) {
         setError("An error occurred while fetching data.");
         logger.error(
-          `[${new Date().toLocaleTimeString()}] Error fetching Purchase data`,
+          `[${new Date().toLocaleTimeString()}] Error fetching Sales data`,
           error
         );
       }
     };
 
     fetchData();
-  }, [PurchaseParameters, hasRequiredAccess]);
+  }, [SalesParameters, hasRequiredAccess]);
 
-  const fetchPurchaseInvoiceLines = async (
+  const fetchSalesInvoiceLines = async (
     headerId,
     currencycode,
     totalamount,
@@ -83,27 +78,27 @@ export default function PurchaseInvoiceResultsForm() {
   ) => {
     try {
       const response = await axios.get(
-        `${API_URL}/get_po_invoice_lines?header_id=${headerId}`,
+        `${API_URL}/get_sales_invoice_lines?header_id=${headerId}`,
         {
           headers: generateHeaders(),
         }
       );
-      setPurchaseInvoiceLines(response.data.purchase_invoice_lines);
+      setSalesInvoiceLines(response.data.sales_invoice_lines);
       setCurrencyCode(currencycode);
       setInvoiceTotal(totalamount);
       setInvoiceNumber(invoice_number);
 
       setShowLinesModalWindow(true);
     } catch (error) {
-      setError("An error occurred while fetching Purchase lines.");
+      setError("An error occurred while fetching Sales lines.");
       logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching Purchase lines`,
+        `[${new Date().toLocaleTimeString()}] Error fetching Sales lines`,
         error
       );
     }
   };
 
-  const fetchPurchaseInvoiceDistributions = async (
+  const fetchSalesInvoiceDistributions = async (
     headerId,
     currencycode,
     totalamount,
@@ -112,12 +107,12 @@ export default function PurchaseInvoiceResultsForm() {
   ) => {
     try {
       const response = await axios.get(
-        `${API_URL}/get_po_invoice_distributions?header_id=${headerId}`,
+        `${API_URL}/get_sales_invoice_distributions?header_id=${headerId}`,
         {
           headers: generateHeaders(),
         }
       );
-      setPurchaseInvoiceDistributions(response.data.purchase_invoice_accounts);
+      setSalesInvoiceDistributions(response.data.sales_invoice_accounts);
       setCurrencyCode(currencycode);
       setInvoiceTotal(totalamount);
       setInvoiceNumber(invoice_number);
@@ -125,9 +120,9 @@ export default function PurchaseInvoiceResultsForm() {
 
       setShowDistributionModalWindow(true);
     } catch (error) {
-      setError("An error occurred while fetching Purchase Distributions.");
+      setError("An error occurred while fetching Sales Distributions.");
       logger.error(
-        `[${new Date().toLocaleTimeString()}] Error fetching Purchase Distributions`,
+        `[${new Date().toLocaleTimeString()}] Error fetching Sales Distributions`,
         error
       );
     }
@@ -135,7 +130,7 @@ export default function PurchaseInvoiceResultsForm() {
 
   return (
     <div>
-      <h1>Purchase Invoice Headers</h1>
+      <h1>Sales Invoice Headers</h1>
       {error ? (
         <p>{error}</p>
       ) : (
@@ -172,7 +167,7 @@ export default function PurchaseInvoiceResultsForm() {
                 <td>
                   <button
                     onClick={() =>
-                      fetchPurchaseInvoiceLines(
+                      fetchSalesInvoiceLines(
                         pi.header_id,
                         pi.currencycode,
                         pi.totalamount,
@@ -185,15 +180,12 @@ export default function PurchaseInvoiceResultsForm() {
                 </td>
                 <td>
                   <button
-                    onClick={() =>
-                      fetchPurchaseInvoiceDistributions(
-                        pi.header_id,
-                        pi.currencycode,
-                        pi.totalamount,
-                        pi.invoice_number,
-                        pi.currencysymbol
-                      )
-                    }
+                    onClick={() => fetchSalesInvoiceDistributions(
+                      pi.header_id,
+                      pi.currencycode,
+                      pi.totalamount,
+                      pi.invoice_number,
+                      pi.currencysymbol)}
                   >
                     Distribution
                   </button>
@@ -210,7 +202,7 @@ export default function PurchaseInvoiceResultsForm() {
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Purchase Invoice Lines</Modal.Title>
+          <Modal.Title>Sales Invoice Lines</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
@@ -229,7 +221,7 @@ export default function PurchaseInvoiceResultsForm() {
               </tr>
             </thead>
             <tbody>
-              {PurchaseInvoiceLines.map((line, index) => (
+              {SalesInvoiceLines.map((line, index) => (
                 <tr key={index}>
                   <td key={line.line_number}>{line.line_number}</td>
                   <td key={line.item_id}>{line.item_code}</td>
@@ -269,7 +261,6 @@ export default function PurchaseInvoiceResultsForm() {
             <thead>
               <tr>
                 <th>Line No</th>
-                <th>Is Tax Line</th>
                 <th>Account</th>
                 <th>Category</th> {/* Added Category column */}
                 <th>Type</th> {/* Added Type column */}
@@ -278,19 +269,12 @@ export default function PurchaseInvoiceResultsForm() {
               </tr>
             </thead>
             <tbody>
-              {PurchaseInvoiceDistributions.map((line, index) => (
+              {SalesInvoiceDistributions.map((line, index) => (
                 <tr key={index}>
                   <td key={line.line_number}>{line.line_number}</td>
-                  <td key={line.is_tax_line}>
-                    {line.is_tax_line === 1 ? "True" : ""}
-                  </td>
                   <td key={line.account_id}>{line.account_number}</td>
-                  <td key={line.account_category}>
-                    {line.account_category}
-                  </td>{" "}
-                  {/* Added Category data */}
-                  <td key={line.account_type}>{line.account_type}</td>{" "}
-                  {/* Added Type data */}
+                  <td key={line.account_category}>{line.account_category}</td> {/* Added Category data */}
+                  <td key={line.account_type}>{line.account_type}</td> {/* Added Type data */}
                   <td key={line.debitamount}>{line.debitamount}</td>
                   <td key={line.creditamount}>{line.creditamount}</td>
                 </tr>

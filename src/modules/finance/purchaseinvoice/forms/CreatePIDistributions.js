@@ -47,8 +47,10 @@ const CreatePIDistributions = ({
       account_type: "",
       debitamount: 0,
       creditamount: 0,
+      is_tax_line: false,
     },
   ]);
+
   const [successMessage, setSuccessMessage] = useState("");
   const [accounts, setAccounts] = useState([]);
   const [debitTotal, setDebitTotal] = useState(0);
@@ -64,10 +66,12 @@ const CreatePIDistributions = ({
 
   useEffect(() => {
     fetchAccountsList();
+    // eslint-disable-next-line
   }, [headerId, companyId, departmentId]);
 
   useEffect(() => {
     calculateTotals();
+    // eslint-disable-next-line
   }, [lines]);
 
   const fetchAccountsList = async () => {
@@ -90,7 +94,9 @@ const CreatePIDistributions = ({
 
   const handleAccountChange = (index, accountId) => {
     const updatedLines = [...lines];
-    const selectedAccount = accounts.find(account => account.account_id === parseInt(accountId, 10));
+    const selectedAccount = accounts.find(
+      (account) => account.account_id === parseInt(accountId, 10)
+    );
 
     if (selectedAccount) {
       updatedLines[index].account_id = parseInt(accountId, 10); // Ensure account_id is an integer
@@ -114,8 +120,14 @@ const CreatePIDistributions = ({
   };
 
   const calculateTotals = () => {
-    const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount || 0), 0);
-    const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount || 0), 0);
+    const totalDebitAmount = lines.reduce(
+      (acc, line) => acc + parseFloat(line.debitamount || 0),
+      0
+    );
+    const totalCreditAmount = lines.reduce(
+      (acc, line) => acc + parseFloat(line.creditamount || 0),
+      0
+    );
 
     setDebitTotal(totalDebitAmount);
     setCreditTotal(totalCreditAmount);
@@ -129,7 +141,7 @@ const CreatePIDistributions = ({
         alert('Please fill in all fields.');
         return;
       }
-
+  
       // Check if sum of debit amounts is equal to sum of credit amounts
       const totalDebitAmount = lines.reduce((acc, line) => acc + parseFloat(line.debitamount), 0);
       const totalCreditAmount = lines.reduce((acc, line) => acc + parseFloat(line.creditamount), 0);
@@ -137,33 +149,34 @@ const CreatePIDistributions = ({
         alert('Total debit amount must be equal to total credit amount.');
         return;
       }
-
+  
       // Check if sum of debit amounts is equal to invoice_total
       if (totalDebitAmount !== parseFloat(invoice_total)) {
         alert('Total debit amount must be equal to invoice total.');
         return;
       }
-
+  
       const updatedLinesWithHeaderId = lines.map((line) => ({
         line_number: line.line_number,
         account_id: parseInt(line.account_id, 10), // Ensure account_id is an integer
         debitamount: parseFloat(line.debitamount), // Ensure debitamount is a float
         creditamount: parseFloat(line.creditamount), // Ensure creditamount is a float
+        is_tax_line: line.is_tax_line
       }));
-
+  
       const payload = {
         header_id: headerId, // Add header_id at the root level
         lines: updatedLinesWithHeaderId,
       };
-
+  
       console.log("JSON request:", payload);
-
+  
       const response = await axios.post(
         `${API_URL}/distribute_invoice_to_accounts`,
         payload,
         { headers: generateHeaders() }
       );
-
+  
       if (response.data.success) {
         onClose();
         onSuccess(response);
@@ -175,6 +188,7 @@ const CreatePIDistributions = ({
           account_type: "",
           debitamount: 0,
           creditamount: 0,
+          is_tax_line: false
         }]);
       } else {
         console.error("Error creating invoice lines:", response.data.message);
@@ -183,6 +197,7 @@ const CreatePIDistributions = ({
       console.error("Error creating invoice lines:", error);
     }
   };
+  
 
   const handleClear = (index) => {
     if (lines.length === 1) {
@@ -204,14 +219,24 @@ const CreatePIDistributions = ({
         account_type: "",
         debitamount: 0,
         creditamount: 0,
+        is_tax_line: false
       },
     ]);
   };
+  
 
   const getTotalRowStyle = () => {
-    const totalsMatch = debitTotal === creditTotal && debitTotal === parseFloat(invoice_total);
+    const totalsMatch =
+      debitTotal === creditTotal && debitTotal === parseFloat(invoice_total);
     return { color: totalsMatch ? "green" : "red" };
   };
+
+  const handleIsTaxLineChange = (index, value) => {
+    const updatedLines = [...lines];
+    updatedLines[index].is_tax_line = value;
+    setLines(updatedLines);
+  };
+  
 
   return (
     <Modal
@@ -226,7 +251,11 @@ const CreatePIDistributions = ({
       <Modal.Body>
         <div>
           <b>Invoice Number:</b> {invoiceNumber} <br />
-          <b>Invoice Amount:</b> <span style={getTotalRowStyle()}>{invoice_total} {currencyCode}</span> <br />
+          <b>Invoice Amount:</b>{" "}
+          <span style={getTotalRowStyle()}>
+            {invoice_total} {currencyCode}
+          </span>{" "}
+          <br />
           <b>Tax Rate:</b> {tax_rate} % <br />
         </div>
 
@@ -235,6 +264,7 @@ const CreatePIDistributions = ({
             <thead className="invoice-line-table-header-custom">
               <tr>
                 <th>Line No</th>
+                <th>Is Tax Line</th>
                 <th>Account</th>
                 <th>Category</th> {/* Added Category column */}
                 <th>Type</th> {/* Added Type column */}
@@ -248,9 +278,20 @@ const CreatePIDistributions = ({
                 <tr key={index} className="table-row">
                   <td>{line.line_number}</td>
                   <td>
+                    <input
+                      type="checkbox"
+                      checked={line.is_tax_line}
+                      onChange={(e) =>
+                        handleIsTaxLineChange(index, e.target.checked)
+                      }
+                    />
+                  </td>
+                  <td>
                     <select
                       value={line.account_id}
-                      onChange={(e) => handleAccountChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handleAccountChange(index, e.target.value)
+                      }
                     >
                       <option value="">Select Account</option>
                       {accounts.map((account) => (

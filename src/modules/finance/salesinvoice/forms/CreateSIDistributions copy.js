@@ -47,7 +47,6 @@ const CreateSIDistributions = ({
       account_type: "",
       debitamount: 0,
       creditamount: 0,
-      is_tax_line: false, // Default value for the new field
     },
   ]);
   const [successMessage, setSuccessMessage] = useState("");
@@ -65,19 +64,11 @@ const CreateSIDistributions = ({
 
   useEffect(() => {
     fetchAccountsList();
-    // eslint-disable-next-line
   }, [headerId, companyId, departmentId]);
 
   useEffect(() => {
     calculateTotals();
-    // eslint-disable-next-line
   }, [lines]);
-
-  const handleTaxLineChange = (index) => {
-    const updatedLines = [...lines];
-    updatedLines[index].is_tax_line = !updatedLines[index].is_tax_line;
-    setLines(updatedLines);
-  };
 
   const fetchAccountsList = async () => {
     try {
@@ -176,7 +167,6 @@ const CreateSIDistributions = ({
           account_id: parseInt(line.account_id, 10), // Ensure account_id is an integer
           debitamount: parseFloat(line.debitamount), // Ensure debitamount is a float
           creditamount: parseFloat(line.creditamount), // Ensure creditamount is a float
-          is_tax_line: line.is_tax_line, // Include is_tax_line in the payload
         })),
       };
 
@@ -228,7 +218,6 @@ const CreateSIDistributions = ({
         account_type: "",
         debitamount: 0,
         creditamount: 0,
-        is_tax_line: false, // Default value for new lines        
       },
     ]);
   };
@@ -265,7 +254,6 @@ const CreateSIDistributions = ({
             <thead className="invoice-line-table-header-custom">
               <tr>
                 <th>Line No</th>
-                <th>Tax Line</th> {/* Added Tax Line column */}
                 <th>Account</th>
                 <th>Category</th> {/* Added Category column */}
                 <th>Type</th> {/* Added Type column */}
@@ -278,13 +266,6 @@ const CreateSIDistributions = ({
               {lines.map((line, index) => (
                 <tr key={`${line.line_number}-${index}`} className="table-row">
                   <td>{line.line_number}</td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={line.is_tax_line}
-                      onChange={() => handleTaxLineChange(index)}
-                    />
-                  </td>
                   <td>
                     <select
                       value={line.account_id}

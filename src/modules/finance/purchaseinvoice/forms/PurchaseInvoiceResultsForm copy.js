@@ -15,11 +15,9 @@ export default function PurchaseInvoiceResultsForm() {
   const [resultData, setResultData] = useState([]);
   const [error, setError] = useState(null);
   const [PurchaseInvoiceLines, setPurchaseInvoiceLines] = useState([]);
-  const [PurchaseInvoiceDistributions, setPurchaseInvoiceDistributions] =
-    useState([]);
+  const [PurchaseInvoiceDistributions, setPurchaseInvoiceDistributions] = useState([]);
   const [showLinesModalWindow, setShowLinesModalWindow] = useState(false);
-  const [showDistributionModalWindow, setShowDistributionModalWindow] =
-    useState(false);
+  const [showDistributionModalWindow, setShowDistributionModalWindow] = useState(false);
   const [currencyCode, setCurrencyCode] = useState(false);
   const [currencySymbol, setCurrencySymbol] = useState(false);
   const [invoiceTotal, setInvoiceTotal] = useState(false);
@@ -185,15 +183,12 @@ export default function PurchaseInvoiceResultsForm() {
                 </td>
                 <td>
                   <button
-                    onClick={() =>
-                      fetchPurchaseInvoiceDistributions(
-                        pi.header_id,
-                        pi.currencycode,
-                        pi.totalamount,
-                        pi.invoice_number,
-                        pi.currencysymbol
-                      )
-                    }
+                    onClick={() => fetchPurchaseInvoiceDistributions(
+                      pi.header_id,
+                      pi.currencycode,
+                      pi.totalamount,
+                      pi.invoice_number,
+                      pi.currencysymbol)}
                   >
                     Distribution
                   </button>
@@ -269,7 +264,6 @@ export default function PurchaseInvoiceResultsForm() {
             <thead>
               <tr>
                 <th>Line No</th>
-                <th>Is Tax Line</th>
                 <th>Account</th>
                 <th>Category</th> {/* Added Category column */}
                 <th>Type</th> {/* Added Type column */}
@@ -281,16 +275,9 @@ export default function PurchaseInvoiceResultsForm() {
               {PurchaseInvoiceDistributions.map((line, index) => (
                 <tr key={index}>
                   <td key={line.line_number}>{line.line_number}</td>
-                  <td key={line.is_tax_line}>
-                    {line.is_tax_line === 1 ? "True" : ""}
-                  </td>
                   <td key={line.account_id}>{line.account_number}</td>
-                  <td key={line.account_category}>
-                    {line.account_category}
-                  </td>{" "}
-                  {/* Added Category data */}
-                  <td key={line.account_type}>{line.account_type}</td>{" "}
-                  {/* Added Type data */}
+                  <td key={line.account_category}>{line.account_category}</td> {/* Added Category data */}
+                  <td key={line.account_type}>{line.account_type}</td> {/* Added Type data */}
                   <td key={line.debitamount}>{line.debitamount}</td>
                   <td key={line.creditamount}>{line.creditamount}</td>
                 </tr>

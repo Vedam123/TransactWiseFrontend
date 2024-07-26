@@ -60,7 +60,7 @@ const CreatePurchaseLineModalForm = ({
   };
 
   const calculateTotalLineAmount = (lines) => {
-    const total = lines.reduce((acc, line) => acc + line.line_total, 0);
+    const total = parseFloat(lines.reduce((acc, line) => acc + line.line_total, 0).toFixed(2));
     setTotalLineAmount(total);
   };
 
@@ -102,7 +102,8 @@ const CreatePurchaseLineModalForm = ({
   const handleQuantityChange = (index, value) => {
     const updatedLines = [...lines];
     updatedLines[index].quantity = value;
-    updatedLines[index].line_total = value * updatedLines[index].unit_price;
+    //updatedLines[index].line_total = value * updatedLines[index].unit_price;
+    updatedLines[index].line_total = parseFloat((value * updatedLines[index].unit_price).toFixed(2));
     setLines(updatedLines);
     calculateTotalSum(updatedLines); // Update total sum
   };
@@ -110,7 +111,8 @@ const CreatePurchaseLineModalForm = ({
   const handleUnitPriceChange = (index, value) => {
     const updatedLines = [...lines];
     updatedLines[index].unit_price = value;
-    updatedLines[index].line_total = value * updatedLines[index].quantity;
+    //updatedLines[index].line_total = value * updatedLines[index].quantity;
+    updatedLines[index].line_total = parseFloat((value * updatedLines[index].quantity).toFixed(2));
     setLines(updatedLines);
     calculateTotalSum(updatedLines); // Update total sum
   };
@@ -145,7 +147,7 @@ const CreatePurchaseLineModalForm = ({
       const updatedLinesWithHeaderId = lines.map((line) => ({
         ...line,
         header_id: headerId,
-        line_total: line.quantity * line.unit_price,
+        line_total: parseFloat((line.quantity * line.unit_price).toFixed(2)), // Round to 
         invoice_number: invoiceNumber,
       }));
   
@@ -181,10 +183,7 @@ const CreatePurchaseLineModalForm = ({
     } catch (error) {
       console.error("Error creating invoice lines:", error);
     }
-  };
-  
-  
-  
+  };  
 
   const handleClear = (index) => {
     if (lines.length === 1) {
@@ -192,7 +191,7 @@ const CreatePurchaseLineModalForm = ({
     }
 
     const updatedLines = [...lines];
-    const removedLineTotal = updatedLines[index].line_total; 
+    const removedLineTotal = parseFloat(updatedLines[index].line_total.toFixed(2));
     updatedLines.splice(index, 1);
     setLines(updatedLines);
     setTotalLineAmount(totalLineAmount - removedLineTotal); 
