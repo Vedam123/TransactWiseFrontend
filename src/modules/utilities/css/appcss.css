@@ -587,3 +587,12 @@
 .editable-field {
   background-color: white;
 }
+
+
+.text-success {
+  color: green;
+}
+
+.text-danger {
+  color: red;
+}

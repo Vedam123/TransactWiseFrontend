@@ -125,9 +125,6 @@ import FindSOToUpdatePage from "../sales/salesorders/FindSOToUpdatePage";
 import SearchJournalPage from "../finance/journal/SearchJournalPage";
 import JournalResultsForm from "../finance/journal/forms/JournalResultsForm";
 
-import FindJounralToUpdatePage from "../finance/journal/FindJounralToUpdatePage"
-import UpdateJournalHeaderPage from "../finance/journal/UpdateJournalHeaderPage"
-
 import PickReleasePage from "../inventory/handling/PickReleasePage";
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
@@ -510,8 +507,6 @@ function AuthenticationPage() {
               path="/update-purchase-order-headers/:POParameters"
               element={<UpdatePurchaseOrderHeaderPage />}
             />
-
-
             <Route
               path="/get-purchase-orders"
               element={<PurchaseOrdersSearchPage />}
@@ -572,15 +567,7 @@ function AuthenticationPage() {
             <Route
               path="/auto-create-Journals"
               element={<AutoCreateJournalPage />} />
-            <Route
-              path="/update-journal-header/:JournalParameters"
-              element={<UpdateJournalHeaderPage />}
-            />
 
-            <Route
-              path="/update-journal"
-              element={<FindJounralToUpdatePage />}
-            />
 
           </Routes>
 

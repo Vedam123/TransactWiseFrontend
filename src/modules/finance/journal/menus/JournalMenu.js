@@ -16,7 +16,7 @@ export default function JournalMenu() {
   const menuItems = [
     { path: "/create-journal", text: "Create Journal", canRender: canCreateModule },
     { path: "/delete-journal", text: "Delete Journal", canRender: canDeleteModule },
-    { path: "/update-Journal", text: "Update Journal", canRender: canUpdateModule },
+    { path: "/update-journal", text: "Update Journal", canRender: canUpdateModule },
     { path: "/get-Journals", text: "Get Journals", canRender: canViewModule },
     { path: "/auto-create-Journals", text: "Auto Create Journal", canRender: canViewModule },    
   ];
