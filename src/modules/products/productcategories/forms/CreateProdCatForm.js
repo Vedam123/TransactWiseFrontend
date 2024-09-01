@@ -10,7 +10,7 @@ export default function CreateProdCatForm() {
     category_name: "",
     uom_id: "",
     description: "",
-    images: [], // Change from single image to an array of images
+    images: [], // Array of images
     is_active: true,
     tax_information: "",
   });
@@ -27,7 +27,7 @@ export default function CreateProdCatForm() {
         setUOMs(response.data.uom);
       } catch (error) {
         logger.error(
-          `[${new Date().toLocaleTimeString()}] Error fetching uoms:`,
+          `[${new Date().toLocaleTimeString()}] Error fetching UOMs:`,
           error
         );
       }
@@ -43,13 +43,11 @@ export default function CreateProdCatForm() {
     return {
       Authorization: `Bearer ${token}`,
       UserId: userId,
-      // Add other headers if needed
     };
   };
 
   const handleChange = (e) => {
     if (e.target.name === "images") {
-      // Handle multiple file selection
       setFormData((prevFormData) => ({
         ...prevFormData,
         images: [...prevFormData.images, ...Array.from(e.target.files)],
@@ -76,10 +74,11 @@ export default function CreateProdCatForm() {
       formDataToSend.append("is_active", formData.is_active ? 1 : 0);
       formDataToSend.append("tax_information", formData.tax_information);
 
-      // Append all selected images
       formData.images.forEach((image, index) => {
-        formDataToSend.append(`images`, image); // `images` should match the key used in your backend
+        formDataToSend.append(`images`, image);
       });
+
+      console.log("Form data to send ",formDataToSend)
 
       const response = await axios.post(
         `${API_URL}/create_item_category`,
@@ -90,12 +89,11 @@ export default function CreateProdCatForm() {
       );
       console.log(response.data);
 
-      // Reset form data
       setFormData({
         category_name: "",
         uom_id: "",
         description: "",
-        images: [], // Reset images
+        images: [],
         is_active: true,
         tax_information: "",
       });
@@ -104,11 +102,9 @@ export default function CreateProdCatForm() {
     }
   };
 
-  // Check user permissions before rendering
   const canViewModule = userPermissions.canViewModule;
 
   if (!canViewModule) {
-    // User doesn't have permission to view the module
     return <div>You do not have permission to view this module.</div>;
   }
 
@@ -133,7 +129,6 @@ export default function CreateProdCatForm() {
             </div>
           </div>
 
-          {/* UOM field */}
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
               <div className="label-container">
@@ -210,33 +205,35 @@ export default function CreateProdCatForm() {
               <div className="label-container">
                 <label htmlFor="images">Images:</label>
               </div>
-              <div className="custom-file">
+              <div className="custom-file-upload">
                 <input
                   type="file"
                   id="images"
                   name="images"
-                  multiple // Allow multiple file selection
+                  multiple
                   onChange={handleChange}
-                  className="custom-file-input"
+                  className="file-input"
                 />
-                {/* Preview selected images */}
-                {formData.images.length > 0 && (
-                  <div className="image-previews">
-                    {formData.images.map((image, index) => (
-                      <img
-                        key={index}
-                        src={URL.createObjectURL(image)}
-                        alt={`Selected file preview ${index + 1}`} // More specific alt text
-                        className="selected-pic"
-                      />
-                    ))}
-                  </div>
-                )}
+                <label htmlFor="images" className="file-label">
+                  Select Images
+                </label>
               </div>
+              {/* Preview selected images */}
+              {formData.images.length > 0 && (
+                <div className="image-previews">
+                  {formData.images.map((image, index) => (
+                    <img
+                      key={index}
+                      src={URL.createObjectURL(image)}
+                      alt={`Selected file preview ${index + 1}`}
+                      className="selected-pic"
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Submit button */}
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
               <button type="submit" className="btn btn-primary">

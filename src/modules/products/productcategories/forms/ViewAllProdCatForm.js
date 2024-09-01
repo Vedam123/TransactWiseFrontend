@@ -133,7 +133,6 @@ function ViewAllProdCatForm() {
     }
   };
 
-
   return hasRequiredAccess ? (
     <div className="child-container form-container">
       <table className="table table-striped table-bordered">

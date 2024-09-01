@@ -10,7 +10,6 @@ export default function CreateItemForm() {
     item_code: "",
     item_name: "",
     category_id: "",
-    unit_price: "",
     manufacturer: "",
     barcode: "",
     stock_quantity: "",
@@ -18,14 +17,14 @@ export default function CreateItemForm() {
     max_stock_level: "",
     reorder_point: "",
     lead_time: "",
-    shelf_life: "", // Updated to expect numeric input
+    shelf_life: "",
     location: "",
-    item_image: null,
+    item_images: [], // Array of images
     notes: "",
     product_type: "",
     default_uom_id: "",
-    expiry_date_flag: false, // Added expiry date flag
-    expiry_date: "", // Added expiry date
+    expiry_date_flag: false,
+    expiry_date: "",
   });
 
   const [uoms, setUOMs] = useState([]);
@@ -34,6 +33,7 @@ export default function CreateItemForm() {
   const [categories, setCategories] = useState([]);
 
   const userPermissions = ModulePermissions({ moduleName: "products" });
+  const canViewModule = userPermissions.canViewModule;
 
   useEffect(() => {
     async function fetchCategories() {
@@ -43,13 +43,24 @@ export default function CreateItemForm() {
         });
         setCategories(response.data.item_categories);
       } catch (error) {
-        logger.error(
-          `[${new Date().toLocaleTimeString()}] Error fetching categories:`,
-          error
-        );
+        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching categories:`, error);
       }
     }
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    async function fetchUOMs() {
+      try {
+        const response = await axios.get(`${API_URL}/list_uoms`, {
+          headers: generateHeaders(),
+        });
+        setUOMs(response.data.uom);
+      } catch (error) {
+        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching uoms:`, error);
+      }
+    }
+    fetchUOMs();
   }, []);
 
   async function fetchUOMs() {
@@ -78,9 +89,14 @@ export default function CreateItemForm() {
 
   const handleChange = (e) => {
     const { name, value, type, files, checked } = e.target;
-    
+
     if (type === "file") {
-      setFormData({ ...formData, [name]: files[0] });
+      if (name === "item_images") {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          item_images: [...prevFormData.item_images, ...Array.from(files)],
+        }));
+      }
     } else if (type === "checkbox") {
       setFormData({ ...formData, [name]: checked });
     } else if (type === "number") {
@@ -89,49 +105,41 @@ export default function CreateItemForm() {
       setFormData({ ...formData, [name]: value });
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormDisabled(true);
-  
+
     try {
       const formDataToSend = new FormData();
-  
+
       Object.keys(formData).forEach((key) => {
         if (formData[key] !== null) {
-          if (key === 'item_image' && formData[key] instanceof File) {
-            formDataToSend.append(key, formData[key]); // Append file directly
+          if (key === "item_images") {
+            formData[key].forEach((image, index) => {
+              formDataToSend.append(`item_images`, image); // Append images directly
+            });
           } else {
             formDataToSend.append(key, formData[key]);
           }
         }
       });
-  
-      console.log("Before Calling API the form data ", formData);
-  
-      const response = await axios.post(
-        `${API_URL}/create_items`,
-        formDataToSend,
-        {
-          headers: {
-            ...generateHeaders(),
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-  
-      setSuccessMessage(
-        `Item created successfully with ID: ${response.data.item_id}`
-      );
-  
+
+      const response = await axios.post(`${API_URL}/create_items`, formDataToSend, {
+        headers: {
+          ...generateHeaders(),
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setSuccessMessage(`Item created successfully with ID: ${response.data.item_id}`);
+      
       setTimeout(() => {
         setSuccessMessage("");
         setFormData({
           item_code: "",
           item_name: "",
           category_id: "",
-          unit_price: "",
           manufacturer: "",
           barcode: "",
           stock_quantity: "",
@@ -141,7 +149,7 @@ export default function CreateItemForm() {
           lead_time: "",
           shelf_life: "",
           location: "",
-          item_image: null,
+          item_images: [],
           notes: "",
           product_type: "",
           default_uom_id: "",
@@ -155,12 +163,9 @@ export default function CreateItemForm() {
       setFormDisabled(false);
     }
   };
-  
-
-  const canViewModule = userPermissions.canViewModule;
 
   if (!canViewModule) {
-    return <div>You do not have permission to view this module.</div>;
+    return <p>You do not have permission to view this module.</p>;
   }
 
   return (
@@ -253,24 +258,7 @@ export default function CreateItemForm() {
             </div>
           </div>
 
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="unit_price">Unit Price:</label>
-              </div>
-              <input
-                type="number"
-                id="unit_price"
-                name="unit_price"
-                value={formData.unit_price}
-                onChange={handleChange}
-                className="form-control input-field"
-                step="0.01"
-                disabled={formDisabled}
-              />
-            </div>
-          </div>
-
+          
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
               <div className="label-container">
@@ -427,23 +415,29 @@ export default function CreateItemForm() {
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
               <div className="label-container">
-                <label htmlFor="item_image">Item Image:</label>
+                <label htmlFor="item_images">Item Images:</label>
               </div>
               <div className="custom-file">
                 <input
                   type="file"
-                  id="item_image"
-                  name="item_image"
+                  id="item_images"
+                  name="item_images"
                   onChange={handleChange}
                   className="custom-file-input"
+                  multiple
                   disabled={formDisabled}
                 />
-                {formData.item_image && (
-                  <img
-                    src={URL.createObjectURL(formData.item_image)}
-                    alt="Selected Item"
-                    className="selected-pic"
-                  />
+                {formData.item_images.length > 0 && (
+                  <div className="image-previews">
+                    {formData.item_images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={URL.createObjectURL(image)}
+                        alt={`Selected file preview ${index + 1}`}
+                        className="selected-pic"
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
             </div>

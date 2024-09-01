@@ -596,3 +596,47 @@
 .text-danger {
   color: red;
 }
+
+
+/* appcss.css */
+
+.custom-file-upload {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.custom-file-upload input[type="file"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.file-label {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-align: center;
+  display: inline-block;
+}
+
+.file-label:hover {
+  background-color: #0056b3;
+}
+
+.image-previews {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.selected-pic {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
