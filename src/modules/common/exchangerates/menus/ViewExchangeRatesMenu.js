@@ -12,7 +12,7 @@ export default function ViewExchangeRatesMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
 
-  const { canViewModule } = ModulePermissions({
+  const { canViewModule,canCreateModule } = ModulePermissions({
     moduleName: BACKEND_COMMON_MODULE_NAME,
   });
 
@@ -26,6 +26,7 @@ export default function ViewExchangeRatesMenu() {
 
   const menuItems = [
     { path: "/list-exchange-rates", text: "View Rates", canRender: canViewModule },
+    { path: "/create-exchange-rates", text: "Create Exchange Rates", canRender: canCreateModule },
     // ... add more menu items here
   ];
 

@@ -11,10 +11,13 @@ import logger from "../../../utilities/Logs/logger"; // Import your logger modul
 export default function UOMMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
-  //  const { canViewModule, canCreateModule, canDeleteModule, canUpdateModule } =
-  const { canViewModule } = ModulePermissions({
-    moduleName: BACKEND_COMMON_MODULE_NAME, // Set the module name as needed
+  const uomPermissions = ModulePermissions({
+    moduleName: BACKEND_COMMON_MODULE_NAME,
   });
+  //  const { canViewModule, canCreateModule, canDeleteModule, canUpdateModule } =
+
+  const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } =
+  uomPermissions;
 
   const handleMenuItemClick = (path, canRender) => {
     if (behaviorOptions.DEFAULT === "_blank") {
@@ -30,6 +33,7 @@ export default function UOMMenu() {
 
   const menuItems = [
     { path: "/list-uoms", text: "View UOMs", canRender: canViewModule }, // Add the "canRender" property
+    { path: "/create-uom", text: "Create UOMs",canRender: canCreateModule }, // Add the "canRender" property
     // ... add more menu items here
   ];
 

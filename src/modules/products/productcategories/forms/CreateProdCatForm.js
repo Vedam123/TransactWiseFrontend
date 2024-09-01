@@ -3,19 +3,19 @@ import axios from "axios";
 import { API_URL } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
 import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
-import logger from "../../../utilities/Logs/logger"; 
+import logger from "../../../utilities/Logs/logger";
 
 export default function CreateProdCatForm() {
   const [formData, setFormData] = useState({
     category_name: "",
     uom_id: "",
     description: "",
-    image: null,
+    images: [], // Change from single image to an array of images
     is_active: true,
     tax_information: "",
   });
-  const userPermissions = ModulePermissions({ moduleName: "products" }); // Fetch user permissions
 
+  const userPermissions = ModulePermissions({ moduleName: "products" }); // Fetch user permissions
   const [uoms, setUOMs] = useState([]);
 
   useEffect(() => {
@@ -26,7 +26,10 @@ export default function CreateProdCatForm() {
         });
         setUOMs(response.data.uom);
       } catch (error) {
-        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching uoms:`, error);
+        logger.error(
+          `[${new Date().toLocaleTimeString()}] Error fetching uoms:`,
+          error
+        );
       }
     }
 
@@ -38,19 +41,22 @@ export default function CreateProdCatForm() {
     const userId = localStorage.getItem("userid");
 
     return {
-      'Authorization': `Bearer ${token}`,
-      'UserId': userId,
+      Authorization: `Bearer ${token}`,
+      UserId: userId,
       // Add other headers if needed
     };
   };
 
   const handleChange = (e) => {
-    if (e.target.name === "image") {
-      setFormData({ ...formData, image: e.target.files[0] });
+    if (e.target.name === "images") {
+      // Handle multiple file selection
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        images: [...prevFormData.images, ...Array.from(e.target.files)],
+      }));
     } else if (e.target.type === "checkbox") {
       setFormData({ ...formData, [e.target.name]: e.target.checked });
     } else if (e.target.name === "tax_information") {
-      // Validate and update the tax_information field
       const numericValue = parseFloat(e.target.value);
       if (!isNaN(numericValue) || e.target.value === "") {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -59,7 +65,7 @@ export default function CreateProdCatForm() {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -67,9 +73,13 @@ export default function CreateProdCatForm() {
       formDataToSend.append("category_name", formData.category_name);
       formDataToSend.append("uom_id", formData.uom_id);
       formDataToSend.append("description", formData.description);
-      formDataToSend.append("image", formData.image);
       formDataToSend.append("is_active", formData.is_active ? 1 : 0);
       formDataToSend.append("tax_information", formData.tax_information);
+
+      // Append all selected images
+      formData.images.forEach((image, index) => {
+        formDataToSend.append(`images`, image); // `images` should match the key used in your backend
+      });
 
       const response = await axios.post(
         `${API_URL}/create_item_category`,
@@ -79,11 +89,13 @@ export default function CreateProdCatForm() {
         }
       );
       console.log(response.data);
+
+      // Reset form data
       setFormData({
         category_name: "",
         uom_id: "",
         description: "",
-        image: null,
+        images: [], // Reset images
         is_active: true,
         tax_information: "",
       });
@@ -193,26 +205,32 @@ export default function CreateProdCatForm() {
             </div>
           </div>
 
-          {/* Image */}
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
               <div className="label-container">
-                <label htmlFor="image">Image:</label>
+                <label htmlFor="images">Images:</label>
               </div>
               <div className="custom-file">
                 <input
                   type="file"
-                  id="image"
-                  name="image"
+                  id="images"
+                  name="images"
+                  multiple // Allow multiple file selection
                   onChange={handleChange}
                   className="custom-file-input"
                 />
-                {formData.image && (
-                  <img
-                    src={URL.createObjectURL(formData.image)}
-                    alt="Selected Item Category"
-                    className="selected-pic"
-                  />
+                {/* Preview selected images */}
+                {formData.images.length > 0 && (
+                  <div className="image-previews">
+                    {formData.images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={URL.createObjectURL(image)}
+                        alt={`Selected file preview ${index + 1}`} // More specific alt text
+                        className="selected-pic"
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
             </div>

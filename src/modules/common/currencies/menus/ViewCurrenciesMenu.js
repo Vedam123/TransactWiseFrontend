@@ -19,7 +19,7 @@ export default function ViewCurrenciesMenu() {
   const userId = localStorage.getItem("userid");
   logger.info(`[${new Date().toLocaleTimeString()}] Token: ${token}, UserId: ${userId}, ModuleName: ${BACKEND_COMMON_MODULE_NAME}`);
 
-  const { canViewModule } = ModulePermissions({
+  const { canViewModule,canCreateModule } = ModulePermissions({
     moduleName: BACKEND_COMMON_MODULE_NAME,
   });
 
@@ -35,6 +35,7 @@ export default function ViewCurrenciesMenu() {
 
   const menuItems = [
     { path: "/list-currencies", text: "View Currencies", canRender: canViewModule },
+    { path: "/create-currencies", text: "Create Currencies", canRender: canCreateModule },
     // ... add more menu items here
   ];
 

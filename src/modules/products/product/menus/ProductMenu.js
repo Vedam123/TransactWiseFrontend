@@ -14,7 +14,7 @@ export default function ProductMenu() {
   const { canCreateModule, canDeleteModule, canUpdateModule, canViewModule } = ProductPermissions;
 
   const menuItems = [
-    { path: "/create-item", text: "Create Product", canRender: canCreateModule },
+    { path: "/create-items", text: "Create Product", canRender: canCreateModule },
     { path: "/delete-item", text: "Delete Product", canRender: canDeleteModule },
     { path: "/update-item", text: "Update Product", canRender: canUpdateModule },
     { path: "/list-products", text: "List Products", canRender: canViewModule },

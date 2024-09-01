@@ -68,6 +68,11 @@ import FinancePage from "../finance/FinancePage";
 import ViewAllAccountsPage from "../finance/accounts/ViewAllAccountsPage";
 import CreateAccountPage from "../finance/accounts/CreateAccountPage";
 
+import SearchDefaultAccountsPage from "../finance/accounts/SearchDefaultAccountsPage";
+import SearchDefaultAccountsResultsForm from "../finance/accounts/forms/SearchDefaultAccountsResultsForm";
+
+
+
 import InventoryPage from "../inventory/InventoryPage";
 import ViewAllBinsPage from "../inventory/bins/ViewAllBinsPage";
 
@@ -95,9 +100,9 @@ import FindPOToUpdatePage from "../purchase/purchaseorders/FindPOToUpdatePage";
 import UpdatePurchaseOrderHeaderPage from "../purchase/purchaseorders/UpdatePurchaseOrderHeaderPage";
 import CreatePOPage from "../purchase/purchaseorders/CreatePOPage";
 import CreateJournalPage from "../finance/journal/CreateJournalPage";
+import CreateDefaultAccountsPage from "../finance/accounts/CreateDefaultAccountsPage";
+
 import AutoCreateJournalPage from "../finance/journal/AutoCreateJournalPage";
-
-
 
 import CreatePurchasePage from "../finance/purchaseinvoice/CreatePurchasePage";
 import CreateSalesPage from "../finance/salesinvoice/CreateSalesPage";
@@ -125,7 +130,12 @@ import FindSOToUpdatePage from "../sales/salesorders/FindSOToUpdatePage";
 import SearchJournalPage from "../finance/journal/SearchJournalPage";
 import JournalResultsForm from "../finance/journal/forms/JournalResultsForm";
 
+import FindJounralToUpdatePage from "../finance/journal/FindJounralToUpdatePage"
+import UpdateJournalHeaderPage from "../finance/journal/UpdateJournalHeaderPage"
+
 import PickReleasePage from "../inventory/handling/PickReleasePage";
+
+import CreateUOMPage from "../common/uoms/CreateUOMPage";
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
@@ -286,11 +296,15 @@ function AuthenticationPage() {
             <Route path="/taxcodes-page" element={<TaxCodesPage />} />
             <Route path="/exchangerates-page" element={<ExchangeRatesPage />} />
             <Route path="/uom-page" element={<UOMPage />} />
+
+            
             <Route path="/bom-page" element={<BOMPage />} />
 
             <Route path="/bom-explosion" element={<ViewBOMExplodePage />} />
             <Route path="/bom" element={<ViewBOMModelPage />} />
             <Route path="/list-uoms" element={<ViewAllUOMsPage />} />
+
+            <Route path="/create-uom" element={<CreateUOMPage />} />
 
             <Route path="/legal-entities" element={<LegalEntityPage />} />
             <Route
@@ -443,6 +457,7 @@ function AuthenticationPage() {
               element={<JournalResultsForm />}
             />
             <Route path="/create-journal" element={<CreateJournalPage />} />
+            
 
             <Route
               path="/create-purchase-invoice"
@@ -507,6 +522,8 @@ function AuthenticationPage() {
               path="/update-purchase-order-headers/:POParameters"
               element={<UpdatePurchaseOrderHeaderPage />}
             />
+
+
             <Route
               path="/get-purchase-orders"
               element={<PurchaseOrdersSearchPage />}
@@ -567,7 +584,33 @@ function AuthenticationPage() {
             <Route
               path="/auto-create-Journals"
               element={<AutoCreateJournalPage />} />
+            <Route
+              path="/update-journal-header/:JournalParameters"
+              element={<UpdateJournalHeaderPage />}
+            />
 
+            <Route
+              path="/update-journal"
+              element={<FindJounralToUpdatePage />}
+            />
+
+
+
+
+            <Route
+              path="/search-default-accounts"
+              element={<SearchDefaultAccountsPage />}
+            />
+            <Route
+              path="/get-default-accounts/:Parameters"
+              element={<SearchDefaultAccountsResultsForm />}
+            />
+            <Route
+              path="/get-default-accounts"
+              element={<SearchDefaultAccountsResultsForm />}
+            />
+            <Route path="/create-default-accounts" element={<CreateDefaultAccountsPage />} />
+            
 
           </Routes>
 

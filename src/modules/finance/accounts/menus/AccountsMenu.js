@@ -18,6 +18,8 @@ export default function AccountsMenu() {
     { path: "/delete-account", text: "Delete Account", canRender: canDeleteModule },
     { path: "/update-account", text: "Update Account", canRender: canUpdateModule },
     { path: "/get-accounts", text: "Get Accounts", canRender: canViewModule },
+    { path: "/search-default-accounts", text: "Get Default Accounts", canRender: canViewModule },
+    { path: "/create-default-accounts", text: "Create Default Accounts", canRender: canCreateModule },
   ];
 
   const handleMenuItemClick = (path) => {

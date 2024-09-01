@@ -12,7 +12,7 @@ export default function ViewTaxCodesMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
   //  const { canViewModule, canCreateModule, canDeleteModule, canUpdateModule } =
-  const { canViewModule } = ModulePermissions({
+  const { canViewModule , canCreateModule} = ModulePermissions({
     moduleName: BACKEND_COMMON_MODULE_NAME, // Set the module name as needed
   });
 
@@ -30,6 +30,9 @@ export default function ViewTaxCodesMenu() {
 
   const menuItems = [
     { path: "/list-tax-codes", text: "View Tax Codes", canRender: canViewModule }, // Add the "canRender" property
+    { path: "/create-tax-codes", text: "Create Tax Codes", canRender: canCreateModule }, // Add the "canRender" property
+    { path: "/search-default-taxcodes", text: "Get Default Tax Codes", canRender: canViewModule },
+    { path: "/create-default-taxcodes", text: "Create Default Tax Codes", canRender: canCreateModule },
     // ... add more menu items here
   ];
 

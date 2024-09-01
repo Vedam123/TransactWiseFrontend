@@ -33,15 +33,25 @@ import CommonPage from "../common/CommonPage";
 import ViewAllUOMsPage from "../common/uoms/ViewAllUOMsPage";
 import ViewAllCurrenciesPage from "../common/currencies/ViewAllCurrenciesPage";
 import ViewAllExchangeRatesPage from "../common/exchangerates/ViewAllExchangeRatesPage";
+
 import ViewAllTaxCodesPage from "../common/taxcodes/ViewAllTaxCodesPage";
+import CreateTaxPage from "../common/taxcodes/CreateTaxPage";
+
+import SearchDefaultTaxCodesPage from "../common/taxcodes/SearchDefaultTaxCodesPage";
+import CreateDefaultTaxCodesPage from "../common/taxcodes/CreateDefaultTaxCodesPage";
+import SearchDefaultTaxCodesResultsForm from "../common/taxcodes//forms/SearchDefaultTaxCodesResultsForm";
+
+
 import ViewAllProdCatPage from "../products/productcategories/ViewAllProdCatPage";
 import PermissionsContext from "./modulepermissions/PermissionsContext";
 import CurrenciesPage from "../common/currencies/CurrenciesPage";
 import TaxCodesPage from "../common/taxcodes/TaxCodesPage";
 import ExchangeRatesPage from "../common/exchangerates/ExchangeRatesPage";
+
 import UOMPage from "../common/uoms/UOMPage";
 import BOMPage from "../common/bom/BOMPage";
 import CreateProdCatPage from "../products/productcategories/CreateProdCatPage";
+import CreateProductsPage from "../products/product/CreateProductsPage";
 import PartnerResults from "../common/businesspartner/forms/PartnerResults";
 import PartnerSearchPage from "../common/businesspartner/PartnerSearchPage";
 import CreatePartnerPage from "../common/businesspartner/CreatePartnerPage";
@@ -67,6 +77,9 @@ import CreateDepartmentsPage from "../common/department/CreateDepartmentsPage";
 import FinancePage from "../finance/FinancePage";
 import ViewAllAccountsPage from "../finance/accounts/ViewAllAccountsPage";
 import CreateAccountPage from "../finance/accounts/CreateAccountPage";
+
+import SearchDefaultAccountsPage from "../finance/accounts/SearchDefaultAccountsPage";
+import SearchDefaultAccountsResultsForm from "../finance/accounts/forms/SearchDefaultAccountsResultsForm";
 
 import InventoryPage from "../inventory/InventoryPage";
 import ViewAllBinsPage from "../inventory/bins/ViewAllBinsPage";
@@ -95,9 +108,9 @@ import FindPOToUpdatePage from "../purchase/purchaseorders/FindPOToUpdatePage";
 import UpdatePurchaseOrderHeaderPage from "../purchase/purchaseorders/UpdatePurchaseOrderHeaderPage";
 import CreatePOPage from "../purchase/purchaseorders/CreatePOPage";
 import CreateJournalPage from "../finance/journal/CreateJournalPage";
+import CreateDefaultAccountsPage from "../finance/accounts/CreateDefaultAccountsPage";
+
 import AutoCreateJournalPage from "../finance/journal/AutoCreateJournalPage";
-
-
 
 import CreatePurchasePage from "../finance/purchaseinvoice/CreatePurchasePage";
 import CreateSalesPage from "../finance/salesinvoice/CreateSalesPage";
@@ -125,10 +138,15 @@ import FindSOToUpdatePage from "../sales/salesorders/FindSOToUpdatePage";
 import SearchJournalPage from "../finance/journal/SearchJournalPage";
 import JournalResultsForm from "../finance/journal/forms/JournalResultsForm";
 
-import FindJounralToUpdatePage from "../finance/journal/FindJounralToUpdatePage"
-import UpdateJournalHeaderPage from "../finance/journal/UpdateJournalHeaderPage"
+import FindJounralToUpdatePage from "../finance/journal/FindJounralToUpdatePage";
+import UpdateJournalHeaderPage from "../finance/journal/UpdateJournalHeaderPage";
 
 import PickReleasePage from "../inventory/handling/PickReleasePage";
+
+import CreateUOMPage from "../common/uoms/CreateUOMPage";
+
+import CreateExchangeRatesPage from "../common/exchangerates/CreateExchangeRatesPage";
+import CreateCurrenciesPage from "../common/currencies/CreateCurrenciesPage";
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
@@ -289,11 +307,14 @@ function AuthenticationPage() {
             <Route path="/taxcodes-page" element={<TaxCodesPage />} />
             <Route path="/exchangerates-page" element={<ExchangeRatesPage />} />
             <Route path="/uom-page" element={<UOMPage />} />
+
             <Route path="/bom-page" element={<BOMPage />} />
 
             <Route path="/bom-explosion" element={<ViewBOMExplodePage />} />
             <Route path="/bom" element={<ViewBOMModelPage />} />
             <Route path="/list-uoms" element={<ViewAllUOMsPage />} />
+
+            <Route path="/create-uom" element={<CreateUOMPage />} />
 
             <Route path="/legal-entities" element={<LegalEntityPage />} />
             <Route
@@ -304,7 +325,6 @@ function AuthenticationPage() {
               path="/create-legalentity"
               element={<CreateLegalEntityPage />}
             />
-
             <Route path="/group-companies" element={<GroupCompaniesPage />} />
             <Route
               path="/get-group-companies"
@@ -334,6 +354,7 @@ function AuthenticationPage() {
               element={<ViewAllCurrenciesPage />}
             />
             <Route path="/list-tax-codes" element={<ViewAllTaxCodesPage />} />
+            <Route path="/create-tax-codes" element={<CreateTaxPage />} />
             <Route
               path="/list-exchange-rates"
               element={<ViewAllExchangeRatesPage />}
@@ -370,6 +391,12 @@ function AuthenticationPage() {
               path="/create-item-category"
               element={<CreateProdCatPage />}
             />
+
+            <Route
+              path="/create-items"
+              element={<CreateProductsPage />}
+            />
+
             <Route path="/products-module" element={<ProductsPage />} />
             <Route path="/purchase-module" element={<PurchasePage />} />
 
@@ -511,7 +538,6 @@ function AuthenticationPage() {
               element={<UpdatePurchaseOrderHeaderPage />}
             />
 
-
             <Route
               path="/get-purchase-orders"
               element={<PurchaseOrdersSearchPage />}
@@ -523,7 +549,6 @@ function AuthenticationPage() {
             />
 
             <Route path="/create-purchase-order" element={<CreatePOPage />} />
-
 
             <Route path="/create-sales-order" element={<CreateSOPage />} />
             <Route
@@ -555,9 +580,16 @@ function AuthenticationPage() {
               element={<FindPOToUpdatePage />}
             />
 
+            <Route path="/pick-release" element={<PickReleasePage />} />
+
             <Route
-              path="/pick-release"
-              element={<PickReleasePage />}
+              path="/create-currencies"
+              element={<CreateCurrenciesPage />}
+            />
+
+            <Route
+              path="/create-exchange-rates"
+              element={<CreateExchangeRatesPage />}
             />
 
             <Route
@@ -567,11 +599,13 @@ function AuthenticationPage() {
 
             <Route
               path="/auto-create-purchase-invoices"
-              element={<AutoPOInvoiceCreationPage />} />
+              element={<AutoPOInvoiceCreationPage />}
+            />
 
             <Route
               path="/auto-create-Journals"
-              element={<AutoCreateJournalPage />} />
+              element={<AutoCreateJournalPage />}
+            />
             <Route
               path="/update-journal-header/:JournalParameters"
               element={<UpdateJournalHeaderPage />}
@@ -582,8 +616,42 @@ function AuthenticationPage() {
               element={<FindJounralToUpdatePage />}
             />
 
-          </Routes>
+            <Route
+              path="/search-default-accounts"
+              element={<SearchDefaultAccountsPage />}
+            />
+            <Route
+              path="/get-default-accounts/:Parameters"
+              element={<SearchDefaultAccountsResultsForm />}
+            />
+            <Route
+              path="/get-default-accounts"
+              element={<SearchDefaultAccountsResultsForm />}
+            />
+            <Route
+              path="/create-default-accounts"
+              element={<CreateDefaultAccountsPage />}
+            />
 
+            <Route
+              path="/search-default-taxcodes"
+              element={<SearchDefaultTaxCodesPage />}
+            />
+
+          <Route
+              path="/get-default-tax-codes/:Parameters"
+              element={<SearchDefaultTaxCodesResultsForm />}
+            />
+            <Route
+              path="/get-default-tax-codes"
+              element={<SearchDefaultTaxCodesResultsForm />}
+            />
+
+            <Route
+              path="/create-default-taxcodes"
+              element={<CreateDefaultTaxCodesPage />}
+            />            
+          </Routes>
         </PermissionsContext.Provider>
       )}
     </BrowserRouter>
