@@ -123,6 +123,8 @@ export default function CreateDefaultAccountsForm() {
     setSelectedCurrencyId(Number(formData.currency_id));
     setSelectedCompanyId(Number(formData.company_id));
 
+    console.log(formData)
+
     try {
       const response = await axios.post(
         `${API_URL}/create_default_account_headers`,

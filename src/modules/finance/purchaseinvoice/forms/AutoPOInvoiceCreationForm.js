@@ -6,7 +6,8 @@ import {
   BACKEND_FINANCE_MODULE_NAME,
   MODULE_LEVEL_CREATE_ACCESS,
 } from "../../../admin/setups/ConstDecl";
-import { AUTO_PURCHASE_INVOICE_CONFIG } from "../../config/config";
+import { COMPANY_CONFIG } from "../../config/CompanyConfigs"; // Import the grouped configuration
+import * as PurchaseConfig from "../../../purchase/config/config"; // Import everything from purchase config
 
 const generateHeaders = () => {
   const token = localStorage.getItem("token");
@@ -18,9 +19,9 @@ const generateHeaders = () => {
   };
 };
 
-export default function AutoPOInvoiceCreationForm() {
+export default function AutoCreateInvoiceFromPOForm() {
   const [formData, setFormData] = useState({
-    purchase_order_numbers: ""
+    purchase_order_numbers: "",
   });
 
   const [successMessage, setSuccessMessage] = useState(null);
@@ -35,112 +36,179 @@ export default function AutoPOInvoiceCreationForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  /*const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    // Convert empty input to an empty array
-    const purchaseOrderNumbersArray = formData.purchase_order_numbers
-      .split(",")
-      .map((num) => num.trim())
-      .filter((num) => num !== "")  // Filter out empty strings
-      .map((num) => parseInt(num, 10));
-  
-    // Confirmation dialog if purchaseOrderNumbersArray is empty
-    if (purchaseOrderNumbersArray.length === 0) {
-      const userConfirmed = window.confirm(
-        "Are you sure you want to create invoices for all purchase orders?"
-      );
-      if (!userConfirmed) {
-        return;  // Exit if the user clicks "No"
-      }
-    }
-  
-    const requestData = {
-      purchase_order_numbers: purchaseOrderNumbersArray,
-      ...AUTO_PURCHASE_INVOICE_CONFIG
-    };
-  
-    try {
-      const response = await axios.post(
-        `${API_URL}/auto_create_po_pi`,
-        requestData,
-        {
-          headers: generateHeaders(),
-        }
-      );
-      console.log(response.data);
-  
-      // Set the success message from header_response
-      setSuccessMessage(response.data.invoices[0].header_response.message);
-      setErrorMessage(null);
-    } catch (error) {
-      console.error("Error creating purchase invoice:", error);
-      setErrorMessage(
-        error.response && error.response.data
-          ? error.response.data.message
-          : "An error occurred while creating the purchase invoice."
-      );
-      setSuccessMessage(null);
-    }
-  };*/
-
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Convert empty input to an empty array
     const purchaseOrderNumbersArray = formData.purchase_order_numbers
       .split(",")
       .map((num) => num.trim())
-      .filter((num) => num !== "")  // Filter out empty strings
+      .filter((num) => num !== "")
       .map((num) => parseInt(num, 10));
   
-    // Confirmation dialog if purchaseOrderNumbersArray is empty
+    console.log("Entered Purchase orders", purchaseOrderNumbersArray);
+  
     if (purchaseOrderNumbersArray.length === 0) {
       const userConfirmed = window.confirm(
         "Are you sure you want to create invoices for all purchase orders?"
       );
       if (!userConfirmed) {
-        return;  // Exit if the user clicks "No"
+        return;
       }
     }
   
-    const requestData = {
-      purchase_order_numbers: purchaseOrderNumbersArray,
-      ...AUTO_PURCHASE_INVOICE_CONFIG
-    };
-  
     try {
-      const response = await axios.post(
-        `${API_URL}/auto_create_po_pi`,
-        requestData,
-        {
-          headers: generateHeaders(),
-        }
-      );
-      console.log(response.data);
+      // Fetch purchase order headers
+      const response = await axios.get(`${API_URL}/get_purchase_order_headers`, {
+        headers: generateHeaders(),
+      });
+      const purchaseOrders = response.data;
   
-      // Check if the response structure is as expected
-      if (response.data.invoices && response.data.invoices.length > 0 && response.data.invoices[0].header_response) {
-        setSuccessMessage(response.data.invoices[0].header_response.message);
-      } else {
-        setSuccessMessage("Purchase invoices created successfully.");
+      // Get the list of statuses that have autoinvoice set to true
+      const autoinvoiceStatuses = PurchaseConfig.PO_ORDER_STATUS.filter(
+        (status) => status.autoinvoice
+      ).map((status) => status.short_name);
+  
+      // Filter purchase orders based on validation
+      const filteredPurchaseOrders = purchaseOrders.filter((order) => {
+        const { po_num, status } = order;
+  
+        // Check if status is in the po_order_status_filter and has autoinvoice true
+        if (!autoinvoiceStatuses.includes(status)) {
+          return false; // Exclude if status doesn't have autoinvoice true
+        }
+  
+        return purchaseOrderNumbersArray.includes(po_num); // Include if it passes all checks
+      });
+  
+      console.log(
+        "Filtered final orders to be sent to POST API",
+        filteredPurchaseOrders
+      );
+  
+      // Group the filtered purchase orders by company_id
+      const purchaseOrdersGroupedByCompanyId = filteredPurchaseOrders.reduce(
+        (acc, order) => {
+          const { company_id, po_num } = order;
+          if (!acc[company_id]) {
+            acc[company_id] = [];
+          }
+          acc[company_id].push(po_num);
+          return acc;
+        },
+        {}
+      );
+  
+      console.log(
+        "Grouped Purchase orders by company",
+        purchaseOrdersGroupedByCompanyId
+      );
+  
+      // Initialize an array to collect results
+      const results = [];
+  
+      // Make the POST API calls for each company_id
+      for (const companyId in purchaseOrdersGroupedByCompanyId) {
+        // Check if the config exists for the company_id
+        const companyConfig =
+          COMPANY_CONFIG[companyId]?.AUTO_PURCHASE_INVOICE_CONFIG;
+        if (!companyConfig) {
+          console.log(
+            "There is no AUTO_PURCHASE_INVOICE_CONFIG setup for the company ",
+            companyId
+          );
+          continue; // Skip this iteration if config is not present
+        }
+  
+        // Calculate the sum of Debit and Credit for Normal category
+        const debitSum = companyConfig.account_types.Debit.filter(
+          (account) => account.category === "Normal"
+        ).reduce((sum, account) => sum + account.distribution_percentage, 0);
+  
+        const creditSum = companyConfig.account_types.Credit.filter(
+          (account) => account.category === "Normal"
+        ).reduce((sum, account) => sum + account.distribution_percentage, 0);
+  
+        // Validate if Debit sum equals Credit sum for Normal category
+        if (debitSum !== creditSum) {
+          console.log(
+            "AUTO_PURCHASE_INVOICE_CONFIG Debit distribution % is not the same as Credit's for the company setup",
+            companyId
+          );
+          continue; // Skip this iteration if the sums don't match
+        }
+  
+        const requestData = {
+          purchase_order_numbers: purchaseOrdersGroupedByCompanyId[companyId],
+          created_by: localStorage.getItem("userid"),
+          ...companyConfig,
+        };
+  
+        try {
+          const postResponse = await axios.post(
+            `${API_URL}/auto_create_po_pi`,
+            requestData,
+            {
+              headers: generateHeaders(),
+            }
+          );
+  
+          // Log the entire response
+          console.log("Respose from API call Group by Company", companyId, postResponse.data);
+  
+          // Collect the response for processing later
+          results.push(postResponse.data);
+        } catch (postError) {
+          console.error("Error creating purchase invoice:", postError);
+          setErrorMessage(
+            postError.response && postError.response.data
+              ? postError.response.data.message
+              : "An error occurred while creating the purchase invoice."
+          );
+          setSuccessMessage(null);
+          return; // Exit the function if there's an error
+        }
       }
-      setErrorMessage(null);
+  
+      // Process collected results
+      if (results.length > 0) {
+        // Flatten results and process
+        const allInvoices = results.flatMap(result => result.invoices || []);
+        const uniqueHeaderIds = new Set(allInvoices.map(inv => inv.header_response.header_id));
+        const uniqueHeaderCount = uniqueHeaderIds.size;
+        const purchaseOrderCount = purchaseOrderNumbersArray.length;
+  
+        let message = "";
+        if (uniqueHeaderCount === 1 && purchaseOrderCount === 1) {
+          message = `Invoice is created for the single purchase order. POs: ${purchaseOrderCount}, Invoices: ${uniqueHeaderCount}`;
+        } else if (uniqueHeaderCount === purchaseOrderCount) {
+          message = `Invoices are created for all the purchase orders. POs: ${purchaseOrderCount}, Invoices: ${uniqueHeaderCount}`;
+        } else if (uniqueHeaderCount < purchaseOrderCount) {
+          message = `Invoices are not created for all the purchase orders. POs: ${purchaseOrderCount}, Invoices: ${uniqueHeaderCount}`;
+        } else if (uniqueHeaderCount > purchaseOrderCount) {
+          message = `There are more invoices created than purchase orders. POs: ${purchaseOrderCount}, Invoices: ${uniqueHeaderCount}`;
+        } else if (uniqueHeaderCount === 0) {
+          message = `No invoice got created.`;
+        }
+        
+  
+        setSuccessMessage(message);
+      } else {
+        setSuccessMessage("No Invoices got created , No response from API.");
+      }
     } catch (error) {
-      console.error("Error creating purchase invoice:", error);
+      console.error("Error fetching purchase order headers:", error);
       setErrorMessage(
         error.response && error.response.data
           ? error.response.data.message
-          : "An error occurred while creating the purchase invoice."
+          : "An error occurred while fetching the purchase orders."
       );
       setSuccessMessage(null);
     }
-  };
-  
-  
+  };    
+
   return (
     <div className="child-container menu-container">
-      <h2 className="title">Auto Create Purchase Invoice</h2>
+      <h2 className="title">Auto Create Purchase Order Invoice</h2>
 
       {hasRequiredAccess ? (
         <div className="child-container form-container">
@@ -148,7 +216,9 @@ export default function AutoPOInvoiceCreationForm() {
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
                 <div className="label-container">
-                  <label htmlFor="purchase_order_numbers">Purchase Order Numbers:</label>
+                  <label htmlFor="purchase_order_numbers">
+                    Purchase Order Numbers:
+                  </label>
                 </div>
                 <input
                   type="text"

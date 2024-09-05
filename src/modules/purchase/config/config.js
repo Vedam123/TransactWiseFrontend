@@ -1,7 +1,7 @@
 export const PO_ORDER_STATUS = [
   { name: "Draft", short_name: "DRAFT", sequence: 10, toupdated: true },
   { name: "Pending Approval", short_name: "PENDING", sequence: 20, toupdated: true },
-  { name: "Approved", short_name: "APPROVED", sequence: 30, toputaway: true },
+  { name: "Approved", short_name: "APPROVED", sequence: 30, toputaway: true , autoinvoice:true},
   { name: "Sent to Vendor", short_name: "SENT", sequence: 40, toinspect: true},
   { name: "Partial Receipt", short_name: "PARTIAL", sequence: 50 , toputaway: true },
   { name: "Received", short_name: "RECEIVED", sequence: 60, putaway: true },

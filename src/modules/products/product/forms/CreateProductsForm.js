@@ -3,11 +3,16 @@ import axios from "axios";
 import { API_URL } from "../../../admin/setups/ConstDecl";
 import "../../../utilities/css/appcss.css";
 import ModulePermissions from "../../../security/modulepermissions/ModulePermissions";
+import { ITEM_CODE_PREFIX } from "../config/config";
 import logger from "../../../utilities/Logs/logger";
 
 export default function CreateItemForm() {
+  const activeItemCodePrefix = ITEM_CODE_PREFIX.find(
+    (prefix) => prefix.active
+  )?.short_name;
+
   const [formData, setFormData] = useState({
-    item_code: "",
+    item_code: activeItemCodePrefix,
     item_name: "",
     category_id: "",
     manufacturer: "",
@@ -25,6 +30,7 @@ export default function CreateItemForm() {
     default_uom_id: "",
     expiry_date_flag: false,
     expiry_date: "",
+    is_serial_controlled: false, // New field added here
   });
 
   const [uoms, setUOMs] = useState([]);
@@ -43,7 +49,10 @@ export default function CreateItemForm() {
         });
         setCategories(response.data.item_categories);
       } catch (error) {
-        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching categories:`, error);
+        logger.error(
+          `[${new Date().toLocaleTimeString()}] Error fetching categories:`,
+          error
+        );
       }
     }
     fetchCategories();
@@ -57,7 +66,10 @@ export default function CreateItemForm() {
         });
         setUOMs(response.data.uom);
       } catch (error) {
-        logger.error(`[${new Date().toLocaleTimeString()}] Error fetching uoms:`, error);
+        logger.error(
+          `[${new Date().toLocaleTimeString()}] Error fetching uoms:`,
+          error
+        );
       }
     }
     fetchUOMs();
@@ -125,19 +137,25 @@ export default function CreateItemForm() {
         }
       });
 
-      const response = await axios.post(`${API_URL}/create_items`, formDataToSend, {
-        headers: {
-          ...generateHeaders(),
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        `${API_URL}/create_items`,
+        formDataToSend,
+        {
+          headers: {
+            ...generateHeaders(),
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      setSuccessMessage(`Item created successfully with ID: ${response.data.item_id}`);
-      
+      setSuccessMessage(
+        `Item created successfully with ID: ${response.data.item_id}`
+      );
+
       setTimeout(() => {
         setSuccessMessage("");
         setFormData({
-          item_code: "",
+          item_code: activeItemCodePrefix,
           item_name: "",
           category_id: "",
           manufacturer: "",
@@ -173,22 +191,8 @@ export default function CreateItemForm() {
       <h2 className="title">Create Item</h2>
       <div className="child-container form-container">
         <form onSubmit={handleSubmit}>
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="item_code">Item Code:</label>
-              </div>
-              <input
-                type="text"
-                id="item_code"
-                name="item_code"
-                value={formData.item_code}
-                onChange={handleChange}
-                className="form-control input-field"
-                disabled={formDisabled}
-              />
-            </div>
-          </div>
+          {/* Item Code (hidden) */}
+          <input type="hidden" name="item_code" value={formData.item_code} />
 
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
@@ -258,7 +262,6 @@ export default function CreateItemForm() {
             </div>
           </div>
 
-          
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
               <div className="label-container">
@@ -480,7 +483,7 @@ export default function CreateItemForm() {
           <div className="form-group col-md-6 mb-2">
             <div className="form-row">
               <div className="label-container">
-                <label htmlFor="expiry_date_flag">Has Expiry Date:</label>
+                <label htmlFor="expiry_date_flag">Is Expired:</label>
               </div>
               <input
                 type="checkbox"
@@ -507,6 +510,25 @@ export default function CreateItemForm() {
                 onChange={handleChange}
                 className="form-control input-field"
                 disabled={!formData.expiry_date_flag || formDisabled} // Disable if expiry date flag is not checked
+              />
+            </div>
+          </div>
+
+          {/* New Is Serial Controlled field */}
+          <div className="form-group col-md-6 mb-2">
+            <div className="form-row">
+              <div className="label-container">
+                <label htmlFor="is_serial_controlled">
+                  Is Serial Controlled:
+                </label>
+              </div>
+              <input
+                type="checkbox"
+                id="is_serial_controlled"
+                name="is_serial_controlled"
+                checked={formData.is_serial_controlled}
+                onChange={handleChange}
+                disabled={formDisabled}
               />
             </div>
           </div>

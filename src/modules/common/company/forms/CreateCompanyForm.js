@@ -18,7 +18,6 @@ export default function CreateCompanyForm() {
     reporting_cur_id: "",
     tax_code_id: "",
     header_name: "", // New state for tax code header_name
-    account_group_id: "", // New state for account group ID
   });
 
   const [groupCompanies, setGroupCompanies] = useState([]);
@@ -26,9 +25,6 @@ export default function CreateCompanyForm() {
 
   const [companyTaxCodes, setCompanyTaxCodes] = useState([]);
   const [loadingCompanyTaxCodes, setLoadingCompanyTaxCodes] = useState(true);
-
-  const [accountGroups, setAccountGroups] = useState([]);
-  const [loadingAccountGroups, setLoadingAccountGroups] = useState(true);
 
   const [currencies, setCurrencies] = useState([]);
   const [loadingCurrencies, setLoadingCurrencies] = useState(true);
@@ -90,14 +86,7 @@ export default function CreateCompanyForm() {
     }));
   };
 
-  const handleAccountGroupChange = (e) => {
-    const accountGroupId = parseInt(e.target.value, 10);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      account_group_id: isNaN(accountGroupId) ? "" : accountGroupId,
-    }));
-  };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -128,7 +117,6 @@ export default function CreateCompanyForm() {
         reporting_cur_id: "",
         tax_code_id: "",
         header_name: "", // Reset tax code header_name after successful submission
-        account_group_id: "", // Reset account group ID after successful submission
       });
     } catch (error) {
       logger.error(
@@ -201,29 +189,10 @@ export default function CreateCompanyForm() {
       }
     };
 
-    const fetchAccountGroups = async () => {
-      try {
-        const response = await axios.get(
-          `${API_URL}/get_default_account_headers`,
-          {
-            headers: generateHeaders(),
-          }
-        );
-        setAccountGroups(response.data.default_account_headers);
-      } catch (error) {
-        logger.error(
-          `[${new Date().toLocaleTimeString()}] Error fetching account groups:`,
-          error
-        );
-      } finally {
-        setLoadingAccountGroups(false);
-      }
-    };
-
+    
     fetchGroupCompanies();
     fetchCurrencies();
     fetchCompanyTaxCodes();
-    fetchAccountGroups();
   }, []);
 
   return (
@@ -387,31 +356,7 @@ export default function CreateCompanyForm() {
                 </select>
               </div>
             </div>
-            <div className="form-group col-md-6 mb-2">
-              <div className="form-row">
-                <div className="label-container">
-                  <label htmlFor="account_group_id">Account Group ID:</label>
-                </div>
-                <select
-                  id="account_group_id"
-                  name="account_group_id"
-                  value={formData.account_group_id}
-                  onChange={handleAccountGroupChange}
-                  className="form-control input-field"
-                >
-                  <option value="">Select Account Group ID</option>
-                  {loadingAccountGroups ? (
-                    <option value="" disabled>Loading Account Groups...</option>
-                  ) : (
-                    accountGroups.map((group) => (
-                      <option key={group.header_id} value={group.header_id}>
-                        {group.header_name}
-                      </option>
-                    ))
-                  )}
-                </select>
-              </div>
-            </div>
+           
 
             {loading && <div className="loading-indicator">Creating...</div>}
             {error && <div className="error-message">{error}</div>}

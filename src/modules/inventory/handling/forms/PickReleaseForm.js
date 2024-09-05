@@ -47,7 +47,7 @@ export default function PickReleaseForm() {
         },
       });
       console.log("Pick Release response", response);
-      setSuccessMessage("Pick release successful");
+      setSuccessMessage(`Pick release completed with the response: ${response.data.message}`);
       setErrorMessage("");
 
       // Reset form data

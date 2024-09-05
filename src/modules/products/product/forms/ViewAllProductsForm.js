@@ -145,7 +145,8 @@ function ViewAllProductsForm() {
               <th>Manufacturer</th>
               <th>UOM</th>
               <th>Product Type</th>
-              <th>Image</th>
+              <th>Serial Controlled ?</th>
+              <th>Images</th>
             </tr>
           </thead>
           <tbody>
@@ -157,6 +158,7 @@ function ViewAllProductsForm() {
                 <td>{item.manufacturer}</td>
                 <td>{uomAbbreviations[item.default_uom_id] || "Unknown UOM"}</td>
                 <td>{item.product_type}</td>
+                <td>{item.is_serial_controlled === 0 ? 'False' : 'True'}</td>
                 <td>
                   {item.item_image ? (
                     <img
