@@ -162,7 +162,7 @@ const CreatePurchaseLineModalForm = ({
       if (response.data.success) {
         onClose();
         onSuccess(response);
-        setSuccessMessage("Invoice lines created successfully.");
+        setSuccessMessage("Invoice lines are created successfully.");
         setTimeout(() => {
           setSuccessMessage(null);
         }, 15000);
