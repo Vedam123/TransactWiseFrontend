@@ -23,6 +23,7 @@ export default function LoginForm(props) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    instance: "",
   });
   const [showUpdateCredentialsForm, setShowUpdateCredentialsForm] = useState(false)
   const [error, setError] = useState("");
@@ -70,7 +71,7 @@ export default function LoginForm(props) {
 
       props.onLoginSuccess(userid, username, access_token, refresh_token, name, emp_img);
 
-      setFormData({ username: "", password: "" });
+      setFormData({ username: "", password: "", instance: "" });
       setError("");
 
       logger.info(`[${new Date().toLocaleTimeString()}] User ${username} logged in successfully.`);
@@ -131,6 +132,24 @@ export default function LoginForm(props) {
               />
             </div>
           </div>
+
+          <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+              <div className="label-container">
+                <label htmlFor="username">Instance:</label>
+              </div>
+              <input
+                type="text"
+                id="instance"
+                name="instance"
+                value={formData.instance}
+                onChange={handleChange}
+                className="form-control input-field"
+              />
+            </div>
+          </div>
+
+          
           <button type="submit">Login</button>
           <button type="button" onClick={handleForgotPassword}>
               Forgot Password?
