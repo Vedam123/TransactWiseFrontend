@@ -14,7 +14,7 @@ export default function BOMMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
 
-  const { canViewModule } = ModulePermissions({
+  const { canViewModule, canCreateModule ,canUpdateModule} = ModulePermissions({
     moduleName: BACKEND_COMMON_MODULE_NAME,
   });
 
@@ -30,8 +30,9 @@ export default function BOMMenu() {
 
   const menuItems = [
     { path: "/bom-explosion", text: "Explode BOM", canRender: canViewModule },
-    { path: "/bom", text: "Model BOM", canRender: canViewModule },
-    // ... add more menu items here
+    { path: "/bom", text: "View BOM", canRender: canViewModule },
+    { path: "/create-bom", text: "Create BOM", canRender: canCreateModule },
+    { path: "/update-bom", text: "Update BOM", canRender: canUpdateModule },
   ];
 
   return (

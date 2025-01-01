@@ -20,7 +20,7 @@ export default function RegisterUserForm() {
     emailid: "",
   });
   const useridauthToken = localStorage.getItem("token");
-  const userid = localStorage.getItem("loggedInUserid");
+  const userid = localStorage.getItem("userid");
   const [sendEmail, setSendEmail] = useState(false); // New state for the checkbox
 
   const hasRequiredAccess = CheckModuleAccess(
@@ -52,7 +52,8 @@ export default function RegisterUserForm() {
       logger.info(
         `[${new Date().toLocaleTimeString()}] User id to call employee: ${userid}`
       );
-      const response = await axios.get(`${API_URL}/employee`, { headers });
+      const status = 1;
+      const response = await axios.get(`${API_URL}/employee?status=${status}`, { headers });
       const data = response.data;
       setEmployeeData(data);
 
@@ -127,12 +128,12 @@ export default function RegisterUserForm() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         UserId: localStorage.getItem("userid"),
       };
-  
+
       // Set the values for status_value, start_date_value, and expiry_date_value
-      const statusValue = USER_STATUS.find(status => status.short_name === "ACTIVE").name;
+      const statusValue = USER_STATUS.find(status => status.status === "Active").short_name;
       const startDateValue = new Date().toISOString().split('T')[0];  // DD-MM-YYYY format
       const expiryDateValue = null;
-  
+
       // Create the request payload
       const requestPayload = {
         ...formData,
@@ -140,14 +141,14 @@ export default function RegisterUserForm() {
         start_date_value: startDateValue,
         expiry_date_value: expiryDateValue,
       };
-  
+
       // Send the registration request
       const response = await axios.post(`${API_URL}/register_user`, requestPayload, {
         headers: headers,
       });
-  
+
       setRegistrationSuccess(true);
-  
+
       setFormData({
         username: "",
         password: "",
@@ -158,7 +159,7 @@ export default function RegisterUserForm() {
       logger.info(
         `[${new Date().toLocaleTimeString()}] Response Register_user API: ${response}`
       );
-  
+
       // Conditionally send email if the checkbox is checked
       logger.info(
         `[${new Date().toLocaleTimeString()}] Send Email check box: ${sendEmail}`
@@ -166,7 +167,7 @@ export default function RegisterUserForm() {
       if (sendEmail) {
         await sendEmailData();
       }
-  
+
       // Log the successful registration with timestamp
       logger.info(
         `[${new Date().toLocaleTimeString()}] User registered successfully. Access granted: ${hasRequiredAccess}`
@@ -180,7 +181,7 @@ export default function RegisterUserForm() {
       );
     }
   };
-  
+
 
   return (
     <div className="child-container menu-container">
@@ -195,7 +196,7 @@ export default function RegisterUserForm() {
             </div>
           ) : (
             // Show the registration form if registrationSuccess is false
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off">
               <div className="form-group col-md-6 mb-2">
                 <div className="form-row">
                   <div className="label-container">
@@ -208,6 +209,7 @@ export default function RegisterUserForm() {
                     value={formData.username}
                     onChange={handleChange}
                     className="form-control input-field"
+                    autoComplete="off"  // Disable autocomplete for company
                   />
                 </div>
               </div>
@@ -224,6 +226,7 @@ export default function RegisterUserForm() {
                     value={formData.password}
                     onChange={handleChange}
                     className="form-control input-field"
+                    autoComplete="off"  // Disable autocomplete for company
                   />
                 </div>
               </div>
@@ -241,6 +244,7 @@ export default function RegisterUserForm() {
                       value={formData.empid}
                       onChange={handleChange}
                       className="form-control input-field"
+                      autoComplete="off"  // Disable autocomplete for company
                     >
                       <option value="">Select Employee</option>
                       {employeeData.map((employee) => (
@@ -265,6 +269,7 @@ export default function RegisterUserForm() {
                     value={formData.emailid}
                     onChange={handleChange}
                     className="form-control input-field"
+                    autoComplete="off"  // Disable autocomplete for company
                   />
                 </div>
               </div>
@@ -277,6 +282,7 @@ export default function RegisterUserForm() {
                     checked={sendEmail}
                     onChange={handleChange}
                     className="form-check-input"
+                    autoComplete="off"  // Disable autocomplete for company
                   />
                   <label htmlFor="sendEmail" className="form-check-label">
                     Send Email

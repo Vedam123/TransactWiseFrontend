@@ -83,7 +83,7 @@ export default function AdminPageMenu() {
     canDeleteAdminModule ||
     canUpdateAdminModule;
 
- /* const menuItems = [
+  const menuItems = [
     { path: "/employee-functions", text: "Employee" },
     { path: "/user-functions", text: "Users&Accesses" },
     { path: "/view-emails-function", text: "View Emails" },
@@ -92,34 +92,52 @@ export default function AdminPageMenu() {
     { path: "/create-db-setups", text: "Create DB Setups" },
     { path: "/list-db-setups", text: "Config DB Setup File" },
     // ... add more menu items here
-  ];*/
+  ];
 
-  const menuItems = [
-    { path: "/employee-functions", text: "Employee" },
-    { path: "/user-functions", text: "Users&Accesses" },
-    { path: "/view-emails-function", text: "View Emails" },
+  const menuItems2 = [
+    { path: "/employee-functions1", text: "Employee2" },
+    { path: "/user-functions1", text: "Users&Accesses2" },
+    { path: "/view-emails-function1", text: "View Emails2" },
   ];
 
   return (
-    <div className="child-container form-container">
-      <div className="menu-list">
-        {menuItems.map((item) =>
-          // Check for permission and render the button if allowed
-          (item.path === "/employee-functions" && isEmployeePermissionGranted) ||
-          (item.path === "/user-functions" && isSecurityPermissionGranted) ||
-          (item.path === "/view-emails-function" && isAdminPermissionGranted) ||
-          (item.path === "/create-ui-setups" && isAdminPermissionGranted) ||
-          (item.path === "/list-ui-setups" && isAdminPermissionGranted) ||
-          (item.path === "/create-db-setups" && isAdminPermissionGranted) ||
-          (item.path === "/list-db-setups" && isAdminPermissionGranted) ? (
-            <ButtonComponent
-              key={item.path}
-              path={item.path}
-              buttonText={item.text}
-              onClick={() => handleMenuItemClick(item.path)}
-            />
-          ) : null
-        )}
+    <div>
+      <div className="child-container form-container">
+        <div className="menu-list">
+          {menuItems.map((item) =>
+            // Check for permission and render the button if allowed
+            (item.path === "/employee-functions" && isEmployeePermissionGranted) ||
+              (item.path === "/user-functions" && isSecurityPermissionGranted) ||
+              (item.path === "/view-emails-function" && isAdminPermissionGranted) ? (
+              <ButtonComponent
+                key={item.path}
+                path={item.path}
+                buttonText={item.text}
+                onClick={() => handleMenuItemClick(item.path)}
+              />
+            ) : null
+          )}
+        </div>
+
+      </div>
+      <div className="child-container form-container">
+        <div className="menu-list">
+          {menuItems.map((item) =>
+            // Check for permission and render the button if allowed
+            (item.path === "/create-ui-setups" && isAdminPermissionGranted) ||
+              (item.path === "/list-ui-setups" && isAdminPermissionGranted) ||
+              (item.path === "/create-db-setups" && isAdminPermissionGranted) ||
+              (item.path === "/list-db-setups" && isAdminPermissionGranted) ? (
+              <ButtonComponent
+                key={item.path}
+                path={item.path}
+                buttonText={item.text}
+                onClick={() => handleMenuItemClick(item.path)}
+              />
+            ) : null
+          )}
+        </div>
+
       </div>
     </div>
   );

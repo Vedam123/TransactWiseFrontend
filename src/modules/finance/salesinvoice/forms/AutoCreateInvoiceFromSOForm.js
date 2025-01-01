@@ -151,10 +151,7 @@ export default function AutoCreateInvoiceFromSOForm() {
 
           results.push(postResponse.data);
 
-          console.log("Respose from API call Group by Company", companyId, postResponse.data);
-  
-          
-          
+          console.log("Respose from API call Group by Company", companyId, postResponse.data);       
   
           setSuccessMessage(successMessage);
           setErrorMessage(null);

@@ -26,7 +26,7 @@ function ViewAllEmployeesForm() {
 
     const fetchData = async () => {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -58,6 +58,7 @@ function ViewAllEmployeesForm() {
               <th>Manager</th>
               <th>Supervisor</th>
               <th>Salary</th>
+              <th>Status</th>
               <th>Designation</th>
               <th>Date of Birth</th>
               <th>Date of Joining</th>
@@ -72,6 +73,7 @@ function ViewAllEmployeesForm() {
                 <td>{employee.manager_name}</td>
                 <td>{employee.supervisor_name}</td>
                 <td>{employee.salary}</td>
+                <td>{employee.status === 1 ? "Active" : "Inactive"}</td>
                 <td>{employee.designation_name}</td>
                 <td>{employee.dob}</td>
                 <td>{employee.doj}</td>

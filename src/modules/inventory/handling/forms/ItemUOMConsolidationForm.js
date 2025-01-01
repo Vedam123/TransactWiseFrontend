@@ -260,7 +260,7 @@ export default function ItemUOMConsolidationForm() {
   const fetchRacks = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -281,7 +281,7 @@ export default function ItemUOMConsolidationForm() {
   const fetchBins = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -302,7 +302,7 @@ export default function ItemUOMConsolidationForm() {
   const fetchRows = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -323,7 +323,7 @@ export default function ItemUOMConsolidationForm() {
   const fetchAisles = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -344,7 +344,7 @@ export default function ItemUOMConsolidationForm() {
   const fetchZones = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -365,7 +365,7 @@ export default function ItemUOMConsolidationForm() {
   const fetchLocations = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -386,7 +386,7 @@ export default function ItemUOMConsolidationForm() {
   const fetchWarehouses = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,

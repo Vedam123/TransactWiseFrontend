@@ -30,7 +30,7 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
   const fetchItemList = async () => {
     try {
       const authToken = localStorage.getItem('token');
-      const userid = localStorage.getItem('loggedInUserid');
+      const userid = localStorage.getItem('userid');
 
       const headers = {
         'Authorization': `Bearer ${authToken}`,
@@ -73,7 +73,7 @@ function ViewExplodeBOMForm({ updateExplodedBOM }) {
 
     try {
       const authToken = localStorage.getItem('token');
-      const userid = localStorage.getItem('loggedInUserid');
+      const userid = localStorage.getItem('userid');
   
       const headers = {
         'Authorization': `Bearer ${authToken}`,

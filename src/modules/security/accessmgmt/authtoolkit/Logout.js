@@ -1,28 +1,18 @@
 import React from "react";
-import axios from "axios";
-import { API_URL } from "../../../admin/setups/ConstDecl";
 import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
 function Logout(props) {
   const handleLogout = async () => {
     try {
-      const userId = localStorage.getItem("loggedInUserid");
 
-      // Define your headers here, including the Authorization and Userid headers
-      const headers = {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Userid: userId,
-      };
-
-      await axios.post(`${API_URL}/logout_user`, null, { headers });
-
+      // Define keys to remove from localStorage
       const keysToRemove = [
         "token",
         "refresh_token",
         "name",
         "emp_img",
         "username",
-        "loggedInUserid",
+        "userid",
         "currenciesDataFetched",
         "loglevel",
         "token_expires_delta",
@@ -33,31 +23,35 @@ function Logout(props) {
         'refresh_token_expires_by_timestamp'
       ];
 
+      // Remove each key from localStorage if it exists
       keysToRemove.forEach((key) => {
-        if (localStorage.getItem(key)) {
-          localStorage.removeItem(key);
-        }
+        localStorage.removeItem(key);
       });
 
+      // Call the token function passed as a prop (if it exists)
       props.token();
 
       // Log successful logout with username
       logger.info(`[${new Date().toLocaleTimeString()}] User ${localStorage.getItem("username")} logged out successfully.`);
     } catch (error) {
+      // Handle any errors that occur during the logout process
       if (error.response) {
         console.log(error.response);
         console.log(error.response.status);
         console.log(error.response.headers);
       }
 
-      // Log logout error
+      // Log any errors during logout
       logger.error(`[${new Date().toLocaleTimeString()}] Error logging out:`, error);
     }
   };
 
   return (
     <div>
+      {/* Display the logged-in username (optional) */}
       {props.username && <p>Logged in as: {props.username}</p>}
+
+      {/* Logout button to trigger the logout process */}
       {props.token && <button onClick={handleLogout}>Logout</button>}
     </div>
   );

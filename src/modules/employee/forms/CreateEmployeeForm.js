@@ -9,11 +9,16 @@ import "../../utilities/css/appcss.css";
 import CheckModuleAccess from "../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 import logger from "../../utilities/Logs/logger"; // Import your logger
 
+// Import EMPLOYEE_STATUS constant
+import { EMPLOYEE_STATUS } from "../config/config.js"; // Make sure the path is correct
+
 export default function CreateEmployeeForm() {
   const [formData, setFormData] = useState({
     name: "",
     dob: "",
     doj: "",
+    resignation_date: "", // Added resignation_date
+    status: "", // Added status
     manager_id: "",
     supervisor_id: "",
     designation_id: "",
@@ -37,14 +42,14 @@ export default function CreateEmployeeForm() {
     const fetchEmployees = async () => {
       try {
         const authToken = localStorage.getItem("token");
-        const userid = localStorage.getItem("loggedInUserid");
+        const userid = localStorage.getItem("userid");
 
         const headers = {
           Authorization: `Bearer ${authToken}`,
           UserId: userid,
         };
-
-        const response = await axios.get(`${API_URL}/employee`, { headers });
+        const status = 1;
+        const response = await axios.get(`${API_URL}/employee?status=${status}`, { headers });
         const employees = response.data;
         setManagerOptions(employees);
 
@@ -67,7 +72,7 @@ export default function CreateEmployeeForm() {
     const fetchDesignations = async () => {
       try {
         const authToken = localStorage.getItem("token");
-        const userid = localStorage.getItem("loggedInUserid");
+        const userid = localStorage.getItem("userid");
 
         const headers = {
           Authorization: `Bearer ${authToken}`,
@@ -103,9 +108,7 @@ export default function CreateEmployeeForm() {
     }
 
     logger.debug(
-      `[${new Date().toLocaleTimeString()}] ${e.target.name} value changed: ${
-        e.target.value
-      }`
+      `[${new Date().toLocaleTimeString()}] ${e.target.name} value changed: ${e.target.value}`
     );
   };
 
@@ -114,7 +117,7 @@ export default function CreateEmployeeForm() {
 
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -125,13 +128,13 @@ export default function CreateEmployeeForm() {
       formDataToSend.append("name", formData.name);
       formDataToSend.append("dob", formData.dob);
       formDataToSend.append("doj", formData.doj);
+      formDataToSend.append("resignation_date", formData.resignation_date); // Added resignation_date
+      formDataToSend.append("status", formData.status); // Added status
       formDataToSend.append("manager_id", formData.manager_id);
       formDataToSend.append("supervisor_id", formData.supervisor_id);
       formDataToSend.append("designation_id", formData.designation_id);
       formDataToSend.append("salary", formData.salary);
       formDataToSend.append("pic", formData.pic);
-
-      console.log("Form DAta ",formDataToSend.name)
 
       logger.info(`[${new Date().toLocaleTimeString()}] Creating employee...`);
 
@@ -150,6 +153,8 @@ export default function CreateEmployeeForm() {
         name: "",
         dob: "",
         doj: "",
+        resignation_date: "", // Clear resignation_date
+        status: "", // Clear status
         manager_id: "",
         supervisor_id: "",
         designation_id: "",
@@ -215,6 +220,46 @@ export default function CreateEmployeeForm() {
                   onChange={handleChange}
                   className="form-control input-field"
                 />
+              </div>
+            </div>
+
+            {/* Resignation Date */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="resignation_date">Resignation Date:</label>
+                </div>
+                <input
+                  type="date"
+                  id="resignation_date"
+                  name="resignation_date"
+                  value={formData.resignation_date}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                />
+              </div>
+            </div>
+
+            {/* Status */}
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="status">Status:</label>
+                </div>
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select Status</option>
+                  {EMPLOYEE_STATUS.map((status) => (
+                    <option key={status.code} value={status.value}>
+                      {status.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 

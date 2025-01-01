@@ -427,7 +427,7 @@ export default function MoveInventoryForm() {
   const fetchBins = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -448,7 +448,7 @@ export default function MoveInventoryForm() {
   const fetchRacks = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -469,7 +469,7 @@ export default function MoveInventoryForm() {
   const fetchRows = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -490,7 +490,7 @@ export default function MoveInventoryForm() {
   const fetchAisles = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -511,7 +511,7 @@ export default function MoveInventoryForm() {
   const fetchZones = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -532,7 +532,7 @@ export default function MoveInventoryForm() {
   const fetchLocations = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -553,7 +553,7 @@ export default function MoveInventoryForm() {
   const fetchWarehouses = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,

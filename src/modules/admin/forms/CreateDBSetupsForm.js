@@ -29,7 +29,7 @@ export default function CreateDBSetupsForm() {
   const handlePasswordGeneration = async () => {
     try {
       const authToken = localStorage.getItem('token');
-      const userid = localStorage.getItem('loggedInUserid');
+      const userid = localStorage.getItem('userid');
 
       const headers = {
         'Authorization': `Bearer ${authToken}`,
@@ -68,7 +68,7 @@ export default function CreateDBSetupsForm() {
 
         // Insert data into two tables using create_db_config_data API
         const authToken = localStorage.getItem('token');
-        const userid = localStorage.getItem('loggedInUserid');
+        const userid = localStorage.getItem('userid');
 
         const headers = {
           'Authorization': `Bearer ${authToken}`,

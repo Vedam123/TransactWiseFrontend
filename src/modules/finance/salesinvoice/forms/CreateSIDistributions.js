@@ -81,7 +81,7 @@ const CreateSIDistributions = ({
 
   const fetchAccountsList = async () => {
     try {
-      const response = await axios.get(`u`, {
+      const response = await axios.get(`${API_URL}/get_accounts`, {
         headers: generateHeaders(),
         params: {
           company_id: companyId,

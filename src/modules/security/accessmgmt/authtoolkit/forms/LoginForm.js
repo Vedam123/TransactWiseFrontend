@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import { API_URL,USER_STATUS  } from "../../../../admin/setups/ConstDecl";
+import { API_URL, USER_STATUS, ENV_INSTANCES } from "../../../../admin/setups/ConstDecl";
 import "../../../../utilities/css/appcss.css";
 import UpdateCredentialsForm from "./UpdateCredentialsForm";
 
@@ -17,23 +17,33 @@ function convertTimestampToDateTime(timestamp) {
   const seconds = date.getSeconds();
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
-;
 
 export default function LoginForm(props) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     instance: "",
+    company: "", // This will be set based on the selected instance
   });
-  const [showUpdateCredentialsForm, setShowUpdateCredentialsForm] = useState(false)
+  const [showUpdateCredentialsForm, setShowUpdateCredentialsForm] = useState(false);
   const [error, setError] = useState("");
+  const [activeInstances, setActiveInstances] = useState([]); // To store active instances
+
+  useEffect(() => {
+    // Filter active instances from ENV_INSTANCES
+    const activeInstances = ENV_INSTANCES.filter(instance => instance.status === "Active");
+    setActiveInstances(activeInstances);
+  }, []); // Only run once on component mount
 
   const logMeIn = async (e) => {
     e.preventDefault();
 
     try {
       const statusWithShortName = USER_STATUS.find((status) => status.short_name === "ACTIVE");
-      const updatedFormData = { ...formData, name: statusWithShortName ? statusWithShortName.name : "" };
+      const updatedFormData = {
+        ...formData,
+        status: statusWithShortName ? statusWithShortName.short_name : ""
+      };
       const response = await axios.post(`${API_URL}/login_user`, updatedFormData);
 
       const {
@@ -43,17 +53,19 @@ export default function LoginForm(props) {
         refresh_token,
         name,
         emp_img,
+        instance,
         token_expires_delta,
         refresh_token_expires_delta,
       } = response.data;
 
       localStorage.setItem("token", access_token);
       localStorage.setItem("refresh_token", refresh_token);
-      localStorage.setItem("loggedInUserid", userid);
+      localStorage.setItem("userid", userid);
       localStorage.setItem("name", name);
       localStorage.setItem("emp_img", emp_img);
       localStorage.setItem("username", username);
       localStorage.setItem("token_expires_delta", token_expires_delta);
+      localStorage.setItem("instance", instance);
 
       const currentTimestamp = Math.floor(Date.now() / 1000);
       const expirationTimestamp = currentTimestamp + token_expires_delta;
@@ -69,9 +81,9 @@ export default function LoginForm(props) {
       logger.info(`[${new Date().toLocaleTimeString()}] Token Expires Delta ${token_expires_delta}`);
       logger.info(`[${new Date().toLocaleTimeString()}] Refresh token expires delta ${refresh_token_expires_delta}`);
 
-      props.onLoginSuccess(userid, username, access_token, refresh_token, name, emp_img);
+      props.onLoginSuccess(userid, username, access_token, refresh_token, name, instance, emp_img);
 
-      setFormData({ username: "", password: "", instance: "" });
+      setFormData({ username: "", password: "", instance: "", company: "" });
       setError("");
 
       logger.info(`[${new Date().toLocaleTimeString()}] User ${username} logged in successfully.`);
@@ -82,80 +94,92 @@ export default function LoginForm(props) {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prevState) => {
+      const newFormData = { ...prevState, [name]: value };
+      // If the instance changes, set the corresponding company
+      if (name === "instance") {
+        const selectedInstance = activeInstances.find((instance) => instance.instance === value);
+        newFormData.company = selectedInstance ? selectedInstance.company : "";
+      }
+      return newFormData;
+    });
   };
+
   const handleForgotPassword = () => {
-    // Set the state to show UpdateCredentialsForm
     setError("");
     setShowUpdateCredentialsForm(true);
   };
 
   return (
     <div className="child-container menu-container">
-
       {error && <div>{error}</div>}
       <div className="child-container form-container">
-      {showUpdateCredentialsForm ? (
-          // If showUpdateCredentialsForm is true, display UpdateCredentialsForm
+        {showUpdateCredentialsForm ? (
           <UpdateCredentialsForm />
         ) : (
-        <form onSubmit={logMeIn}>
-          <div className="form-group col-md-6 mb-2">
-          <h3 className="title">Login </h3>
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="username">Username:</label>
-              </div>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                className="form-control input-field"
-              />
-            </div>
-          </div>
-
-          <div className="form-group col-md-6 mb-2">
-            <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="password">Password:</label>
-              </div>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="form-control input-field"
-              />
-            </div>
-          </div>
-
-          <div className="form-group col-md-6 mb-2">
+          <form onSubmit={logMeIn}>
+            <div className="form-group col-md-6 mb-2">
+              <h3 className="title">Login </h3>
               <div className="form-row">
-              <div className="label-container">
-                <label htmlFor="username">Instance:</label>
+                <div className="label-container">
+                  <label htmlFor="username">Username:</label>
+                </div>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                />
               </div>
-              <input
-                type="text"
-                id="instance"
-                name="instance"
-                value={formData.instance}
-                onChange={handleChange}
-                className="form-control input-field"
-              />
             </div>
-          </div>
 
-          
-          <button type="submit">Login</button>
-          <button type="button" onClick={handleForgotPassword}>
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="password">Password:</label>
+                </div>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                />
+              </div>
+            </div>
+
+            <div className="form-group col-md-6 mb-2">
+              <div className="form-row">
+                <div className="label-container">
+                  <label htmlFor="instance">Instance:</label>
+                </div>
+                <select
+                  id="instance"
+                  name="instance"
+                  value={formData.instance}
+                  onChange={handleChange}
+                  className="form-control input-field"
+                >
+                  <option value="">Select Instance</option>
+                  {activeInstances.map((instance) => (
+                    <option key={instance.instance} value={instance.instance}>
+                      {instance.instance}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <button type="submit">Login</button>
+            <button type="button" onClick={handleForgotPassword}>
               Forgot Password?
             </button>
-        </form>
-            )}
+          </form>
+        )}
       </div>
     </div>
   );

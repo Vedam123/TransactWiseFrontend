@@ -1,9 +1,10 @@
 export const BUSINESS_PARTNERT_STATUS = [
-    { name: "Active", short_name: "ACTIVE", sequence: 10 },
-    { name: "Expired", short_name: "EXPIRED", sequence: 20 },
-  ];
+  { name: "Active", short_name: "ACTIVE", sequence: 10 },
+  { name: "Expired", short_name: "EXPIRED", sequence: 20 },
+  { name: "Pending", short_name: "PENDING", sequence: 30 },
+];
 
- 
+
 export const TAX_TYPES = [
   { name: "Income Tax", code: "INCOME_TAX", description: "Tax levied on income.", sequence: 10, display: true },
   { name: "Sales Tax", code: "SALES_TAX", description: "Tax levied on sales of goods and services.", sequence: 20, display: true },
@@ -69,3 +70,8 @@ export const TAX_REPORTING_CODES = [
   { name: "Not Applicable Reporting", code: "NOT_APPLICABLE_REPORTING", description: "Reporting code used when tax reporting is not applicable.", sequence: 90, display: true },
   { name: "Special Scheme Reporting", code: "SPECIAL_SCHEME_REPORTING", description: "Reporting code for special tax schemes or arrangements.", sequence: 100, display: true }
 ];
+
+export const EFFECTIVE_DATE = '2024-01-01'; // Alternatively one can enter null or '' empty string
+export const BOM_ITEM_END_DAYS = 365; // Alternatively one can enter null or '' empty string
+
+

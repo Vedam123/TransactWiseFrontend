@@ -2,9 +2,12 @@ import React from "react";
 import { APPLICATION_NAME } from "../../../admin/setups/ConstDecl";
 import logger from "../../../utilities/Logs/logger"; // Import your logger module here
 
-function UserName({ username, emp_img }) {
+function UserName({ username, userid, linstance, emp_img }) {
   // Constants and variables
-  const welcomeMessage = `${APPLICATION_NAME} Welcomes, ${username}`;
+  const welcomeMessage = `${APPLICATION_NAME} Welcomes, ${username} (${userid}) `;
+  const addInfo = (
+    <span>to <span style={{ color: 'blue' }}>{linstance}</span></span>
+  );
 
   // Log the component rendering with a constant
   logger.info(`[${new Date().toLocaleTimeString()}] UserName component rendered. Welcome message: ${welcomeMessage}`);
@@ -19,6 +22,7 @@ function UserName({ username, emp_img }) {
           className="employee-pic"
         />
       )}
+      {addInfo}
     </div>
   );
 }

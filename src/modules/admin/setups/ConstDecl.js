@@ -19,30 +19,39 @@ export const BACKEND_INVENTORY_MODULE_NAME = "inventory";
 export const BACKEND_PURCHASE_MODULE_NAME = "purchase";
 export const BACKEND_SALES_MODULE_NAME = "sales";
 export const BACKEND_FINANCE_MODULE_NAME = "finance";
-export const APPLICATION_LEVEL ="Production"  //Test, Production, Development
+export const APPLICATION_LEVEL = "Production"  //Test, Production, Development
 export const IS_INAPP_HELP_NEEDED = true;
 export const IS_ACCESS_CONTROLLED_BY_REFRESH_TOKEN = false;
 export const ACCOUNT_TYPES = [
-    "Cash",
-    "Accounts Receivable",
-    "Inventory",
-    "Property, Plant, and Equipment (PP&E)",
-    "Accounts Payable",
-    "Loans Payable",
-    "Accrued Liabilities",
-    "Owner's Equity",
-    "Retained Earnings",
-    "Sales",
-    "Interest Income",
-    "Cost of Goods Sold (COGS)",
-    "Rent Expense",
-    "Utilities Expense",
-    "Salary/Wages Income",
-    "Rent/Mortgage Expense",
-    "Groceries Expense",
-    "Purchase"
-  ];
-  export const USER_STATUS = [
-    { name: "Active", short_name: "ACTIVE", sequence: 10 },
-    { name: "Expired", short_name: "EXPIRED", sequence: 20 },
-  ];
+  "Cash",
+  "Accounts Receivable",
+  "Inventory",
+  "Property, Plant, and Equipment (PP&E)",
+  "Accounts Payable",
+  "Loans Payable",
+  "Accrued Liabilities",
+  "Owner's Equity",
+  "Retained Earnings",
+  "Sales",
+  "Interest Income",
+  "Cost of Goods Sold (COGS)",
+  "Rent Expense",
+  "Utilities Expense",
+  "Salary/Wages Income",
+  "Rent/Mortgage Expense",
+  "Groceries Expense",
+  "Purchase"
+];
+export const USER_STATUS = [
+  { status: "Active", short_name: "ACTIVE", sequence: 10 },
+  { status: "Expired", short_name: "EXPIRED", sequence: 20 },
+];
+
+export const ENV_INSTANCES = [
+  { instance: "instance0", company: "Company_0", status: "Active", sequence: 10 },
+  { instance: "instance1", company: "Company_0", status: "Active", sequence: 20 },
+  { instance: "instance2", company: "Company_0", status: "Active", sequence: 30 },
+  { instance: "instance3", company: "Company_0", status: "Active", sequence: 40 },
+  { instance: "instance4", company: "Company_0", status: "Inactive", sequence: 50 }
+];
+

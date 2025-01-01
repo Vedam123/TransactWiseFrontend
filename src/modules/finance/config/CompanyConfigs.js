@@ -1,6 +1,6 @@
 // Grouped configuration objects by company ID
 export const COMPANY_CONFIG = {
-  3008: {
+  3001: {
     AUTO_SALES_INVOICE_CONFIG: {
       so_order_status_filter: ["PICKED", "PARTPICKED", "APPROVED"],
       so_new_status: "INVOICED",
@@ -32,15 +32,9 @@ export const COMPANY_CONFIG = {
           {
             account_type: "Tax Payable",
             category: "Tax",
-            tax_type: "Sales Tax",
-            distribution_percentage: 50,
-          },
-          {
-            account_type: "Groceries Expense",
-            category: "Tax",
-            tax_type: "GST",
-            distribution_percentage: 50,
-          },
+            tax_type: "VAT",
+            distribution_percentage: 100,
+          }
         ],
       },
     },
@@ -76,15 +70,9 @@ export const COMPANY_CONFIG = {
           {
             account_type: "Tax Payable",
             category: "Tax",
-            tax_type: "GST",
+            tax_type: "VAT",
             distribution_percentage: 50,
-          },
-          {
-            account_type: "Loans Payable",
-            category: "Tax",
-            tax_type: "Sales Tax",
-            distribution_percentage: 50,
-          },
+          }
         ],
       },
     },

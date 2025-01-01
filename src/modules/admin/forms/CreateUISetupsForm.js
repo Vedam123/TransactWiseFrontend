@@ -26,7 +26,7 @@ export default function CreateUISetupsForm() {
     e.preventDefault();
     try {
       const authToken = localStorage.getItem('token');
-      const userid = localStorage.getItem('loggedInUserid');
+      const userid = localStorage.getItem('userid');
 
       const headers = {
         'Authorization': `Bearer ${authToken}`,

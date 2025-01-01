@@ -13,12 +13,13 @@ export const ModulePermission = {
 
 export default function ModulePermissions({ moduleName }) {
   const userPermissions = usePermissions(); // Fetch user permissions from context
-  const userid = localStorage.getItem("loggedInUserid");
+  const userid = localStorage.getItem("userid");
 
   logger.info(`[${new Date().toLocaleTimeString()}] ModulePermissions: Checking permissions for moduleName=${moduleName}, userid=${userid}`);
 
   if (parseInt(userid) < SUPER_USERS_COUNT) {
     logger.info(`[${new Date().toLocaleTimeString()}] ModulePermissions: User is a superuser, granting all permissions.`);
+    console.log("super user granting all the accesses in module permissions");
     return {
       canViewModule: true,
       canCreateModule: true,

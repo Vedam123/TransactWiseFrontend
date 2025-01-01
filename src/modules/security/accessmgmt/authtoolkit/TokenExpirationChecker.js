@@ -16,7 +16,7 @@ function TokenExpirationChecker() {
           "name",
           "emp_img",
           "username",
-          "loggedInUserid",
+          "userid",
           "currenciesDataFetched",
           "loglevel",
           "token_expires_delta",

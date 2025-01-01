@@ -60,7 +60,7 @@ function SearchItemInventoryForm({ updateSearchItemInventory }) {
   const fetchRacks = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -81,7 +81,7 @@ function SearchItemInventoryForm({ updateSearchItemInventory }) {
   const fetchBins = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -102,7 +102,7 @@ function SearchItemInventoryForm({ updateSearchItemInventory }) {
   const fetchRows = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -123,7 +123,7 @@ function SearchItemInventoryForm({ updateSearchItemInventory }) {
   const fetchAisles = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -144,7 +144,7 @@ function SearchItemInventoryForm({ updateSearchItemInventory }) {
   const fetchZones = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -165,7 +165,7 @@ function SearchItemInventoryForm({ updateSearchItemInventory }) {
   const fetchLocations = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -186,7 +186,7 @@ function SearchItemInventoryForm({ updateSearchItemInventory }) {
   const fetchWarehouses = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -233,7 +233,7 @@ function SearchItemInventoryForm({ updateSearchItemInventory }) {
   const fetchItemList = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -267,7 +267,7 @@ function SearchItemInventoryForm({ updateSearchItemInventory }) {
   const handleFoundInventory = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,

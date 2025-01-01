@@ -31,7 +31,7 @@ const LoadModulestoDBForm = () => {
       logger.warn(`[${new Date().toLocaleTimeString()}] User does not have required access to view this module.`);
       return;
     }
-    
+
     fetchData();
     // eslint-disable-next-line
   }, [hasRequiredAccess]);
@@ -46,12 +46,14 @@ const LoadModulestoDBForm = () => {
         headers: generateHeaders(), // Include headers here
       });
 
-      if (modulesResponse.data.message === "The modules are inserted in DB successfully") {
+      // Check for success status code (200)
+      if (modulesResponse.status === 200) {
         setMessage("All the backend application Modules are inserted into the table");
         logger.info(`${logTime} Modules fetched and inserted successfully.`);
       } else {
+        // If the status code is not 200, something went wrong
         setMessage("Error fetching and inserting modules.");
-        logger.error(`${logTime} Error fetching and inserting modules.`);
+        logger.error(`${logTime} Error fetching and inserting modules: Status Code ${modulesResponse.status}`);
       }
     } catch (error) {
       const logTime = `[${new Date().toLocaleTimeString()}]`;

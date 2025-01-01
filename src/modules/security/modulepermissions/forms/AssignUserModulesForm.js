@@ -96,27 +96,29 @@ const AssignUserModulesForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     if (!formData.username || !selectedModule) {
       setError("Please select both username and Module name.");
       return;
     }
-  
+
     logger.info(
       `[${new Date().toLocaleTimeString()}] Selected Module: ${selectedModule}`
     );
     logger.info(
       `[${new Date().toLocaleTimeString()}] Selected user id: ${formData.username}`
     );
-  
+
+    console.log()
+
     // Check if the user and module combination already exists in the fetched modules
     const isAlreadyAssigned = fetchedModules.includes(selectedModule);
-  
+
     if (isAlreadyAssigned) {
       setError("User is already assigned to the selected module.");
       return;
     }
-  
+
     try {
       const response = await axios.post(
         `${API_URL}/create_permissions`,
@@ -130,15 +132,15 @@ const AssignUserModulesForm = () => {
           headers: generateHeaders(),
         }
       );
-  
+
       logger.info(
         `[${new Date().toLocaleTimeString()}] Response data: ${JSON.stringify(
           response.data
         )}`
       );
       // Clear form field after successful submission
-     // setFormData({ username: "" });
-     // setSelectedModule("");
+      // setFormData({ username: "" });
+      // setSelectedModule("");
       // Refetch user permissions to update fetchedModules
       handleCheckUserPermissions();
     } catch (error) {
@@ -148,7 +150,7 @@ const AssignUserModulesForm = () => {
       logger.error(`[${new Date().toLocaleTimeString()}] ${error}`);
     }
   };
-  
+
 
   const handleCheckUserPermissions = async () => {
     try {
@@ -162,6 +164,8 @@ const AssignUserModulesForm = () => {
       });
 
       const userPermissionsData = response.data.user_module_permissions;
+
+      console.log("User permissions ", userPermissionsData)
 
       const userModulesList = userPermissionsData.map((permission) => permission.module);
 
@@ -216,7 +220,7 @@ const AssignUserModulesForm = () => {
                 </div>
               </div>
             )}
-             {error && (
+            {error && (
               <div className="form-row">
                 <p className="error-message">{error}</p>
               </div>

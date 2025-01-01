@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../utilities/css/appcss.css";
 import axios from "axios";
 import { API_URL } from "../admin/setups/ConstDecl";
 import { SUPER_USERS_COUNT, APPLICATION_NAME } from "../admin/setups/ConstDecl";
@@ -148,19 +149,23 @@ import CreateUOMPage from "../common/uoms/CreateUOMPage";
 import CreateExchangeRatesPage from "../common/exchangerates/CreateExchangeRatesPage";
 import CreateCurrenciesPage from "../common/currencies/CreateCurrenciesPage";
 
+import CreateBOMPage from "../common/bom/CreateBOMPage";
+import UpdateBOMPage from "../common/bom/UpdateBOMPage";
+
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
 function AuthenticationPage() {
   const { token, removeToken, setToken } = useToken();
-  const [loggedInUserid, setLoggedInUserid] = useState("");
+  const [userid, setuserid] = useState("");
   const [userPermissions, setUserPermissions] = useState([]);
   const [name, setName] = useState("");
+  const [linstance, setLinstance] = useState("");
   const [emp_img, setImage] = useState("");
   const [refresh_token, setRefreshToken] = useState("");
   //const [journalResults, setJournalResults] = useState([]);
 
   const nameWithSpace = name + "\u00a0";
-  const useridWithSpace = loggedInUserid + "\u00a0";
+  const useridWithSpace = userid + "\u00a0";
 
   const handleLoginSuccess = (
     userid,
@@ -168,13 +173,15 @@ function AuthenticationPage() {
     token,
     refresh_token,
     name,
-    emp_img
+    instance,
+    emp_img,
   ) => {
     setToken(token);
-    setLoggedInUserid(userid);
+    setuserid(userid);
     setName(name);
     setImage(emp_img);
     setRefreshToken(refresh_token);
+    setLinstance(instance);
 
     // Log successful login
     logger.info(
@@ -183,14 +190,19 @@ function AuthenticationPage() {
   };
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("loggedInUserid");
+    const storedUserId = localStorage.getItem("userid");
 
     const fetchUserPermissions = async () => {
       if (token) {
         try {
           let filteredPermissions;
           if (parseInt(storedUserId) < parseInt(SUPER_USERS_COUNT)) {
-            const modulesResponse = await axios.get(`${API_URL}/list_modules`);
+            const modulesResponse = await axios.get(`${API_URL}/list_modules`, {
+              headers: {
+                Authorization: `Bearer ${token}`, // Authorization header added here for super users
+              },
+            });
+
             const allModules = modulesResponse.data.modules;
             filteredPermissions = allModules.flatMap((module) => ({
               delete_permission: true,
@@ -199,7 +211,7 @@ function AuthenticationPage() {
               read_permission: true,
               update_permission: true,
               user_id: storedUserId,
-              loggedInUserid: storedUserId,
+              userid: storedUserId,
             }));
           } else {
             const response = await axios.get(
@@ -217,7 +229,7 @@ function AuthenticationPage() {
               )
               .map((permission) => ({
                 ...permission,
-                loggedInUserid: storedUserId,
+                userid: storedUserId,
               }));
           }
           setUserPermissions(filteredPermissions);
@@ -253,7 +265,7 @@ function AuthenticationPage() {
     logger.info(
       `[${new Date().toLocaleTimeString()}] AuthenticationPage component rendered.`
     );
-  }, [token, loggedInUserid, name, emp_img, refresh_token]);
+  }, [token, userid, name, emp_img, refresh_token]);
   return (
     <BrowserRouter>
       {!token ? (
@@ -272,9 +284,12 @@ function AuthenticationPage() {
               <UserName
                 username={nameWithSpace}
                 userid={useridWithSpace}
+                linstance={linstance}
                 emp_img={emp_img}
               />
-              <Link to="/">Home</Link>
+            </div>
+            <div className="left-header">
+              <Link to="/" className="home-link">Home</Link>
             </div>
             <div className="right-header">
               <Logout token={removeToken} />{" "}
@@ -309,6 +324,9 @@ function AuthenticationPage() {
             <Route path="/uom-page" element={<UOMPage />} />
 
             <Route path="/bom-page" element={<BOMPage />} />
+            <Route path="/create-bom" element={<CreateBOMPage />} />
+
+            <Route path="/update-bom" element={<UpdateBOMPage />} />
 
             <Route path="/bom-explosion" element={<ViewBOMExplodePage />} />
             <Route path="/bom" element={<ViewBOMModelPage />} />
@@ -638,7 +656,7 @@ function AuthenticationPage() {
               element={<SearchDefaultTaxCodesPage />}
             />
 
-          <Route
+            <Route
               path="/get-default-tax-codes/:Parameters"
               element={<SearchDefaultTaxCodesResultsForm />}
             />
@@ -650,7 +668,7 @@ function AuthenticationPage() {
             <Route
               path="/create-default-taxcodes"
               element={<CreateDefaultTaxCodesPage />}
-            />            
+            />
           </Routes>
         </PermissionsContext.Provider>
       )}

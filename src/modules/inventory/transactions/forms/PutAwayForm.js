@@ -108,7 +108,7 @@ function PutAwayForm() {
   const fetchReceiptsForPutAway = async (transactionType) => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -136,7 +136,7 @@ function PutAwayForm() {
   const fetchInspectionsForPutAway = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -174,7 +174,7 @@ function PutAwayForm() {
 
       try {
         const authToken = localStorage.getItem("token");
-        const userid = localStorage.getItem("loggedInUserid");
+        const userid = localStorage.getItem("userid");
 
         const headers = {
           Authorization: `Bearer ${authToken}`,
@@ -218,7 +218,7 @@ function PutAwayForm() {
 
       try {
         const authToken = localStorage.getItem("token");
-        const userid = localStorage.getItem("loggedInUserid");
+        const userid = localStorage.getItem("userid");
 
         const headers = {
           Authorization: `Bearer ${authToken}`,
@@ -266,7 +266,7 @@ function PutAwayForm() {
         return;
       }
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
       logger.debug(
         `[${new Date().toLocaleTimeString()}] Form data : ${formData}`
       );
@@ -365,7 +365,7 @@ function PutAwayForm() {
   const fetchRacks = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -385,7 +385,7 @@ function PutAwayForm() {
   const fetchBins = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -406,7 +406,7 @@ function PutAwayForm() {
   const fetchRows = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -427,7 +427,7 @@ function PutAwayForm() {
   const fetchAisles = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -448,7 +448,7 @@ function PutAwayForm() {
   const fetchZones = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -469,7 +469,7 @@ function PutAwayForm() {
   const fetchLocations = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
@@ -490,7 +490,7 @@ function PutAwayForm() {
   const fetchWarehouses = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const userid = localStorage.getItem("loggedInUserid");
+      const userid = localStorage.getItem("userid");
 
       const headers = {
         Authorization: `Bearer ${authToken}`,

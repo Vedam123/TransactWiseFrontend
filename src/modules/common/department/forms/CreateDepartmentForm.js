@@ -100,7 +100,10 @@ export default function CreateDepartmentForm() {
 
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get(`${API_URL}/employee`, {
+
+
+        const status = 1;
+        const response = await axios.get(`${API_URL}/employee?status=${status}`, {
           headers: generateHeaders(),
         });
         setEmployees(response.data); // Assuming the employee data is an array
