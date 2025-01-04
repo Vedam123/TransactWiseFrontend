@@ -6,6 +6,7 @@ import DocumentationContainer from "../utilities/DocumentationContainer";
 import ReceiptsPage from "./receipts/ReceiptsPage";
 import TransactionsPage from "./transactions/TransactionsPage";
 import HandlingPage from "./handling/HandlingPage";
+import StoragePage from "./storagesystem/StoragePage";
 import logger from "../utilities/Logs/logger";
 
 export default function InventoryPage() {
@@ -16,7 +17,8 @@ export default function InventoryPage() {
   const componentsToRender = [
     HandlingPage,
     TransactionsPage,
-    ReceiptsPage
+    ReceiptsPage,
+    StoragePage,
   ];
 
   const componentsToRender2 = [InventoryPage];

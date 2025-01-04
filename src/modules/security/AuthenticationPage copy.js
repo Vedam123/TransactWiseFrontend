@@ -83,7 +83,7 @@ import SearchDefaultAccountsPage from "../finance/accounts/SearchDefaultAccounts
 import SearchDefaultAccountsResultsForm from "../finance/accounts/forms/SearchDefaultAccountsResultsForm";
 
 import InventoryPage from "../inventory/InventoryPage";
-
+import ViewAllBinsPage from "../inventory/bins/ViewAllBinsPage";
 
 import ViewAllReceiptsPage from "../inventory/receipts/ViewAllReceiptsPage";
 import CreateReceiptPage from "../inventory/receipts/CreateReceiptPage";
@@ -155,11 +155,6 @@ import UpdateBOMPage from "../common/bom/UpdateBOMPage";
 import CreateWarehousesPage from "../inventory/storagesystem/CreateWarehousesPage";
 import CreateLocationsPage from "../inventory/storagesystem/CreateLocationsPage";
 import CreateZonesPage from "../inventory/storagesystem/CreateZonesPage";
-import CreateAislesPage from "../inventory/storagesystem/CreateAislesPage";
-import CreateRowsPage from "../inventory/storagesystem/CreateRowsPage";
-import CreateRacksPage from "../inventory/storagesystem/CreateRacksPage";
-import CreateBinsPage from "../inventory/storagesystem/CreateBinsPage";
-import ViewAllBinsPage from "../inventory/storagesystem/ViewAllBinsPage";
 
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
@@ -693,29 +688,6 @@ function AuthenticationPage() {
             <Route
               path="/create-zones"
               element={<CreateZonesPage />} />
-
-
-
-            <Route
-              path="/create-aisles"
-              element={<CreateAislesPage />} />
-
-            <Route
-              path="/create-rows"
-              element={<CreateRowsPage />} />
-
-            <Route
-              path="/create-racks"
-              element={<CreateRacksPage />} />
-
-            <Route
-              path="/create-bins"
-              element={<CreateBinsPage />} />
-
-
-
-
-
           </Routes>
         </PermissionsContext.Provider>
       )}

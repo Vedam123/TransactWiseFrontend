@@ -1,7 +1,7 @@
 import React from "react";
 import "../../utilities/css/appcss.css";
 
-const HELP_AdminPageMenu = () => (
+const HELP_CreateWarehousesPage = () => (
   <div>
     <h2 className="subheading">Admin Page Menu Component</h2>
     <p className="indented-paragraph">
@@ -19,8 +19,8 @@ const HELP_AdminPageMenu = () => (
     <p className="indented-paragraph">
       One can view all the emails generated in the system.
     </p>
-
+    
   </div>
 );
 
-export default HELP_AdminPageMenu;
+export default HELP_CreateWarehousesPage;
