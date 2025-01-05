@@ -17,9 +17,13 @@
 //export const APPLICATION_NAME = process.env.APPLICATION_NAME;
 //export const APPLICATION_LEVEL = process.env.APPLICATION_LEVEL;;
 
-export const API_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_APP_SERVER_HOST}:${process.env.REACT_APP_APP_SERVER_PORT}`;
-export const FRONTEND_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_WEB_CLIENT_HOST}:${process.env.REACT_APP_WEB_CLIENT_PORT}`;
-export const SMTP_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_SMTP_HOST}:${process.env.REACT_APP_SMTP_PORT}`;
+//export const API_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_APP_SERVER_HOST}:${process.env.REACT_APP_APP_SERVER_PORT}`;
+//export const FRONTEND_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_WEB_CLIENT_HOST}:${process.env.REACT_APP_WEB_CLIENT_PORT}`;
+//export const SMTP_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_SMTP_HOST}:${process.env.REACT_APP_SMTP_PORT}`;
+
+export const API_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_APP_SERVER_HOST}:${parseInt(process.env.REACT_APP_APP_SERVER_PORT)}`;
+export const FRONTEND_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_WEB_CLIENT_HOST}:${parseInt(process.env.REACT_APP_WEB_CLIENT_PORT)}`;
+export const SMTP_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_SMTP_HOST}:${parseInt(process.env.REACT_APP_SMTP_PORT)}`;
 export const SMTP_EML = process.env.REACT_APP_SMTP_EMAIL;
 export const APPLICATION_NAME = process.env.REACT_APP_APPLICATION_NAME;
 export const APPLICATION_LEVEL = process.env.REACT_APP_APPLICATION_LEVEL;
