@@ -37,6 +37,7 @@ export default function LoginForm(props) {
 
   const logMeIn = async (e) => {
     e.preventDefault();
+    console.log("The API URL", { API_URL })
 
     try {
       const statusWithShortName = USER_STATUS.find((status) => status.short_name === "ACTIVE");
