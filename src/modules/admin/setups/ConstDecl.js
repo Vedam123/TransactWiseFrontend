@@ -21,12 +21,29 @@
 //export const FRONTEND_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_WEB_CLIENT_HOST}:${process.env.REACT_APP_WEB_CLIENT_PORT}`;
 //export const SMTP_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_SMTP_HOST}:${process.env.REACT_APP_SMTP_PORT}`;
 
-export const API_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_APP_SERVER_HOST}:${parseInt(process.env.REACT_APP_APP_SERVER_PORT)}`;
-export const FRONTEND_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_WEB_CLIENT_HOST}:${parseInt(process.env.REACT_APP_WEB_CLIENT_PORT)}`;
-export const SMTP_URL = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_SMTP_HOST}:${parseInt(process.env.REACT_APP_SMTP_PORT)}`;
-export const SMTP_EML = process.env.REACT_APP_SMTP_EMAIL;
-export const APPLICATION_NAME = process.env.REACT_APP_APPLICATION_NAME;
-export const APPLICATION_LEVEL = process.env.REACT_APP_APPLICATION_LEVEL;
+
+const appConfig = {
+  applicationName: process.env.REACT_APP_APPLICATION_NAME,
+  applicationLevel: process.env.REACT_APP_APPLICATION_LEVEL,
+  webClientHost: process.env.REACT_APP_WEB_CLIENT_HOST,
+  webClientPort: process.env.REACT_APP_WEB_CLIENT_PORT,
+  webClientProtocol: process.env.REACT_APP_WEB_CLIENT_PROTOCOL,
+  smtpHost: process.env.REACT_APP_SMTP_HOST,
+  smtpPort: process.env.REACT_APP_SMTP_PORT,
+  smtpEmail: process.env.REACT_APP_SMTP_EMAIL,
+  appServerHost: process.env.REACT_APP_APP_SERVER_HOST,
+  appServerPort: process.env.REACT_APP_APP_SERVER_PORT,
+  appServerProtocol: process.env.REACT_APP_APP_SERVER_PROTOCOL
+};
+
+// Assuming you already have the appConfig object
+
+export const API_URL = `${appConfig.appServerProtocol}://${appConfig.appServerHost}:${parseInt(appConfig.appServerPort)}`;
+export const FRONTEND_URL = `${appConfig.webClientProtocol}://${appConfig.webClientHost}:${parseInt(appConfig.webClientPort)}`;
+export const SMTP_URL = `${appConfig.smtpProtocol}://${appConfig.smtpHost}:${parseInt(appConfig.smtpPort)}`;
+export const SMTP_EML = appConfig.smtpEmail;
+export const APPLICATION_NAME = appConfig.applicationName;
+export const APPLICATION_LEVEL = appConfig.applicationLevel;
 
 
 export const SUPER_USERS_COUNT = 100;
