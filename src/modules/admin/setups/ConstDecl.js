@@ -25,9 +25,9 @@
 const appConfig = {
   applicationName: process.env.REACT_APP_APPLICATION_NAME,
   applicationLevel: process.env.REACT_APP_APPLICATION_LEVEL,
-  webClientHost: process.env.REACT_APP_WEB_CLIENT_HOST,
-  webClientPort: process.env.REACT_APP_WEB_CLIENT_PORT,
-  webClientProtocol: process.env.REACT_APP_WEB_CLIENT_PROTOCOL,
+  webClientHost: process.env.HOST,
+  webClientPort: process.env.PORT,
+  webClientProtocol: process.env.PROTOCOL,
   smtpHost: process.env.REACT_APP_SMTP_HOST,
   smtpPort: process.env.REACT_APP_SMTP_PORT,
   smtpEmail: process.env.REACT_APP_SMTP_EMAIL,
