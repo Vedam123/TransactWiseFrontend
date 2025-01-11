@@ -25,15 +25,15 @@
 const appConfig = {
   applicationName: process.env.REACT_APP_APPLICATION_NAME,
   applicationLevel: process.env.REACT_APP_APPLICATION_LEVEL,
-  webClientHost: process.env.HOST,
-  webClientPort: process.env.PORT,
-  webClientProtocol: process.env.PROTOCOL,
+  webClientHost: process.env.REACT_APP_WEB_CLIENT_HOST,
+  webClientPort: process.env.REACT_APP_WEB_CLIENT_PORT,
+  webClientProtocol: process.env.REACT_APP_WEB_CLIENT_PROTOCOL,
   smtpHost: process.env.REACT_APP_SMTP_HOST,
   smtpPort: process.env.REACT_APP_SMTP_PORT,
   smtpEmail: process.env.REACT_APP_SMTP_EMAIL,
-  appServerHost: process.env.REACT_APP_APP_SERVER_HOST,
-  appServerPort: process.env.REACT_APP_APP_SERVER_PORT,
-  appServerProtocol: process.env.REACT_APP_APP_SERVER_PROTOCOL
+  appServerHost: process.env.REACT_APP_BACKEND_SERVER_HOST,
+  appServerPort: process.env.REACT_APP_BACKEND_SERVER_PORT,
+  appServerProtocol: process.env.REACT_APP_BACKEND_SERVER_PROTOCOL
 };
 
 // Assuming you already have the appConfig object
@@ -45,7 +45,8 @@ export const SMTP_EML = appConfig.smtpEmail;
 export const APPLICATION_NAME = appConfig.applicationName;
 export const APPLICATION_LEVEL = appConfig.applicationLevel;
 
-
+console.log("In Constant declations the API_URL", { API_URL })
+console.log("API config file ", appConfig)
 export const SUPER_USERS_COUNT = 100;
 export const TOKEN_EXPIRATION_CHECK_FREQUENCY = 600;  // For 10 min we need to set 600000 milli seconds
 export const MODULE_LEVEL_VIEW_ACCESS = "canViewModule";
@@ -89,10 +90,9 @@ export const USER_STATUS = [
 ];
 
 export const ENV_INSTANCES = [
-  { instance: "instance0", company: "Company_0", status: "Active", sequence: 10 },
-  { instance: "instance1", company: "Company_0", status: "Active", sequence: 20 },
-  { instance: "instance2", company: "Company_0", status: "Active", sequence: 30 },
-  { instance: "instance3", company: "Company_0", status: "Active", sequence: 40 },
-  { instance: "instance4", company: "Company_0", status: "Inactive", sequence: 50 }
+  { instance: "instance0", company: "Company_3", status: "Active", sequence: 1 },
+  { instance: "instance1", company: "Company_3", status: "Active", sequence: 2 },
+  { instance: "instance2", company: "Company_3", status: "Active", sequence: 3 },
+  { instance: "instance3", company: "Company_3", status: "Active", sequence: 4 }
 ];
 

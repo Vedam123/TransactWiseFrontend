@@ -20,7 +20,8 @@ function Logout(props) {
         "refresh_token_expires_delta",
         "refresh_token_expires_by",
         'token_expires_by_timestamp',
-        'refresh_token_expires_by_timestamp'
+        'refresh_token_expires_by_timestamp',
+        'instance',
       ];
 
       // Remove each key from localStorage if it exists
