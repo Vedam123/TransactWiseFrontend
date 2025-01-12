@@ -21,6 +21,8 @@ export default function EmployeeMenu() {
     { path: "/delete-employee", text: "Delete Employee", canRender: canDeleteModule },
     { path: "/update-employee", text: "Update Employee", canRender: canUpdateModule },
     { path: "/list-employees", text: "List Employees", canRender: canViewModule },
+    { path: "/designations", text: "List Designations", canRender: canViewModule },
+    { path: "/create-designations", text: "Create Designations", canRender: canCreateModule },
   ];
 
   const handleMenuItemClick = (path) => {

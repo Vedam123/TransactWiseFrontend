@@ -161,6 +161,11 @@ import CreateRacksPage from "../inventory/storagesystem/CreateRacksPage";
 import CreateBinsPage from "../inventory/storagesystem/CreateBinsPage";
 import ViewAllBinsPage from "../inventory/storagesystem/ViewAllBinsPage";
 
+import ViewAllDesignationsPage from "../employee/ViewAllDesignationsPage";
+import CreateDesignationsPage from "../employee/CreateDesignationsPage";
+
+
+
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
@@ -712,8 +717,13 @@ function AuthenticationPage() {
               path="/create-bins"
               element={<CreateBinsPage />} />
 
+            <Route
+              path="/designations"
+              element={<ViewAllDesignationsPage />} />
 
-
+            <Route
+              path="/create-designations"
+              element={<CreateDesignationsPage />} />
 
 
           </Routes>

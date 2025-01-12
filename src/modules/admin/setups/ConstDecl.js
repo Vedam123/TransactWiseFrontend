@@ -90,9 +90,9 @@ export const USER_STATUS = [
 ];
 
 export const ENV_INSTANCES = [
-  { instance: "instance0", company: "Company_3", status: "Active", sequence: 1 },
-  { instance: "instance1", company: "Company_3", status: "Active", sequence: 2 },
-  { instance: "instance2", company: "Company_3", status: "Active", sequence: 3 },
-  { instance: "instance3", company: "Company_3", status: "Active", sequence: 4 }
+  { instance: "instance0", company: "Company_0", status: "Active", sequence: 1 },
+  { instance: "instance1", company: "Company_0", status: "Active", sequence: 2 },
+  { instance: "instance2", company: "Company_0", status: "Active", sequence: 3 },
+  { instance: "instance3", company: "Company_0", status: "Active", sequence: 4 }
 ];
 
