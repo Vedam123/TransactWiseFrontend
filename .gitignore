@@ -1,27 +1,40 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Dependencies
+/node_modules/
+/.pnp/
+/.pnp.js
 
-# testing
-/coverage
+# Testing
+/coverage/
 
-# production
-/build
+# Production build
+/build/
 
-# misc
+# Miscellaneous
 .DS_Store
+
+# Environment files (local and development-specific)
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+# npm and yarn logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-.VSCodeCounter/
+# General log files
+*.log
+
+# IDE configuration
 .vscode/
-.git/
+.VSCodeCounter/
+
+# Ignore specific files
+ConstDecl.js
+
+# Git internal files (this is typically ignored by default)
+# .git/ should not be included as it’s part of the repository structure.
