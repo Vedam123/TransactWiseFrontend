@@ -164,8 +164,8 @@ import ViewAllBinsPage from "../inventory/storagesystem/ViewAllBinsPage";
 import ViewAllDesignationsPage from "../employee/ViewAllDesignationsPage";
 import CreateDesignationsPage from "../employee/CreateDesignationsPage";
 
-import FindDepartmentToUpdatePage from "../common/department/FindDepartmentToUpdatePage";
-import UpdateDepartmentPage from "../common/department/UpdateDepartmentPage";
+
+
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
@@ -724,17 +724,6 @@ function AuthenticationPage() {
             <Route
               path="/create-designations"
               element={<CreateDesignationsPage />} />
-
-
-            <Route
-              path="/update-department"
-              element={<UpdateDepartmentPage />}
-            />
-
-            <Route
-              path="/update-departments"
-              element={<FindDepartmentToUpdatePage />}
-            />
 
 
           </Routes>

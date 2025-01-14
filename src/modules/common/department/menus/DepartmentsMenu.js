@@ -12,7 +12,7 @@ export default function DepartmentsMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
   //  const { canViewModule, canCreateModule, canDeleteModule, canUpdateModule } =
-  const { canViewModule, canCreateModule } = ModulePermissions({
+  const { canViewModule, canCreateModule, canUpdateModule } = ModulePermissions({
     moduleName: BACKEND_COMMON_MODULE_NAME, // Set the module name as needed
   });
 
@@ -31,6 +31,7 @@ export default function DepartmentsMenu() {
   const menuItems = [
     { path: "/get-departments", text: "View Departments", canRender: canViewModule }, // Add the "canRender" property
     { path: "/create-department", text: "Create Department", canRender: canCreateModule },
+    { path: "/update-departments", text: "Update Department", canRender: canUpdateModule },
     // ... add more menu items here
   ];
 
