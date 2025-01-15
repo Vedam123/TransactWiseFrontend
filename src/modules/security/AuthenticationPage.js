@@ -167,6 +167,9 @@ import CreateDesignationsPage from "../employee/CreateDesignationsPage";
 import FindDepartmentToUpdatePage from "../common/department/FindDepartmentToUpdatePage";
 import UpdateDepartmentPage from "../common/department/UpdateDepartmentPage";
 
+import FindCompanyToUpdatePage from "../common/company/FindCompanyToUpdatePage";
+import UpdateCompanyPage from "../common/company/UpdateCompanyPage";
+
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
 function AuthenticationPage() {
@@ -734,6 +737,16 @@ function AuthenticationPage() {
             <Route
               path="/update-departments"
               element={<FindDepartmentToUpdatePage />}
+            />
+
+            <Route
+              path="/update-company"
+              element={<UpdateCompanyPage />}
+            />
+
+            <Route
+              path="/update-companies"
+              element={<FindCompanyToUpdatePage />}
             />
 
 

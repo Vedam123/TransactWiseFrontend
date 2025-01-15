@@ -12,7 +12,7 @@ export default function CompaniesMenu() {
   const navigate = useNavigate();
   const openInNewTab = useButtonBehavior();
   //  const { canViewModule, canCreateModule, canDeleteModule, canUpdateModule } =
-  const { canViewModule, canCreateModule } = ModulePermissions({
+  const { canViewModule, canCreateModule, canUpdateModule } = ModulePermissions({
     moduleName: BACKEND_COMMON_MODULE_NAME, // Set the module name as needed
   });
 
@@ -31,6 +31,7 @@ export default function CompaniesMenu() {
   const menuItems = [
     { path: "/get-companies", text: "View Companies", canRender: canViewModule }, // Add the "canRender" property
     { path: "/create-company", text: "Create Company", canRender: canCreateModule },
+    { path: "/update-companies", text: "Update Company", canRender: canUpdateModule },
     // ... add more menu items here
   ];
 
