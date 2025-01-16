@@ -64,7 +64,7 @@ export const BACKEND_SALES_MODULE_NAME = "sales";
 export const BACKEND_FINANCE_MODULE_NAME = "finance";
 export const IS_INAPP_HELP_NEEDED = true;
 export const IS_ACCESS_CONTROLLED_BY_REFRESH_TOKEN = false;
-export const ACCOUNT_TYPES = [
+/* export const ACCOUNT_TYPES = [
   "Cash",
   "Accounts Receivable",
   "Inventory",
@@ -84,7 +84,7 @@ export const ACCOUNT_TYPES = [
   "Rent/Mortgage Expense",
   "Groceries Expense",
   "Purchase"
-];
+]; */
 
 
 export const USER_STATUS = [

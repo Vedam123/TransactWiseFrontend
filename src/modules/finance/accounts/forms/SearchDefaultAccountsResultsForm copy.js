@@ -102,6 +102,7 @@ export default function SearchDefaultAccountsResultsForm() {
     }
   };
 
+
   // Handle account selection from LOV dropdown
   const handleAccountSelection = (index, selectedAccount) => {
     const updatedAccounts = [...selectedAccounts];
@@ -194,15 +195,8 @@ export default function SearchDefaultAccountsResultsForm() {
     }
   };
 
-  // Handle account update (only for existing rows, not new ones)
   const handleUpdateLine = async (index) => {
     const accountToUpdate = selectedAccounts[index];
-
-    // Check if the row is from the added lines; skip update if it's a newly added line
-    if (addedLines.some(line => line.line_id === accountToUpdate.line_id)) {
-      alert("You cannot update a newly added line.");
-      return;
-    }
 
     // Confirm if the user is sure they want to update this record
     const confirmed = window.confirm("Are you sure you want to update this record?");
@@ -218,7 +212,7 @@ export default function SearchDefaultAccountsResultsForm() {
           description: accountToUpdate.account_name  // Assuming account_name is used for description
         };
 
-        console.log("Data to update", dataToUpdate);
+        console.log("DAta to update", dataToUpdate)
 
         const url = `${API_URL}/update_default_accounts`;  // API endpoint
 
@@ -242,9 +236,10 @@ export default function SearchDefaultAccountsResultsForm() {
   };
 
 
+
   return (
     <div>
-      <h1>Default Account Headers</h1>
+      <h1>Default Journal Headers</h1>
       {error && <div className="alert alert-danger">{error}</div>}
       <table className="table table-small">
         <thead className="jo-line-table-header-custom">
@@ -348,22 +343,10 @@ export default function SearchDefaultAccountsResultsForm() {
                     </Dropdown>
                   </td>
                   <td>
-                    {/* Disable "Update" button for newly added lines */}
-                    <button
-                      onClick={() => handleUpdateLine(index)}
-                      disabled={addedLines.some(line => line.line_id === account.line_id)}
-                    >
-                      Update
-                    </button>
+                    <button onClick={() => handleUpdateLine(index)}>update</button>
                   </td>
                   <td>
-                    {/* Disable "Remove" button for newly added lines */}
-                    <button
-                      onClick={() => handleDeleteConfirmation(index)}
-                      disabled={addedLines.some(line => line.line_id === account.line_id)}
-                    >
-                      Remove
-                    </button>
+                    <button onClick={() => handleDeleteConfirmation(index)}>Remove</button>
                   </td>
                 </tr>
               ))}

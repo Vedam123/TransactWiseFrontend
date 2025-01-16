@@ -1,6 +1,7 @@
 export const ACCOUNT_TYPES = [
   "Cash",
   "Accounts Receivable",
+  "Accounts Receivable Internal",
   "Inventory",
   "Inventory Tax",
   "Property, Plant, and Equipment (PP&E)",
@@ -11,6 +12,7 @@ export const ACCOUNT_TYPES = [
   "Owner's Equity",
   "Retained Earnings",
   "Sales",
+  "Sales Tax",
   "Interest Income",
   "Cost of Goods Sold (COGS)",
   "Rent Expense",
@@ -24,7 +26,6 @@ export const ACCOUNT_TYPES = [
 
 export const ACCOUNT_CATEGORY = [
   "Asset",
-  "Asset VAT R",
   "Liability",
   "Equity",
   "Revenue",
