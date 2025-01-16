@@ -41,7 +41,7 @@ export const COMPANY_CONFIG = {
     AUTO_PURCHASE_INVOICE_CONFIG: {
       invoice_status: "DRAFT",
       po_new_status: "INVOICED",
-      po_order_status_filter: ["APPROVED", "RECEIVED"],
+      po_order_status_filter: ["APPROVED", "Received"],
       payment_terms: "NET 20",
       account_types: {
         Credit: [
@@ -51,24 +51,19 @@ export const COMPANY_CONFIG = {
             distribution_percentage: 50,
           },
           {
-            account_type: "Inventory",
+            account_type: "Accounts Payable Internal",
             category: "Normal",
             distribution_percentage: 50,
           },
         ],
         Debit: [
           {
-            account_type: "Utilities Expense",
+            account_type: "Inventory",
             category: "Normal",
-            distribution_percentage: 50,
+            distribution_percentage: 100,
           },
           {
-            account_type: "Retained Earnings",
-            category: "Normal",
-            distribution_percentage: 50,
-          },
-          {
-            account_type: "Tax Payable",
+            account_type: "Inventory Tax",
             category: "Tax",
             tax_type: "VAT",
             distribution_percentage: 50,

@@ -68,6 +68,7 @@ export const ACCOUNT_TYPES = [
   "Cash",
   "Accounts Receivable",
   "Inventory",
+  "Input VAT",
   "Property, Plant, and Equipment (PP&E)",
   "Accounts Payable",
   "Loans Payable",
@@ -84,6 +85,8 @@ export const ACCOUNT_TYPES = [
   "Groceries Expense",
   "Purchase"
 ];
+
+
 export const USER_STATUS = [
   { status: "Active", short_name: "ACTIVE", sequence: 10 },
   { status: "Expired", short_name: "EXPIRED", sequence: 20 },

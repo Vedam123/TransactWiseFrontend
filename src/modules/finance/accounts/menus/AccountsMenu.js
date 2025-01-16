@@ -20,6 +20,7 @@ export default function AccountsMenu() {
     { path: "/get-accounts", text: "Get Accounts", canRender: canViewModule },
     { path: "/search-default-accounts", text: "Get Default Accounts", canRender: canViewModule },
     { path: "/create-default-accounts", text: "Create Default Accounts", canRender: canCreateModule },
+    { path: "/company-default-accounts", text: "Company Default Accounts", canRender: canCreateModule },
   ];
 
   const handleMenuItemClick = (path) => {

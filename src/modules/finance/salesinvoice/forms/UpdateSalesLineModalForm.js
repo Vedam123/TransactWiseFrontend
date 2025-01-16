@@ -206,7 +206,7 @@ const UpdateSalesLineModalForm = ({
         }));
 
         const createResponse = await axios.post(
-          `${API_URL}/create_so_invoice_lines`,
+          `${API_URL}//create_sales_invoice_lines`,
           updatedLinesWithHeaderId,
           { headers: generateHeaders() }
         );

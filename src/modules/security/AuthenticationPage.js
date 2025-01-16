@@ -169,6 +169,7 @@ import UpdateDepartmentPage from "../common/department/UpdateDepartmentPage";
 
 import FindCompanyToUpdatePage from "../common/company/FindCompanyToUpdatePage";
 import UpdateCompanyPage from "../common/company/UpdateCompanyPage";
+import CompanyDefaultAccPage from "../finance/accounts/CompanyDefaultAccPage";
 
 import logger from "../utilities/Logs/logger"; // Import your logger module here
 
@@ -748,6 +749,14 @@ function AuthenticationPage() {
               path="/update-companies"
               element={<FindCompanyToUpdatePage />}
             />
+
+
+            <Route
+              path="/company-default-accounts"
+              element={<CompanyDefaultAccPage />}
+            />
+
+
 
 
           </Routes>
