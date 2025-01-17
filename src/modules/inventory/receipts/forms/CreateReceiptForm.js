@@ -138,7 +138,7 @@ export default function CreateReceiptForm() {
       !formData.transaction_number ||
       parseInt(formData.transaction_number) === 0
     ) {
-      setErrorMessage(" KEERTHANA Transaction number cannot be empty or 0.");
+      setErrorMessage("Transaction number cannot be empty or 0.");
       setSuccessMessage("");
       return;
     }
