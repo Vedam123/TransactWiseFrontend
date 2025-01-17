@@ -26,7 +26,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+     "_comment": "This is just comments purpose if http is used replace start with --start: react-scripts start---",
+    "start": "cross-env HTTPS=true SSL_CRT_FILE=./certs/server.crt SSL_KEY_FILE=./certs/server.key react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -50,6 +51,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "react-app-rewired": "^2.2.1"
   }
 }
