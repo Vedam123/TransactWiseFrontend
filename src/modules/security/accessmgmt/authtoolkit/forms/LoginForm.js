@@ -22,8 +22,8 @@ export default function LoginForm(props) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    instance: "",
-    company: "", // This will be set based on the selected instance
+    instance: "", // This will be set based on the selected instance
+    company: "",  // This will be set based on the selected instance
   });
   const [showUpdateCredentialsForm, setShowUpdateCredentialsForm] = useState(false);
   const [error, setError] = useState("");
@@ -100,8 +100,9 @@ export default function LoginForm(props) {
       const newFormData = { ...prevState, [name]: value };
       // If the instance changes, set the corresponding company
       if (name === "instance") {
-        const selectedInstance = activeInstances.find((instance) => instance.instance === value);
+        const selectedInstance = activeInstances.find((instance) => instance.disname === value); // Match with disname
         newFormData.company = selectedInstance ? selectedInstance.company : "";
+        newFormData.instance = selectedInstance ? selectedInstance.instance : "";
       }
       return newFormData;
     });
@@ -167,8 +168,8 @@ export default function LoginForm(props) {
                 >
                   <option value="">Select Instance</option>
                   {activeInstances.map((instance) => (
-                    <option key={instance.instance} value={instance.instance}>
-                      {instance.instance}
+                    <option key={instance.instance} value={instance.disname}>
+                      {instance.disname} {/* Displaying disname */}
                     </option>
                   ))}
                 </select>
