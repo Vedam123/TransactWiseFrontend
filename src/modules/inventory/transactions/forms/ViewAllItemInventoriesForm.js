@@ -60,14 +60,16 @@ function ViewAllItemInventoriesForm() {
               <th>UOM</th>
               <th>Transaction Number</th>
               <th>Transaction Type</th>
-              <th>Inventory ID</th>              
+              <th>Inventory ID</th>
               <th>Bin Name</th>
               <th>Rack Name</th>
               <th>Row Name</th>
               <th>Aisle Name</th>
               <th>Zone Name</th>
               <th>Location Name</th>
-              <th>Warehouse Name</th>                         
+              <th>Warehouse Name</th>
+              <th>Picked Released?</th>
+              <th>Released for</th>
               {/* Add more headers as needed */}
             </tr>
           </thead>
@@ -80,15 +82,17 @@ function ViewAllItemInventoriesForm() {
                 <td>{item.quantity}</td>
                 <td>{item.uom_name}</td>
                 <td>{item.transaction_id}</td>
-                <td>{item.transaction_type}</td>     
-                <td>{item.inventory_id}</td>                            
+                <td>{item.transaction_type}</td>
+                <td>{item.inventory_id}</td>
                 <td>{item.bin_name}</td>
                 <td>{item.rack_name}</td>
                 <td>{item.row_name}</td>
                 <td>{item.aisle_name}</td>
                 <td>{item.zone_name}</td>
                 <td>{item.location_name}</td>
-                <td>{item.warehouse_name}</td>                           
+                <td>{item.warehouse_name}</td>
+                <td>{item.status}</td>
+                <td>{item.subject}</td>
                 {/* Add more table data cells as needed */}
               </tr>
             ))}
