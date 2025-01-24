@@ -27,24 +27,33 @@ export default function LoginForm(props) {
   });
   const [showUpdateCredentialsForm, setShowUpdateCredentialsForm] = useState(false);
   const [error, setError] = useState("");
-  const [activeInstances, setActiveInstances] = useState([]); // To store active instances
+  const [activeInstances, setActiveInstances] = useState([]);
 
   useEffect(() => {
-    // Filter active instances from ENV_INSTANCES
-    const activeInstances = ENV_INSTANCES.filter(instance => instance.status === "Active");
+    const activeInstances = ENV_INSTANCES.filter((instance) => instance.status === "Active");
     setActiveInstances(activeInstances);
-  }, []); // Only run once on component mount
+  }, []);
 
   const logMeIn = async (e) => {
     e.preventDefault();
-    console.log("The API URL", { API_URL })
+    console.log("The API URL", { API_URL });
 
     try {
       const statusWithShortName = USER_STATUS.find((status) => status.short_name === "ACTIVE");
+
+      // Retrieve selected instance and company from activeInstances
+      const selectedInstance = activeInstances.find(
+        (instance) => instance.disname === formData.instance
+      );
+
+      // If selected instance exists, set company and instance accordingly
       const updatedFormData = {
         ...formData,
-        status: statusWithShortName ? statusWithShortName.short_name : ""
+        status: statusWithShortName ? statusWithShortName.short_name : "",
+        instance: selectedInstance ? selectedInstance.instance : "", // Set instance here
+        company: selectedInstance ? selectedInstance.company : ""   // Set company here
       };
+
       const response = await axios.post(`${API_URL}/login_user`, updatedFormData);
 
       const {
@@ -94,19 +103,17 @@ export default function LoginForm(props) {
     }
   };
 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => {
-      const newFormData = { ...prevState, [name]: value };
-      // If the instance changes, set the corresponding company
-      if (name === "instance") {
-        const selectedInstance = activeInstances.find((instance) => instance.disname === value); // Match with disname
-        newFormData.company = selectedInstance ? selectedInstance.company : "";
-        newFormData.instance = selectedInstance ? selectedInstance.instance : "";
-      }
-      return newFormData;
-    });
+
+    // Only updating the instance field
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value, // Update the field that changed (username, password, instance)
+    }));
   };
+
 
   const handleForgotPassword = () => {
     setError("");
@@ -122,7 +129,7 @@ export default function LoginForm(props) {
         ) : (
           <form onSubmit={logMeIn}>
             <div className="form-group col-md-6 mb-2">
-              <h3 className="title">Login </h3>
+              <h3 className="title">Login</h3>
               <div className="form-row">
                 <div className="label-container">
                   <label htmlFor="username">Username:</label>
@@ -162,14 +169,14 @@ export default function LoginForm(props) {
                 <select
                   id="instance"
                   name="instance"
-                  value={formData.instance}
+                  value={formData.instance} // Ensuring the select element is controlled
                   onChange={handleChange}
                   className="form-control input-field"
                 >
                   <option value="">Select Instance</option>
                   {activeInstances.map((instance) => (
                     <option key={instance.instance} value={instance.disname}>
-                      {instance.disname} {/* Displaying disname */}
+                      {instance.disname}
                     </option>
                   ))}
                 </select>
