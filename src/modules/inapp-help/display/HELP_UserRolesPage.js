@@ -1,66 +1,66 @@
 import "../../utilities/css/appcss.css";
+// UsersAndAccessesMenu.js
+
 import React from "react";
 
-const HELP_UserRolesPage = () => (
+const HELP_UsersAndAccessesPage = () => (
   <div>
-    <h2 className="subheading">User Roles Menu</h2>
+    <h2 className="subheading">Users & Accesses Menu</h2>
     <p className="indented-paragraph">
-      The `UserRolesMenu` component provides a menu for managing user roles and access.
+      The `Users & Accesses Menu` provides functionality for managing user accounts, their roles, and access permissions within the system. Administrators can create, delete, and modify user accounts, manage roles and permissions, and ensure users have the appropriate access to system modules.
     </p>
 
-    <h3 className="subheading">Menu Items</h3>
+    <h3 className="subheading">User Roles Menu</h3>
     <p className="indented-paragraph">
-      This menu contains various items for user role management:
-    </p>
-    <ul>
-      <li>
-        <strong>Create User:</strong> Create a new user. <span className="help-example">Example: John Doe</span>
-      </li>
-      <li>
-        <strong>Delete User:</strong> Delete a user. <span className="help-example">Example: Jane Smith</span>
-      </li>
-      <li>
-        <strong>Modify User:</strong> Modify user information. <span className="help-example">Example: Michael Johnson</span>
-      </li>
-      <li>
-        <strong>List Users:</strong> View a list of users. <span className="help-example">Example: All Users</span>
-      </li>
-      {/* Add more menu items here */}
-    </ul>
-
-    <h3 className="subheading">Menu Actions</h3>
-    <p className="indented-paragraph">
-      Click on a menu item to perform the corresponding action.
-    </p>
-    <h2 className="subheading">Permissions Menu</h2>
-    <p className="indented-paragraph">
-      The `PermissionsMenu` component provides a menu for managing permissions and access control.
+      The `User Roles Menu` allows administrators to manage user roles within the system. Roles define what access and privileges users have within the platform, ensuring that the right individuals have the necessary permissions for their tasks.
     </p>
 
-    <h3 className="subheading">Menu Items</h3>
+    <h3 className="subheading">Create User</h3>
     <p className="indented-paragraph">
-      This menu contains various items for managing permissions:
+      The `Create User` option allows administrators to add new users to the system. By entering essential information such as the user’s name, email, and role, new user profiles are created, granting them access to the system according to their assigned roles.
     </p>
-    <ul>
-      <li>
-        <strong>Load Modules:</strong> Load available modules. <span className="help-example">Example: All Modules</span>
-      </li>
-      <li>
-        <strong>Assign User Modules:</strong> Assign modules to users. <span className="help-example">Example: Assign Modules</span>
-      </li>
-      <li>
-        <strong>Grant Accesses:</strong> Grant access permissions. <span className="help-example">Example: Grant All Access</span>
-      </li>
-      <li>
-        <strong>List User Accesses:</strong> List user access permissions. <span className="help-example">Example: List Accesses</span>
-      </li>
-      {/* Add more menu items here */}
-    </ul>
 
-    <h3 className="subheading">Menu Actions</h3>
+    <h3 className="subheading">Delete User</h3>
     <p className="indented-paragraph">
-      Click on a menu item to perform the corresponding action.
+      The `Delete User` option enables administrators to remove users from the system. This action is necessary when users leave the organization or no longer require access to the system.
     </p>
+
+    <h3 className="subheading">Modify User</h3>
+    <p className="indented-paragraph">
+      The `Modify User` feature allows administrators to update user details, such as their contact information, roles, or access permissions. This ensures that user profiles remain current and reflect any changes in their responsibilities.
+    </p>
+
+    <h3 className="subheading">List Users</h3>
+    <p className="indented-paragraph">
+      The `List Users` option enables administrators to view all registered users in the system. This feature provides an overview of all active users and can be filtered or searched to find specific users as needed.
+    </p>
+
+    <h3 className="subheading">Permissions Menu</h3>
+    <p className="indented-paragraph">
+      The `Permissions Menu` allows administrators to manage the system’s permissions, defining what users can or cannot access within the platform. This includes configuring user access to specific modules and functionalities.
+    </p>
+
+    <h3 className="subheading">Load Modules</h3>
+    <p className="indented-paragraph">
+      The `Load Modules` feature enables administrators to add new modules to the system. This allows the platform to evolve and expand, ensuring that new features and functionalities can be integrated as needed.
+    </p>
+
+    <h3 className="subheading">Assign Modules</h3>
+    <p className="indented-paragraph">
+      The `Assign Modules` option allows administrators to assign specific modules to users or user groups. By managing module assignments, administrators control which features and functionalities are available to individual users or roles.
+    </p>
+
+    <h3 className="subheading">Grant Accesses</h3>
+    <p className="indented-paragraph">
+      The `Grant Accesses` functionality enables administrators to assign specific access permissions to users for various modules and actions within the system. This ensures that users have the appropriate levels of access to perform their tasks while maintaining security.
+    </p>
+
+    <h3 className="subheading">List User Accesses</h3>
+    <p className="indented-paragraph">
+      The `List User Accesses` option provides a comprehensive view of all user access configurations, showing which users have access to which modules and permissions. This feature is essential for monitoring and auditing user access rights across the system.
+    </p>
+
   </div>
 );
-export default HELP_UserRolesPage;
+
+export default HELP_UsersAndAccessesPage;

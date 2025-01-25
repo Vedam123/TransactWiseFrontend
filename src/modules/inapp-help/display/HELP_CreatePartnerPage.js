@@ -1,95 +1,52 @@
-import "../../utilities/css/appcss.css";
 import React from "react";
+import "../../utilities/css/appcss.css";
 
-const HELP_CreatePartnerPage = () => (
+const HELP_CreateLocationsPage = () => (
   <div>
-    <h2 className="subheading">Create Partner Form</h2>
+    <h2 className="subheading">Create Location Form</h2>
     <p className="indented-paragraph">
-      The `CreatePartnerForm` component allows you to create new partner records in the system.
+      The `Create Location` form is used to add a new location within the system. It involves entering key details such as the location name, type, warehouse, description, capacity, unit of measure (UOM), temperature control status, and security level.
     </p>
 
     <h3 className="subheading">Form Fields</h3>
     <p className="indented-paragraph">
-      This form contains various fields for entering partner information:
+      The following fields are available in the location creation form:
     </p>
-    <ul>
-      <li>
-        <strong>Partner Type:</strong> Select the type of partner (Supplier, Customer, Both, Internal, All).
-        <span className="help-example">Example: Supplier</span>
-      </li>
-      <li>
-        <strong>Partner Name:</strong> Enter the name of the partner.
-        <span className="help-example">Example: ABC Corporation</span>
-      </li>
-      <li>
-        <strong>Currency Code:</strong> Select the currency code from the list of options.
-        <span className="help-example">Example: USD</span>
-      </li>
-      <li>
-        <strong>Status:</strong> Select the status of the partner (Active, Inactive, Dormant).
-        <span className="help-example">Example: Active</span>
-      </li>
-      <li>
-        <strong>Address:</strong> Enter the partner's address.
-        <span className="help-example">Example: 123 Main St</span>
-      </li>
-      <li>
-        <strong>City:</strong> Enter the city where the partner is located.
-        <span className="help-example">Example: New York</span>
-      </li>
-      <li>
-        <strong>State:</strong> Enter the state or region where the partner is located.
-        <span className="help-example">Example: NY</span>
-      </li>
-      <li>
-        <strong>Postal Code:</strong> Enter the postal code of the partner's location.
-        <span className="help-example">Example: 10001</span>
-      </li>
-      <li>
-        <strong>Country:</strong> Enter the country where the partner is located.
-        <span className="help-example">Example: USA</span>
-      </li>
-      <li>
-        <strong>Contact Person:</strong> Enter the name of the contact person for the partner.
-        <span className="help-example">Example: John Smith</span>
-      </li>
-      <li>
-        <strong>Phone:</strong> Enter the phone number of the contact person.
-        <span className="help-example">Example: (123) 456-7890</span>
-      </li>
-      <li>
-        <strong>Email:</strong> Enter the email address of the contact person.
-        <span className="help-example">Example: john.smith@example.com</span>
-      </li>
-      <li>
-        <strong>Tax ID:</strong> Enter the tax identification number for the partner.
-        <span className="help-example">Example: 123-45-6789</span>
-      </li>
-      <li>
-        <strong>Registration Number:</strong> Enter the registration number for the partner.
-        <span className="help-example">Example: ABC123456</span>
-      </li>
-      <li>
-        <strong>Additional Information:</strong> Enter any additional information about the partner.
-        <span className="help-example">Example: This partner is a key supplier for our company.</span>
-      </li>
-      <li>
-        <strong>Partner Image:</strong> Upload an image of the partner (JPG, PNG, GIF).
-        <span className="help-example">Example: partner.jpg</span>
-      </li>
+    <ul className="indented-list">
+      <li><strong>Location Name</strong>: Enter a unique name for the location being created.</li>
+      <li><strong>Location Type</strong>: Select the type of location (e.g., storage, processing, etc.).</li>
+      <li><strong>Warehouse</strong>: Choose the warehouse where the location is situated.</li>
+      <li><strong>Description</strong>: Provide a brief description of the location.</li>
+      <li><strong>Capacity</strong>: Enter the capacity of the location (must be a positive number).</li>
+      <li><strong>Unit of Measure (UOM)</strong>: Select the unit of measure (e.g., cubic meters, square feet, etc.).</li>
+      <li><strong>Temperature Controlled</strong>: Choose whether the location is temperature-controlled.</li>
+      <li><strong>Security Level</strong>: Select the security level required for the location.</li>
     </ul>
 
-    <h3 className="subheading">Submit Button</h3>
+    <h3 className="subheading">Form Validation</h3>
     <p className="indented-paragraph">
-      Click the "Create Partner" button to create a new partner record with the provided information.
+      The form includes validation for required fields such as location name, type, warehouse, capacity, and UOM. Additionally, the capacity field must contain a numeric value greater than 0. If any required field is missing or invalid, the form will not be submitted, and the user will receive an error message.
     </p>
 
-    <h3 className="subheading">Access Permissions</h3>
+    <h3 className="subheading">Data Fetching</h3>
     <p className="indented-paragraph">
-      Your access to this module is determined by your user role and permissions. If you do not have the necessary access, you will see a message indicating that you do not have permission to view this module.
-      <span className="help-example">Example: You do not have permission to view this module</span>
+      The form fetches data dynamically from the backend:
+    </p>
+    <ul className="indented-list">
+      <li><strong>Unit of Measure (UOM)</strong>: A list of available UOMs is fetched from the backend when the form is loaded.</li>
+      <li><strong>Warehouses</strong>: A list of available warehouses is fetched from the backend for selection in the "Warehouse" field.</li>
+    </ul>
+
+    <h3 className="subheading">Error and Success Messages</h3>
+    <p className="indented-paragraph">
+      If an error occurs while submitting the form (e.g., network issues or validation failures), an error message is displayed to the user. On successful creation of a location, a success message is shown, and the form is cleared for the next entry.
+    </p>
+
+    <h3 className="subheading">Permissions</h3>
+    <p className="indented-paragraph">
+      Only users with the appropriate permissions are allowed to create new locations. The form ensures that the user has valid access before submitting the data.
     </p>
   </div>
 );
 
-export default HELP_CreatePartnerPage;
+export default HELP_CreateLocationsPage;

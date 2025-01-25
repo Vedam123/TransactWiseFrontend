@@ -1,26 +1,28 @@
 import React from "react";
 import "../../utilities/css/appcss.css";
 
-const HELP_FindJounralToUpdatePage = () => (
+const HELP_FindJournalToUpdatePage = () => (
   <div>
-    <h2 className="subheading">Admin Page Menu Component</h2>
+    <h2 className="subheading">Find Journal to Update</h2>
     <p className="indented-paragraph">
-      The `Admin Page Menu` component is responsible for rendering a list of menu items based on user permissions.
+      The `Find Journal to Update` page allows users to search for a specific journal by its journal number. Once a journal is found, users can proceed to the update form to modify the journal details.
     </p>
-    <h3 className="subheading">Employee Module</h3>
+
+    <h3 className="subheading">Journal Number</h3>
     <p className="indented-paragraph">
-      The Employee Module allows users to manage employee-related functionalities.
+      The `Journal Number` field allows users to enter the journal number associated with the journal they want to update. After entering the journal number, users can click on the "Update Journal" button to proceed.
     </p>
-    <h3 className="subheading">Security Module</h3>
+
+    <h3 className="subheading">Update Journal</h3>
     <p className="indented-paragraph">
-      The Security Module is responsible for managing user access and permissions.
+      The `Update Journal` button navigates the user to the journal update form. The journal number entered in the input field will be passed as part of the URL for the update form, allowing users to update the correct journal.
     </p>
-    <h3 className="subheading">Email </h3>
+
+    <h3 className="subheading">Permissions</h3>
     <p className="indented-paragraph">
-      One can view all the emails generated in the system.
+      Access to this page is restricted based on user permissions. If a user does not have the required permission to view or update journal details, they will see a message indicating that they do not have permission to view this module.
     </p>
-    
   </div>
 );
 
-export default HELP_FindJounralToUpdatePage;
+export default HELP_FindJournalToUpdatePage;

@@ -5,7 +5,7 @@ const HELP_ItemUOMConsolidationPage = () => (
   <div>
     <h2 className="subheading">Inventory Item UOM Conversion Form</h2>
     <p className="indented-paragraph">
-      The `Inventory Item UOM Conversion` form allows authorized users to perform Unit of Measure (UOM) conversions for inventory items.
+      The `Inventory Item UOM Consolidation ` form allows authorized users to perform Unit of Measure (UOM) conversions for inventory items.
     </p>
 
     <h3 className="subheading">Usage</h3>
