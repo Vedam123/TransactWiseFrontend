@@ -32,7 +32,7 @@ export default function HomePage() {
 
       <div className="parent-container">
         <div className="child-container menu-container">
-          <DisplayCard title="Modules" color="#FFD799">
+          <DisplayCard title="Functional Modules" color="#FFD799">
             {componentsToRender.map((Component, index) => (
               <Component key={index} />
             ))}

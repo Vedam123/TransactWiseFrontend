@@ -12,7 +12,7 @@ export default function ExchangeRatesPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Module Name: ${moduleName}`);
 
   return (
-    <DisplayCard title="Exchange Rates" color="#FFD799">
+    <DisplayCard title="Manage Exchange Rates" color="#FFD799">
       <div className="menu-list">
         <ViewExchangeRatesMenu />
       </div>

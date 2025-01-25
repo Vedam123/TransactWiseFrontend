@@ -14,7 +14,7 @@ export default function CreateDBSetupsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Find & Create Configurations</h1>
+      <h1 className="title">Search / Create Configurations</h1>
 
       <div className="parent-container">
         <CreateDBSetupsForm />

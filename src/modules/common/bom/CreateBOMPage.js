@@ -17,7 +17,7 @@ function CreateBOMPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create BOM</h1>
+      <h1 className="title">Create Bill of Materials</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

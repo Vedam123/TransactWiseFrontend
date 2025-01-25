@@ -9,7 +9,7 @@ function ViewAllDesignationsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">List of Designations</h1>
+      <h1 className="title">Designations</h1>
       <ViewAllDesignationsForm />
       <RotatingImage />
       <BottomContainer />

@@ -20,7 +20,7 @@ export default function FinancePage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Finance Module</h1>
+      <h1 className="title">Finanacial Transactions</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
           <div className="menu-list-container">

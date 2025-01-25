@@ -9,13 +9,13 @@ import SearchJournalForm from "./forms/SearchJournalForm";
 function SearchJournalPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Journal Page`);
 
-const componentsToRender = [SearchJournalForm];
-const componentsToRender2 = [SearchJournalPage];
+  const componentsToRender = [SearchJournalForm];
+  const componentsToRender2 = [SearchJournalPage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Journal Search Page</h1>
-  
+      <h1 className="title">Journal Entry Finder</h1>
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />

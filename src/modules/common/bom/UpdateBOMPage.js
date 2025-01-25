@@ -16,7 +16,7 @@ export default function UpdateBOMPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Update BOM</h1>
+      <h1 className="title">Update Bill of Materials</h1>
   
       <div className="parent-container">
         <UpdateModelBOM BOMParameters={BOMParameters} />

@@ -17,7 +17,7 @@ function CreateDepartmentsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Department</h1>
+      <h1 className="title">Create New Department</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

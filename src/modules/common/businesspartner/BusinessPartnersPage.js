@@ -11,7 +11,7 @@ export default function BusinessPartnersPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Entered BusinessPartnersPage`);
 
   return (
-    <DisplayCard title="Business Partner" color="#FFD799">
+    <DisplayCard title="Manage Business Partners" color="#FFD799">
       <BusinessPartnerMenu />
     </DisplayCard>
   );

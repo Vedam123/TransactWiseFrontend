@@ -9,7 +9,7 @@ export default function PurchaseInvoicePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Purchase Invoice Page rendering.`);
 
   return (
-    <DisplayCard title="PurchaseInvoice" color="#FFD799">
+    <DisplayCard title="Manage Purchase Invoices" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <PurchaseInvoiceMenu />

@@ -39,7 +39,7 @@ function ViewBOMModelPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Bill of Materials</h1>
+      <h1 className="title">View Modal Item Bill of Materials</h1>
       <div className="side-by-side-container">
         {componentsToRender.map((Component, index) => (
           <React.Fragment key={index}>{Component}</React.Fragment>

@@ -27,7 +27,7 @@ function ViewBOMExplodePage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Explode BOM</h1>
+      <h1 className="title">Explode Bill of Materials</h1>
       <div className="side-by-side-container">
         {componentsToRender.map((Component, index) => (
           <React.Fragment key={index}>{Component}</React.Fragment>

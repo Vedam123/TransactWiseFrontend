@@ -14,7 +14,7 @@ const componentsToRender2 = [SearchPurchaseInvoicePage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Purchase Invoice Page </h1>
+      <h1 className="title">Search Purchase Invoices </h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

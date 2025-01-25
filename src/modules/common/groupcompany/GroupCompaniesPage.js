@@ -9,7 +9,7 @@ export default function GroupCompaniesPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Group Company component is rendering.`);
 
   return (
-    <DisplayCard title="Group Companies" color="#FFD799">
+    <DisplayCard title="Manage Group Companies" color="#FFD799">
       <div className="menu-list">
         <GroupCompaniesMenu />
       </div>

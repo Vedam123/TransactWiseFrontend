@@ -9,13 +9,13 @@ import AutoPOInvoiceCreationForm from "./forms/AutoPOInvoiceCreationForm";
 function AutoPOInvoiceCreationPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Auto create Purchase Invoice`);
 
-const componentsToRender = [AutoPOInvoiceCreationForm];
-const componentsToRender2 = [AutoPOInvoiceCreationPage];
+  const componentsToRender = [AutoPOInvoiceCreationForm];
+  const componentsToRender2 = [AutoPOInvoiceCreationPage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Auto Create PO Invoice</h1>
-  
+      <h1 className="title">Automatic PO Invoice Generation</h1>
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />

@@ -9,7 +9,7 @@ export default function UOMPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] UOMPage component is rendering.`);
 
   return (
-    <DisplayCard title="UOM" color="#FFD799">
+    <DisplayCard title="Manage Unit of Measures" color="#FFD799">
       <div className="menu-list">
         <UOMMenu />
       </div>

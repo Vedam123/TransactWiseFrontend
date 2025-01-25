@@ -9,7 +9,7 @@ export default function LegalEntityPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Legal Entity  component is rendering.`);
 
   return (
-    <DisplayCard title="Legal Entities" color="#FFD799">
+    <DisplayCard title="Manage Legal Entities" color="#FFD799">
       <div className="menu-list">
         <LegalEntityMenu />
       </div>

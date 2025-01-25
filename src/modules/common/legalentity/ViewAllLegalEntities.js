@@ -12,8 +12,8 @@ function ViewAllLegalEntities() {
     <div className="page-container">
       {/* Log the page title */}
 
-      <h1 className="title">View All Legal Entities</h1>
-      
+      <h1 className="title">Legal Entities</h1>
+
       <ViewAllLegalEntitiesForm />
 
       <RotatingImage />

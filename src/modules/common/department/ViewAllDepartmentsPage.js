@@ -12,8 +12,8 @@ function ViewAllDepartmentsPage() {
     <div className="page-container">
       {/* Log the page title */}
 
-      <h1 className="title">View All Departments</h1>
-      
+      <h1 className="title">Departments</h1>
+
       <ViewAllDepartmentsForm />
 
       <RotatingImage />

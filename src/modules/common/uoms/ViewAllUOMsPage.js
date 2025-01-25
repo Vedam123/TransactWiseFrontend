@@ -12,7 +12,7 @@ function ViewAllUOMsPage() {
     <div className="page-container">
       {/* Log the page title */}
 
-      <h1 className="title">List of UOMs</h1>
+      <h1 className="title">Unit of Measures</h1>
       
       <ViewAllUOMsForm />
 

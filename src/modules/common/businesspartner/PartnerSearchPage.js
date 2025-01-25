@@ -18,7 +18,7 @@ function PartnerSearchPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Business Partner Search Page</h1>
+      <h1 className="title">Search Business Partners</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

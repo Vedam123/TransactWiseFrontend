@@ -54,7 +54,7 @@ export default function CommonPage() {
   return (
     <div className="page-container">
       {/* Log the page title with timestamp */}
-      <h1 className="title">Common Functions</h1>
+      <h1 className="title">Common Module Functions</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
           <div className="menu-list-container">

@@ -17,10 +17,10 @@ export default function EmployeePage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Employee</h1>
+      <h1 className="title">Manage Employees</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
-          <DisplayCard title="View Employee Data" color="#FFD799">
+          <DisplayCard title="Employees" color="#FFD799">
             <div className="child-container form-container">
               <div className="menu-list">
                 {componentsToRender.map((Component, index) => (

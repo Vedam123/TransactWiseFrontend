@@ -10,7 +10,7 @@ function ViewDefaultAccountsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title"> Company Default Accounts</h1>
+      <h1 className="title">Default Accounts</h1>
       <ViewDefaultAccountsForm />
       <RotatingImage />
       <BottomContainer />

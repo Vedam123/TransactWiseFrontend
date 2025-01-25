@@ -14,7 +14,7 @@ const componentsToRender2 = [SearchPOInvoiceToUpdatePage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Find PO Invoice to Update </h1>
+      <h1 className="title">Search Purchase Order Invoices </h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

@@ -14,7 +14,7 @@ function DBSetupsSearchPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create React Configurations File</h1>
+      <h1 className="title">Create React Config file</h1>
 
       <div className="parent-container">
         <ShowAllDBSetupsForm />

@@ -13,7 +13,7 @@ const componentsToRender2 = [SearchDefaultAccountsPage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Company Default Accounts Page </h1>
+      <h1 className="title">Find Default Account</h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

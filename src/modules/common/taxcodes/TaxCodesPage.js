@@ -13,7 +13,7 @@ export default function TaxCodesPage() {
   }, []);
 
   return (
-    <DisplayCard title="Tax Code functions" color="#FFD799">
+    <DisplayCard title="Manage Tax Codes" color="#FFD799">
       <div className="menu-list">
         <ViewTaxCodesMenu />
       </div>

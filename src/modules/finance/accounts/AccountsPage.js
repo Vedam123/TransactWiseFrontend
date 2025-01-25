@@ -9,7 +9,7 @@ export default function AccountsPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Accounts is rendering.`);
 
   return (
-    <DisplayCard title="Accounts" color="#FFD799">
+    <DisplayCard title="Manage Chat of Accounts" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <AccountsMenu />

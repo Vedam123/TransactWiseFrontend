@@ -9,7 +9,7 @@ export default function CompaniesPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Company component is rendering.`);
 
   return (
-    <DisplayCard title="Companies" color="#FFD799">
+    <DisplayCard title="Manage Companies" color="#FFD799">
       <div className="menu-list">
         <CompaniesMenu />
       </div>

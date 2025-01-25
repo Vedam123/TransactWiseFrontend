@@ -10,13 +10,13 @@ import AutoCreateJournalForm from "./forms/AutoCreateJournalForm";
 function AutoCreateJournalPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Auto Create Journal`);
 
-const componentsToRender = [AutoCreateJournalForm];
-const componentsToRender2 = [AutoCreateJournalPage];
+  const componentsToRender = [AutoCreateJournalForm];
+  const componentsToRender2 = [AutoCreateJournalPage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Auto Create Journals</h1>
-  
+      <h1 className="title">Automated Journal Creation</h1>
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />

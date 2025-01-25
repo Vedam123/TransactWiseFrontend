@@ -15,7 +15,7 @@ export default function CurrenciesPage() {
   }, []);
 
   return (
-    <DisplayCard title="Currencies" color="#FFD799">
+    <DisplayCard title="Manage Currencies" color="#FFD799">
       <ViewCurrenciesMenu />
     </DisplayCard>
   );

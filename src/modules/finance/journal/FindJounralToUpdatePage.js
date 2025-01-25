@@ -14,7 +14,7 @@ const componentsToRender2 = [FindJounralToUpdatePage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Find Journal to Update </h1>
+      <h1 className="title">Find Journal Entries to Edit </h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

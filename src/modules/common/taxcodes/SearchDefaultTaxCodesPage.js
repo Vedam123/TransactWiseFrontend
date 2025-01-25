@@ -13,7 +13,7 @@ const componentsToRender2 = [SearchDefaultTaxCodesPage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Search Company Default Tax Codes </h1>
+      <h1 className="title">Find Tax Codes</h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

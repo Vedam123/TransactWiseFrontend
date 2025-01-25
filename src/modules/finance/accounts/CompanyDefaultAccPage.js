@@ -16,7 +16,7 @@ function CompanyDefaultAccPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Company Default Accounts</h1>
+      <h1 className="title">Default Accounts</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

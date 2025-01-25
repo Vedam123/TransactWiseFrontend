@@ -20,7 +20,7 @@ export default function AccountsMenu() {
     { path: "/get-accounts", text: "Get Accounts", canRender: canViewModule },
     { path: "/search-default-accounts", text: "Get Default Accounts", canRender: canViewModule },
     { path: "/create-default-accounts", text: "Create Default Accounts", canRender: canCreateModule },
-    { path: "/company-default-accounts", text: "Company Default Accounts", canRender: canCreateModule },
+    // { path: "/company-default-accounts", text: "Company Default Accounts", canRender: canCreateModule },
   ];
 
   const handleMenuItemClick = (path) => {
@@ -40,22 +40,22 @@ export default function AccountsMenu() {
 
   return (
 
-      <div className="menu-list">
-        {menuItems.map((item) =>
-          item.canRender && (
-            <ButtonComponent
-              key={item.path}
-              path={item.path}
-              buttonText={item.text}
-              onClick={() => {
-                handleMenuItemClick(item.path);
-                // Log the button click action with timestamp
-                logger.info(`[${new Date().toLocaleTimeString()}] Clicked button: ${item.text}`);
-              }}
-            />
-          )
-        )}
-      </div>
+    <div className="menu-list">
+      {menuItems.map((item) =>
+        item.canRender && (
+          <ButtonComponent
+            key={item.path}
+            path={item.path}
+            buttonText={item.text}
+            onClick={() => {
+              handleMenuItemClick(item.path);
+              // Log the button click action with timestamp
+              logger.info(`[${new Date().toLocaleTimeString()}] Clicked button: ${item.text}`);
+            }}
+          />
+        )
+      )}
+    </div>
 
   );
 }

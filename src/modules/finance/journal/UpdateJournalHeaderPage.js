@@ -16,7 +16,7 @@ export default function UpdateJournalHeaderPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Update Journal</h1>
+      <h1 className="title">Modify Journal</h1>
   
       <div className="parent-container">
         {/* Render UpdatePOInvoiceHeaderForm component directly */}

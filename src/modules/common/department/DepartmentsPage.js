@@ -9,7 +9,7 @@ export default function DepartmentsPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Departments component is rendering.`);
 
   return (
-    <DisplayCard title="Departments" color="#FFD799">
+    <DisplayCard title="Manage Departments" color="#FFD799">
       <div className="menu-list">
         <DepartmentsMenu />
       </div>

@@ -11,7 +11,7 @@ export default function BOMPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering BOMPage`); // Log when the component is rendered with time
 
   return (
-    <DisplayCard title="BOM" color="#FFD799">
+    <DisplayCard title="Bill of Materials Menu Items" color="#FFD799">
       <BOMMenu />
     </DisplayCard>
   );

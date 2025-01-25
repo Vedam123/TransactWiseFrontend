@@ -14,7 +14,7 @@ const componentsToRender2 = [CreateDefaultTaxCodesPage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Company Default Tax Codes</h1>
+      <h1 className="title">Create Default Tax Codes</h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

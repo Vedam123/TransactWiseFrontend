@@ -10,7 +10,7 @@ function ViewAllAccountsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title"> Accounts</h1>
+      <h1 className="title">Accounts</h1>
       <ViewAllAccountsForm />
       <RotatingImage />
       <BottomContainer />

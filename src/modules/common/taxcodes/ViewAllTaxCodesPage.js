@@ -19,8 +19,8 @@ function ViewAllTaxCodesPage() {
         logger.info(`[${new Date().toLocaleTimeString()}] Page title: List of Tax Codes`);
       }, [])}
 
-      <h1 className="title">List of Tax Codes</h1>
-      
+      <h1 className="title">Tax Codes</h1>
+
       <ViewAllTaxCodesForm />
 
       <RotatingImage />

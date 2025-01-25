@@ -16,7 +16,7 @@ function CreateAccountPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Account</h1>
+      <h1 className="title">Create a Chart of Account</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

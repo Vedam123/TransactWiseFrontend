@@ -31,10 +31,10 @@ export default function AdminPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Admin & Setups</h1>
+      <h1 className="title">Access Management</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
-          <DisplayCard title="Admin Functions" color="#FFD799">
+          <DisplayCard title="Functions of Accessmanagment" color="#FFD799">
             {componentsToRender.map((Component, index) => (
               <Component key={index} />
             ))}

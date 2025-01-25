@@ -12,7 +12,7 @@ function ViewAllCompaniesPage() {
     <div className="page-container">
       {/* Log the page title */}
 
-      <h1 className="title">View AllCompanies</h1>
+      <h1 className="title">Companies View</h1>
       
       <ViewAllCompaniesForm />
 

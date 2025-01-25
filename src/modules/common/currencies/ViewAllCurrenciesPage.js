@@ -12,7 +12,7 @@ export default function ViewAllCurrenciesPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">List of Currencies</h1>
+      <h1 className="title">Currencies</h1>
       <ViewAllCurrenciesForm />
 
       <BottomContainer />

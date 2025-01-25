@@ -12,7 +12,7 @@ function CreateUOMPage() {
     <div className="page-container">
       {/* Log the page title */}
 
-      <h1 className="title">Create UOM</h1>
+      <h1 className="title">Create Unit of Measure</h1>
       
       <CreateUOMForm />
 

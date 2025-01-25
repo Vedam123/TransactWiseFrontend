@@ -9,7 +9,7 @@ function ViewAllEmployeesPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">List of Employees</h1>
+      <h1 className="title">Employees</h1>
       <ViewAllEmployeesForm />
       <RotatingImage />
       <BottomContainer />

@@ -9,7 +9,7 @@ export default function JournalPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Journal is rendering.`);
 
   return (
-    <DisplayCard title="Journal" color="#FFD799">
+    <DisplayCard title="Manage Journal Entries" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <JournalMenu />

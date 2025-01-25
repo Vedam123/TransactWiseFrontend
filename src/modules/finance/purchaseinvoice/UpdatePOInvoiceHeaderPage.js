@@ -17,7 +17,7 @@ export default function UpdatePOInvoiceHeaderPage() {
   return (
     <div className="page-container">
       <h1 className="title">Update Purchase Invoice</h1>
-  
+
       <div className="parent-container">
         {/* Render UpdatePOInvoiceHeaderForm component directly */}
         <UpdatePOInvoiceHeaderForm PurchaseParameters={PurchaseParameters} />

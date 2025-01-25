@@ -17,7 +17,7 @@ function CreatePartnerPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Business Partner</h1>
+      <h1 className="title">Create New Business Partner</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
