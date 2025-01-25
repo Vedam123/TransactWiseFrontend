@@ -16,7 +16,7 @@ function PutAwayPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Perform PutAway</h1>
+      <h1 className="title">PutAway Inventory</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

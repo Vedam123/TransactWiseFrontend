@@ -9,7 +9,7 @@ export default function StoragePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] StorageMenu are rendering.`);
 
   return (
-    <DisplayCard title="Storage" color="#FFD799">
+    <DisplayCard title="Storage Area Administration" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <StorageMenu />

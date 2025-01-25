@@ -9,7 +9,7 @@ export default function SalesInvoicePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Sales Invoice Page rendering.`);
 
   return (
-    <DisplayCard title="SalesInvoice" color="#FFD799">
+    <DisplayCard title="Manage Sales Invoice" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <SalesInvoiceMenu />

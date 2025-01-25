@@ -18,7 +18,7 @@ function CreateSOPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title"> Create SO</h1>
+      <h1 className="title">New Sales Order</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

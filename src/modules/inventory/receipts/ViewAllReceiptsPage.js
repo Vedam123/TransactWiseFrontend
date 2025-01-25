@@ -10,7 +10,7 @@ function ViewAllReceiptsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title"> Receipts</h1>
+      <h1 className="title">Receipts</h1>
       <ViewAllReceiptsForm />
       <RotatingImage />
       <BottomContainer />

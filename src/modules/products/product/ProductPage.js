@@ -9,7 +9,7 @@ export default function ProductPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] ProductPage component is rendering.`);
 
   return (
-    <DisplayCard title="Products" color="#FFD799">
+    <DisplayCard title="Manage Products" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <ProductMenu />

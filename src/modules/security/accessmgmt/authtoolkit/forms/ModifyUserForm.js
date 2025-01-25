@@ -177,7 +177,7 @@ function ModifyUserForm() {
 
   return (
     <div className="child-container menu-container">
-      <h2 className="title">Search and Modify User</h2>
+      <h2 className="title">Search User Details</h2>
       <div className="child-container form-container">
         <form onSubmit={handleSearchSubmit}>
           <div className="form-group col-md-6 mb-2">

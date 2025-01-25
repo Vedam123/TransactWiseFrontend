@@ -53,7 +53,7 @@ function Logout(props) {
       {props.username && <p>Logged in as: {props.username}</p>}
 
       {/* Logout button to trigger the logout process */}
-      {props.token && <button onClick={handleLogout}>Logout</button>}
+      {props.token && <button onClick={handleLogout}>Sign Off</button>}
     </div>
   );
 }

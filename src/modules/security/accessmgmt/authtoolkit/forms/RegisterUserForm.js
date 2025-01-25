@@ -185,7 +185,7 @@ export default function RegisterUserForm() {
 
   return (
     <div className="child-container menu-container">
-      <h2 className="title">Register User</h2>
+      <h2 className="title">Add User</h2>
       {hasRequiredAccess ? (
         <div className="child-container form-container">
           {registrationSuccess ? (

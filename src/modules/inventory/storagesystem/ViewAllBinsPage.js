@@ -10,7 +10,7 @@ function ViewAllBinsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title"> Bins</h1>
+      <h1 className="title">Bins</h1>
       <ViewAllBinsForm />
       <RotatingImage />
       <BottomContainer />

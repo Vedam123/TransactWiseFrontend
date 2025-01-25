@@ -12,7 +12,7 @@ function UsersListPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">List of Users</h1>
+      <h1 className="title">User Accounts</h1>
       <UsersListForm />
       <RotatingImage />
       <BottomContainer />

@@ -16,7 +16,7 @@ function CreateBinsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Bins</h1>
+      <h1 className="title">Setup Bins</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

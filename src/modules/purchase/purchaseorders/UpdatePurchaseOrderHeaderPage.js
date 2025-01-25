@@ -16,7 +16,7 @@ export default function UpdatePurchaseOrderHeaderPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Update Purchase Orders</h1>
+      <h1 className="title">Modify Purchase Orders</h1>
   
       <div className="parent-container">
         {/* Render UpdatePOInvoiceHeaderForm component directly */}

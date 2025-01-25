@@ -9,7 +9,7 @@ export default function ProductCategoriesPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] ProductCategoriesPage component is rendering.`);
 
   return (
-    <DisplayCard title="Product Categories" color="#FFD799">
+    <DisplayCard title="Manage Product Categories" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <ProductsCatMenu />

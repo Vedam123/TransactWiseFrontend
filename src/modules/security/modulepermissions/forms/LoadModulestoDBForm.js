@@ -64,7 +64,7 @@ const LoadModulestoDBForm = () => {
 
   return (
     <div className="child-container form-container">
-      <h1 className="title"> Modules</h1>
+      <h1 className="title">Application Modules</h1>
       {message && <p>{message}</p>}
     </div>
   );

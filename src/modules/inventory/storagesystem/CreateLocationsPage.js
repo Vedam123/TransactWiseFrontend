@@ -16,7 +16,7 @@ function CreateLocationsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Locations</h1>
+      <h1 className="title">Setup Locations</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

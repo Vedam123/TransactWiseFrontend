@@ -9,7 +9,7 @@ export default function PurchaseOrdersPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] View Purchase orders page is rendering.`);
 
   return (
-    <DisplayCard title="Purchase Order Functions" color="#FFD799">
+    <DisplayCard title="Purchase Order Administration" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <PurchaseOrdersMenu />

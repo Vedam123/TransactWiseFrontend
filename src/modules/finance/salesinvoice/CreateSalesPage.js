@@ -14,7 +14,7 @@ const componentsToRender2 = [CreateSalesPage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Sales</h1>
+      <h1 className="title">Sales Invoice Creation</h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

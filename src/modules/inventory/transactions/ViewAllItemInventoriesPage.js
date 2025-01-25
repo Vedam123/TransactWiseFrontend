@@ -10,7 +10,7 @@ function ViewAllItemInventoriesPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title"> ItemInventories</h1>
+      <h1 className="title">Item Inventories</h1>
       <ViewAllItemInventoriesForm />
       <RotatingImage />
       <BottomContainer />

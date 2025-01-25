@@ -10,7 +10,7 @@ function ViewAllInspectionsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title"> View All Inspections</h1>
+      <h1 className="title">Inspections</h1>
       <ViewAllInspectionsForm />
       <RotatingImage />
       <BottomContainer />

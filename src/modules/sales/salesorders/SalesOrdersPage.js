@@ -9,7 +9,7 @@ export default function SalesOrdersPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] View Sales orders page is rendering.`);
 
   return (
-    <DisplayCard title="Sales Order Functions" color="#FFD799">
+    <DisplayCard title="Sales Management" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <SalesOrdersMenu />

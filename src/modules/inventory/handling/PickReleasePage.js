@@ -16,7 +16,7 @@ function PickReleasePage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Pick Rlease Inventory</h1>
+      <h1 className="title">Inventory Pick Release</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

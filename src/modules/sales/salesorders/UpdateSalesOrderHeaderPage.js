@@ -16,7 +16,7 @@ export default function UpdateSalesOrderHeaderPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Update Sales Orders</h1>
+      <h1 className="title">Modify Sales Orders</h1>
   
       <div className="parent-container">
         {/* Render UpdateSOInvoiceHeaderForm component directly */}

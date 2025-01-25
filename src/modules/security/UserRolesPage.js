@@ -22,7 +22,7 @@ export default function UserRolesPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Users and Permissions</h1>
+      <h1 className="title">User Access Management</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
           <h2 className="title">Menu</h2>

@@ -12,7 +12,7 @@ function AssignUserModules() {
   
   return (
     <div className="page-container">
-      <h1 className="title">Assign Modules to Users</h1>
+      <h1 className="title">User Module Access Control</h1>
 
       <div className="parent-container">
         <AssignUserModulesForm />

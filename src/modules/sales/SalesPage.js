@@ -36,7 +36,7 @@ export default function SalesPage() {
   return (
     <div className="page-container">
       {/* Log the page title with timestamp */}
-      <h1 className="title">Sales  Functions</h1>
+      <h1 className="title">Sales Operations</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
           <div className="menu-list-container">

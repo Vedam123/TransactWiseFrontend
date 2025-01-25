@@ -10,7 +10,7 @@ function ViewAllPurchaseOrdersPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title"> View All POs</h1>
+      <h1 className="title">Purchase Orders List</h1>
       <ViewPurchaseOrdersForm />
       <RotatingImage />
       <BottomContainer />

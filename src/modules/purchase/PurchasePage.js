@@ -36,7 +36,7 @@ export default function PurchasePage() {
   return (
     <div className="page-container">
       {/* Log the page title with timestamp */}
-      <h1 className="title">Purchase  Functions</h1>
+      <h1 className="title">Procurement Functions</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
           <div className="menu-list-container">

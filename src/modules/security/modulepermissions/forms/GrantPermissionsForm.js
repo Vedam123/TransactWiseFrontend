@@ -46,7 +46,7 @@ const GrantPermissionsForm = () => {
     if (!hasRequiredAccess) {
       return; // Do not fetch data if access is not granted
     }
-  
+
     // Fetch data here if access is granted
     //fetchModules();
   }, [hasRequiredAccess]);
@@ -92,11 +92,11 @@ const GrantPermissionsForm = () => {
       const userPermissionsData =
         permissionsResponse.data.user_module_permissions;
 
-        if (Object.keys(userPermissionsData).length === 0 || !Array.isArray(userPermissionsData)) {
-          displayStatusMessage("The fetched Data is not proper or null")
-          return;
-        }
-       
+      if (Object.keys(userPermissionsData).length === 0 || !Array.isArray(userPermissionsData)) {
+        displayStatusMessage("The fetched Data is not proper or null")
+        return;
+      }
+
       logger.info(`[${new Date().toLocaleTimeString()}] User Permissions data: ${userPermissionsData}`);
       logger.info(`[${new Date().toLocaleTimeString()}] Seems userPermissionsData is an Array`);
 
@@ -189,7 +189,7 @@ const GrantPermissionsForm = () => {
 
   return (
     <div className="child-container form-container">
-      <h3 className="title">Grant Module Access Permissions to user</h3>
+      <h3 className="title">Assign Module Access to User</h3>
       {hasRequiredAccess ? (
         <form onSubmit={handleSubmit}>
           {statusMessage && <div className="status-message">{statusMessage}</div>}
@@ -234,7 +234,7 @@ const GrantPermissionsForm = () => {
                     <input
                       type="checkbox"
                       name={`read_permission`}
-                      checked={entry.read_permission} 
+                      checked={entry.read_permission}
                       onChange={(event) => handleModuleEntryChange(index, event)}
                     />
                     Read
@@ -268,7 +268,7 @@ const GrantPermissionsForm = () => {
                   </label>
                 </div>
               ))}
-              
+
             </div>
           )}
           <div className="right-side-form-button">

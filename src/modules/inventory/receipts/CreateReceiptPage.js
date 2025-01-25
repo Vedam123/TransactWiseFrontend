@@ -16,7 +16,7 @@ function CreateReceiptPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Receipts</h1>
+      <h1 className="title">Create Miscellaneous Receipt</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

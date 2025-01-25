@@ -16,7 +16,7 @@ function MoveInventoryPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Move Inventory</h1>
+      <h1 className="title">Inventory Redistribution</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

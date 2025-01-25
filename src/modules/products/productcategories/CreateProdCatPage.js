@@ -16,7 +16,7 @@ function CreateProdCatPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Product Category</h1>
+      <h1 className="title">Define Product Category</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

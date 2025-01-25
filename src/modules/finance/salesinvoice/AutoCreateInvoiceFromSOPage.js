@@ -13,7 +13,7 @@ const componentsToRender2 = [AutoCreateInvoiceFromSOPage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Auto Create Sales Invoice</h1>
+      <h1 className="title">Auto Generate Invoices for Sale</h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

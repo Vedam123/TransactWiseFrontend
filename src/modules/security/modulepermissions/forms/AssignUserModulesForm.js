@@ -181,7 +181,7 @@ const AssignUserModulesForm = () => {
 
   return (
     <div className="child-container form-container">
-      <h2 className="title">Assign Modules to Users</h2>
+      <h2 className="title">Module Allocation to Users</h2>
       {hasRequiredAccess ? (
         <form onSubmit={handleSubmit}>
           <div className="form-group col-md-6 mb-2">

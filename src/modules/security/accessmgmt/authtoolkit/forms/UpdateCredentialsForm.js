@@ -258,7 +258,7 @@ export default function UpdateCredentialsForm() {
   };
   return (
     <div className="child-container menu-container">
-      <h3 className="title">Change Password </h3>
+      <h3 className="title">Set New Password </h3>
       {passwordError && <span className="error-message">{passwordError}</span>}
       <div className="child-container form-container">
 

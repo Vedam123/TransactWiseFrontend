@@ -11,7 +11,7 @@ function GrantPermissions() {
   
   return (
     <div className="page-container">
-      <h1 className="title">Module Permissions</h1>
+      <h1 className="title">Access Control for Modules</h1>
 
       <div className="parent-container">
         <GrantPermissionsForm />

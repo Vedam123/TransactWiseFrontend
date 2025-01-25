@@ -9,7 +9,7 @@ function ListUserPermissions() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Granted Permissions for users</h1>
+      <h1 className="title">Assigned User Permissions</h1>
       
       <ListUserPermissionsForm />
 

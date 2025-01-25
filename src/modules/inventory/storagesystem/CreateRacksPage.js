@@ -16,7 +16,7 @@ function CreateRacksPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Racks</h1>
+      <h1 className="title">Setup Racks</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

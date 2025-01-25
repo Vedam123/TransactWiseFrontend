@@ -18,7 +18,7 @@ export default function ProductsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Product & Product Categories</h1>
+      <h1 className="title">Products and Categories</h1>
       <div className="parent-container">
         <div className="child-container menu-container">
           <div className="menu-list-container">

@@ -16,7 +16,7 @@ function ModifyUserPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Modify User</h1>
+      <h1 className="title">Update User</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

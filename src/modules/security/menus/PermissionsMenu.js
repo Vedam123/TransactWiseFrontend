@@ -13,10 +13,10 @@ export default function PermissionsMenu() {
   // Constants and variables
   const defaultBehavior = behaviorOptions.DEFAULT;
   const menuItems = [
-    { path: "/load-all-modules", text: "Load modules" },
-    { path: "/assign-user-modules", text: "Assign modules" },
-    { path: "/create-permissions", text: "Grant Accesses" },
-    { path: "/list-user-permissions", text: "List User Accesses" },
+    { path: "/load-all-modules", text: "Import Modules" },
+    { path: "/assign-user-modules", text: "Allocate Modules" },
+    { path: "/create-permissions", text: "Grant Permissions" },
+    { path: "/list-user-permissions", text: "Show User Access Rights" },
     // ... add more menu items here
   ];
 

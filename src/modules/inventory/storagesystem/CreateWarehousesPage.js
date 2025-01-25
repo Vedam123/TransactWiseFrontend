@@ -16,7 +16,7 @@ function CreateWarehousesPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Warehouse</h1>
+      <h1 className="title">Setup Warehouse</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

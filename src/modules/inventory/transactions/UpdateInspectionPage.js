@@ -16,7 +16,7 @@ function UpdateInspectionPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Perform Inspection</h1>
+      <h1 className="title">Conduct Inspection</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

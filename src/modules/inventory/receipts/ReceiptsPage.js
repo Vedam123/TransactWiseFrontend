@@ -9,7 +9,7 @@ export default function ReceiptsPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Receipts are rendering.`);
 
   return (
-    <DisplayCard title="Receipts" color="#FFD799">
+    <DisplayCard title="Manage Receipts" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <ReceiptsMenu />

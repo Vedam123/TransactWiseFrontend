@@ -9,7 +9,7 @@ export default function TransactionsPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Transactions are rendering.`);
 
   return (
-    <DisplayCard title="Transactions" color="#FFD799">
+    <DisplayCard title="Manage Inventory Transactions" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <TransactionsMenu />

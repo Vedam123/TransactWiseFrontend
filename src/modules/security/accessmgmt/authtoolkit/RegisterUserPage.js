@@ -8,7 +8,7 @@ import logger from "../../../utilities/Logs/logger"; // Import your logger modul
 
 function RegisterUserPage() {
   // Constants and variables
-  const pageTitle = "Create User";
+  const pageTitle = "Add New User";
 
   // Log the component rendering with constant
   logger.info(`[${new Date().toLocaleTimeString()}] RegisterUser component rendered. Page title: ${pageTitle}`);

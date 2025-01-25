@@ -10,7 +10,7 @@ function ViewWarehousesPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title"> View Warehouses</h1>
+      <h1 className="title">Warehouses</h1>
       <ViewWarehousesForm />
       <RotatingImage />
       <BottomContainer />

@@ -65,7 +65,7 @@ const ListUserPermissionsForm = () => {
 
   return (
     <div className="child-container form-container">
-      <h3 className="title">Granted Permissions to Users</h3>
+      <h3 className="title">Granted Access Rights</h3>
       {hasRequiredAccess ? (
         <table className="table table-striped table-bordered">
           <thead>

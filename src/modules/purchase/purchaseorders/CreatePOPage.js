@@ -18,7 +18,7 @@ function CreatePOPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title"> Create PO</h1>
+      <h1 className="title">Add Purchase Order</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

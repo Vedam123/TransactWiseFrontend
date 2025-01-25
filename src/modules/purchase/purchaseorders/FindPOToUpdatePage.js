@@ -14,7 +14,7 @@ const componentsToRender2 = [FindPOToUpdatePage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Find Purchase order to Update </h1>
+      <h1 className="title">Find and Update Purchase Order</h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

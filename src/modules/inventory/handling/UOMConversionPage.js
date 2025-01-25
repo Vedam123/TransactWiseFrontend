@@ -16,7 +16,7 @@ function UOMConversionPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">UOM ConversionPage</h1>
+      <h1 className="title">Item UOM Consolidation</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

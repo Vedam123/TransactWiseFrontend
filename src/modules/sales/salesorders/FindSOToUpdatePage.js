@@ -14,7 +14,7 @@ const componentsToRender2 = [FindSOToUpdatePage];
 
   return (
     <div className="page-container">
-      <h1 className="title">Find Sales order to Update </h1>
+      <h1 className="title">Search Sales Orders for Update </h1>
   
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

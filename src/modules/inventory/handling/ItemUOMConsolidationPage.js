@@ -16,7 +16,7 @@ function ItemUOMConsolidationPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Inventory Item UOM Consolidation</h1>
+      <h1 className="title">Inventory Unit Consolidation</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

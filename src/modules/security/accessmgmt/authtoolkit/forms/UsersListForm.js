@@ -53,7 +53,7 @@ function UserListForm() {
 
   return (
     <div className="child-container form-container">
-      <h1 className="title">List of Users</h1>
+      <h1 className="title">Users Overview</h1>
       {hasRequiredAccess ? (
         <table className="table table-striped table-bordered">
           <thead>

@@ -16,7 +16,7 @@ function CreateProductsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Products</h1>
+      <h1 className="title">Add New Product</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (

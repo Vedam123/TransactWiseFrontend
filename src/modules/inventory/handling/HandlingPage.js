@@ -9,7 +9,7 @@ export default function HandlingPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Inventory Handling.`);
 
   return (
-    <DisplayCard title="Handling" color="#FFD799">
+    <DisplayCard title="Stock Handling" color="#FFD799">
       <div className="child-container form-container">
         <div className="menu-list">
           <HandlingMenu />

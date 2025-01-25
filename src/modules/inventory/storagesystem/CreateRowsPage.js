@@ -16,7 +16,7 @@ function CreateRowsPage() {
 
   return (
     <div className="page-container">
-      <h1 className="title">Create Rows</h1>
+      <h1 className="title">Setup Rows</h1>
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
