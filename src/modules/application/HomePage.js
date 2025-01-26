@@ -16,7 +16,7 @@ export default function HomePage() {
 
     // You can also log additional information as needed
     logger.debug(`[${new Date().toLocaleTimeString()}] Debug message for component mount.`);
-    
+
     // Cleanup function: Log a message when the component unmounts
     return () => {
       logger.info(`[${new Date().toLocaleTimeString()}] HomePage component is unmounting.`);
@@ -39,7 +39,7 @@ export default function HomePage() {
             <RotatingImage />
           </DisplayCard>
         </div>
-        <DocumentationContainer  componentNames={componentsToRender.map(component => component.name)} />
+        <DocumentationContainer componentNames={componentsToRender.map(component => component.name)} />
       </div>
       <BottomContainer />
     </div>
