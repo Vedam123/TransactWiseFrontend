@@ -103,7 +103,7 @@ function ShowAllUISetupsForm() {
 
   return (
     <div className="child-container menu-container">
-      <h2>Configurations from DB and File Generation</h2>
+      <h2>Config Management & Export</h2>
       {hasRequiredAccess ? (
         <div className="child-container form-container">
           <div className="form-group col-md-6 mb-2">

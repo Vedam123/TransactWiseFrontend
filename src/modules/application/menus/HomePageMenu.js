@@ -34,13 +34,13 @@ export default function HomePageMenu() {
 
   // Define the menu items with their module names
   const menuItems = [
-    { path: "/admin-module", text: "Admin & Setups", moduleName: BACKEND_ADMIN_MODULE_NAME },
-    { path: "/common-module", text: "Common", moduleName: BACKEND_COMMON_MODULE_NAME },
-    { path: "/products-module", text: "Products", moduleName: BACKEND_PRODUCT_MODULE_NAME },
-    { path: "/inventory-module", text: "Inventory", moduleName: BACKEND_INVENTORY_MODULE_NAME },
-    { path: "/purchase-module", text: "Purchase", moduleName: BACKEND_PURCHASE_MODULE_NAME },
-    { path: "/sales-module", text: "Sales", moduleName: BACKEND_SALES_MODULE_NAME },
-    { path: "/finance-module", text: "Finance", moduleName: BACKEND_FINANCE_MODULE_NAME },
+    { path: "/admin-module", text: "System Admin", moduleName: BACKEND_ADMIN_MODULE_NAME },
+    { path: "/common-module", text: "Enterprise Setup", moduleName: BACKEND_COMMON_MODULE_NAME },
+    { path: "/products-module", text: "Product Management", moduleName: BACKEND_PRODUCT_MODULE_NAME },
+    { path: "/inventory-module", text: "Inventory Control", moduleName: BACKEND_INVENTORY_MODULE_NAME },
+    { path: "/purchase-module", text: "Procurement Orders", moduleName: BACKEND_PURCHASE_MODULE_NAME },
+    { path: "/sales-module", text: "Sales Operations", moduleName: BACKEND_SALES_MODULE_NAME },
+    { path: "/finance-module", text: "Finance Management", moduleName: BACKEND_FINANCE_MODULE_NAME },
     // ... add more menu items here
   ];
 

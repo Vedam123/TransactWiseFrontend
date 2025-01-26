@@ -84,20 +84,14 @@ export default function AdminPageMenu() {
     canUpdateAdminModule;
 
   const menuItems = [
-    { path: "/employee-functions", text: "Employee" },
-    { path: "/user-functions", text: "Users&Accesses" },
-    { path: "/view-emails-function", text: "View Emails" },
-    { path: "/create-ui-setups", text: "Create UI Setups" },
-    { path: "/list-ui-setups", text: "Config UI Setup File" },
-    { path: "/create-db-setups", text: "Create DB Setups" },
-    { path: "/list-db-setups", text: "Config DB Setup File" },
+    { path: "/employee-functions", text: "Employee Setup" },
+    { path: "/user-functions", text: "Access Control" },
+    { path: "/view-emails-function", text: "Message Dashboard" },
+    { path: "/create-ui-setups", text: "Create Interface Setup" },
+    { path: "/list-ui-setups", text: "UI File Configuration" },
+    { path: "/create-db-setups", text: "Create Database Setup" },
+    { path: "/list-db-setups", text: "DB Setup Export" },
     // ... add more menu items here
-  ];
-
-  const menuItems2 = [
-    { path: "/employee-functions1", text: "Employee2" },
-    { path: "/user-functions1", text: "Users&Accesses2" },
-    { path: "/view-emails-function1", text: "View Emails2" },
   ];
 
   return (

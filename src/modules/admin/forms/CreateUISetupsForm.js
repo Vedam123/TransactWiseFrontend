@@ -53,7 +53,7 @@ export default function CreateUISetupsForm() {
 
   return (
     <div className="child-container menu-container">
-      <h2>Create UI Configuration Data</h2>
+      <h2>User Interface Setup</h2>
       {hasRequiredAccess ? (
         <div className="child-container form-container">
           <form onSubmit={handleSubmit}>

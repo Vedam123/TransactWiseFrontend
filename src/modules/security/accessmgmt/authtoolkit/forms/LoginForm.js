@@ -121,7 +121,7 @@ export default function LoginForm(props) {
   };
 
   return (
-    <div className="child-container menu-container">
+    <div >
       {error && <div>{error}</div>}
       <div className="child-container form-container">
         {showUpdateCredentialsForm ? (
@@ -129,7 +129,6 @@ export default function LoginForm(props) {
         ) : (
           <form onSubmit={logMeIn}>
             <div className="form-group col-md-6 mb-2">
-              <h3 className="title">Authenticate</h3>
               <div className="form-row">
                 <div className="label-container">
                   <label htmlFor="username">Username:</label>

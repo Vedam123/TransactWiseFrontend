@@ -153,7 +153,7 @@ function ShowAllDBSetupsForm() {
 
   return (
     <div className="child-container menu-container">
-      <h2>Configurations and User Data from DB</h2>
+      <h2>Database Configurations</h2>
       {hasRequiredAccess ? (
         <div className="child-container form-container">
           <div className="form-group col-md-6 mb-2">

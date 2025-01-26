@@ -108,7 +108,7 @@ export default function CreateDBSetupsForm() {
 
   return (
     <div className="child-container menu-container">
-      <h2>Create UI Configuration Data</h2>
+      <h2>Database Interface Setup</h2>
       {hasRequiredAccess ? (
         <div className="child-container form-container">
           <form onSubmit={handleSubmit}>
