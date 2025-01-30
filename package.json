@@ -13,6 +13,7 @@
     "jsonwebtoken": "^9.0.1",
     "loglevel": "^1.8.1",
     "path-browserify": "^1.0.1",
+    "pm2": "^5.4.3",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-auth-kit": "^2.12.4",
@@ -26,7 +27,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-     "_comment": "This is just comments purpose if http is used replace start with --start: react-scripts start---",
+    "_comment": "This is just comments purpose if http is used replace start with --start: react-scripts start---",
     "start": "cross-env HTTPS=true SSL_CRT_FILE=./certs/server.crt SSL_KEY_FILE=./certs/server.key react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
