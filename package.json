@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.26.3",
     "cross-env": "^7.0.3",
     "react-app-rewired": "^2.2.1"
   }
