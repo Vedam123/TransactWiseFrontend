@@ -26,6 +26,8 @@ export default function HomePage() {
   // Create an array of components to render
   const componentsToRender = [HomePageMenu];
 
+  console.log("Components to render in Help text", componentsToRender);
+
   return (
     <div className="page-container">
       <h1 className="title">{APPLICATION_NAME}</h1>

@@ -38,8 +38,12 @@ export default function DocumentationContainer(props) {
       props.componentNames.forEach((componentName) => {
         // Add "HELP_" prefix to the componentName
         const docComponentName = `HELP_${componentName}`;
+
+        // Log the import path for debugging
+        console.log(`Attempting to import: ../../inapp-help/display/${docComponentName}.js`);
+
         dynamicComponentPromises.push(
-          import(`../inapp-help/display/${docComponentName}.js`)
+          import(`../../inapp-help/display/${docComponentName}.js`)
             .then((module) => module.default)
             .catch((error) => {
               console.error(`Failed to import ${docComponentName}:`, error);

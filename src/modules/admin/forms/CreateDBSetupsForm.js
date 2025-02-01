@@ -82,7 +82,7 @@ export default function CreateDBSetupsForm() {
           updatedFormData,
           { headers }
         );
-        
+
         // Log the response data
         logger.info(`[${new Date().toLocaleTimeString()}] Response data:`, response.data);
 

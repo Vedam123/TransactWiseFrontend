@@ -36,10 +36,10 @@ export default function CreateUISetupsForm() {
       logger.info(`[${new Date().toLocaleTimeString()}] Creating UI Configuration Data...`);
 
       const response = await axios.post(`${API_URL}/create_ui_config_data`, formData, { headers });
-      
+
       // Log the response data
       logger.info(`[${new Date().toLocaleTimeString()}] Response data:`, response.data);
-      
+
       setFormData({
         config_key: "",
         config_value: "",
