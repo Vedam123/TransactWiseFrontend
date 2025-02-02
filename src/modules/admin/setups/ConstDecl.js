@@ -39,6 +39,7 @@ const appConfig = {
 // Assuming you already have the appConfig object
 
 export const API_URL = `${appConfig.appServerProtocol}://${appConfig.appServerHost}:${parseInt(appConfig.appServerPort)}`;
+//export const API_URL = `${appConfig.appServerProtocol}://${appConfig.appServerHost}`;
 export const FRONTEND_URL = `${appConfig.webClientProtocol}://${appConfig.webClientHost}:${parseInt(appConfig.webClientPort)}`;
 export const SMTP_URL = `${appConfig.smtpProtocol}://${appConfig.smtpHost}:${parseInt(appConfig.smtpPort)}`;
 export const SMTP_EML = appConfig.smtpEmail;
