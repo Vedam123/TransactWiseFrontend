@@ -27,8 +27,11 @@ app.get('*', (req, res) => {
 });
 
 // Setup the HTTPS server
-const port = process.env.PORT || 443;  // Default to 443 if not specified in .env
-https.createServer(sslOptions, app).listen(port, '0.0.0.0', () => {  // Bind to '0.0.0.0' to allow access from all network interfaces
-    console.log(`Server running on ${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}`);
+const host = process.env.HOST || '0.0.0.0'; // Default to 0.0.0.0 if not specified
+const port = process.env.PORT || 443; // Default to 443 if not specified
+const protocol = process.env.PROTOCOL || 'https'; // Default to https if not specified
+
+https.createServer(sslOptions, app).listen(port, host, () => {
+    console.log(`Server running on ${protocol}://${host}:${port}`);
 });
 
