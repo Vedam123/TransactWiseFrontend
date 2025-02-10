@@ -19,7 +19,9 @@ function CreateEmployeePage() {
 
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
-          <Component key={index} />
+          <React.Fragment key={index}>
+            <Component />
+          </React.Fragment>
         ))}
         <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
