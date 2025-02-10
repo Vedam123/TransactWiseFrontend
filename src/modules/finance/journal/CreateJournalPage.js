@@ -9,18 +9,18 @@ import CreateJournalForm from "./forms/CreateJournalForm";
 function CreateJournalPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Create Journal Page`);
 
-const componentsToRender = [CreateJournalForm];
-const componentsToRender2 = [CreateJournalPage];
+  const componentsToRender = [CreateJournalForm];
+  const helpComponentsToRender = ["CreateJournalPage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Create Journals</h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

@@ -27,13 +27,13 @@ function ViewBOMModelPage() {
     logger.info(`[${new Date().toLocaleTimeString()}] useEffect triggered with bomByDescriptions: ${bomByDescriptions}`);
   }, [bomByDescriptions]);
 
-  const componentsToRender2 = [ViewBOMPage];
+  const helpComponentsToRender = ["ViewBOMPage"];
 
-  if (explodedBOM.length > 0 ) {
+  if (explodedBOM.length > 0) {
     componentsToRender.push(<ViewBOMPage explodedBOM={explodedBOM} bomByDescriptions={bomByDescriptions} />);
   } else {
     componentsToRender.push(
-      <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+      <DocumentationContainer componentNames={helpComponentsToRender} />
     );
   }
 

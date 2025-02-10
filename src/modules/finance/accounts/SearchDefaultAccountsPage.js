@@ -8,18 +8,18 @@ import SearchDefaultAccountsForm from "./forms/SearchDefaultAccountsForm";
 function SearchDefaultAccountsPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Sales Page`);
 
-const componentsToRender = [SearchDefaultAccountsForm];
-const componentsToRender2 = [SearchDefaultAccountsPage];
+  const componentsToRender = [SearchDefaultAccountsForm];
+  const helpComponentsToRender = ["SearchDefaultAccountsPage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Find Default Account</h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

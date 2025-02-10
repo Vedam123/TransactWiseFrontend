@@ -14,9 +14,9 @@ export default function FinancePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Finance component is rendering.`);
 
   // Define the list of components to render
-  const componentsToRender = [AccountsPage,JournalPage,PurchaseInvoicePage, SalesInvoicePage];
+  const componentsToRender = [AccountsPage, JournalPage, PurchaseInvoicePage, SalesInvoicePage];
 
-  const componentsToRender2 = [FinancePage];
+  const helpComponentsToRender = ["FinancePage"];
 
   return (
     <div className="page-container">
@@ -29,7 +29,7 @@ export default function FinancePage() {
             ))}
           </div>
         </div>
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

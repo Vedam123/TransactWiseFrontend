@@ -12,7 +12,7 @@ function CreateZonesPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreateZonesForm];
-  const componentsToRender2 = [CreateZonesPage];
+  const helpComponentsToRender = ["CreateZonesPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function CreateZonesPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

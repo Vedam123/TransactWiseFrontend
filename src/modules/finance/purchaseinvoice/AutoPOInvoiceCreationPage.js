@@ -10,7 +10,7 @@ function AutoPOInvoiceCreationPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Auto create Purchase Invoice`);
 
   const componentsToRender = [AutoPOInvoiceCreationForm];
-  const componentsToRender2 = [AutoPOInvoiceCreationPage];
+  const helpComponentsToRender = ["AutoPOInvoiceCreationPage"];
 
   return (
     <div className="page-container">
@@ -20,7 +20,7 @@ function AutoPOInvoiceCreationPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

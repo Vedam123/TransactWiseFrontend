@@ -11,7 +11,7 @@ function AutoCreateJournalPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Auto Create Journal`);
 
   const componentsToRender = [AutoCreateJournalForm];
-  const componentsToRender2 = [AutoCreateJournalPage];
+  const helpComponentsToRender = ["AutoCreateJournalPage"];
 
   return (
     <div className="page-container">
@@ -21,7 +21,7 @@ function AutoCreateJournalPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

@@ -9,18 +9,18 @@ import CreateDefaultTaxCodesHeadersForm from "./forms/CreateDefaultTaxCodesHeade
 function CreateDefaultTaxCodesPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering CreateDefaultTaxCodesPage`);
 
-const componentsToRender = [CreateDefaultTaxCodesHeadersForm];
-const componentsToRender2 = [CreateDefaultTaxCodesPage];
+  const componentsToRender = [CreateDefaultTaxCodesHeadersForm];
+  const helpComponentsToRender = ["CreateDefaultTaxCodesPage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Create Default Tax Codes</h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

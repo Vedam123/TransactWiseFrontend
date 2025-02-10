@@ -13,7 +13,7 @@ export default function UpdateDepartmentPage() {
   // Extracting parameters from the URL
   const { DepartmentParameters } = useParams();
 
-  const componentsToRender2 = [UpdateDepartmentPage]; // Store the component directly without enclosing in an array
+  const helpComponentsToRender = ["UpdateDepartmentPage"]; // Store the component directly without enclosing in an array
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ export default function UpdateDepartmentPage() {
       <div className="parent-container">
         {/* Render UpdatePOInvoiceHeaderForm component directly */}
         <UpdateDepartmentForm DepartmentParameters={DepartmentParameters} />
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

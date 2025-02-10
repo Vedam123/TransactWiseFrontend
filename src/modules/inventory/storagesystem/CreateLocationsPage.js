@@ -12,7 +12,7 @@ function CreateLocationsPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreateLocationsForm];
-  const componentsToRender2 = [CreateLocationsPage];
+  const helpComponentsToRender = ["CreateLocationsPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function CreateLocationsPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

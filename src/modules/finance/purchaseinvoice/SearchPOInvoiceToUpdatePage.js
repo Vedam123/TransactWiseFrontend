@@ -9,18 +9,18 @@ import SearchPOInvoiceToUpdateForm from "./forms/SearchPOInvoiceToUpdateForm";
 function SearchPOInvoiceToUpdatePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Purchase Invoice Page`);
 
-const componentsToRender = [SearchPOInvoiceToUpdateForm];
-const componentsToRender2 = [SearchPOInvoiceToUpdatePage];
+  const componentsToRender = [SearchPOInvoiceToUpdateForm];
+  const helpComponentsToRender = ["SearchPOInvoiceToUpdatePage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Search Purchase Order Invoices </h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

@@ -9,18 +9,18 @@ import CreateSalesForm from "./forms/CreateSalesForm";
 function CreateSalesPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Create Sales Page`);
 
-const componentsToRender = [CreateSalesForm];
-const componentsToRender2 = [CreateSalesPage];
+  const componentsToRender = [CreateSalesForm];
+  const helpComponentsToRender = ["CreateSalesPage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Sales Invoice Creation</h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

@@ -9,18 +9,18 @@ import SearchPurchaseInvoiceForm from "./forms/SearchPurchaseInvoiceForm";
 function SearchPurchaseInvoicePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Purchase Page`);
 
-const componentsToRender = [SearchPurchaseInvoiceForm];
-const componentsToRender2 = [SearchPurchaseInvoicePage];
+  const componentsToRender = [SearchPurchaseInvoiceForm];
+  const helpComponentsToRender = ["SearchPurchaseInvoicePage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Search Purchase Invoices </h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

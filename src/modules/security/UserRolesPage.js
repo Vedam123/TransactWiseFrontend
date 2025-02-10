@@ -12,7 +12,7 @@ import logger from "../utilities/Logs/logger"; // Import your logger module here
 const componentsToRender = [UserRolesMenu, PermissionsMenu];
 
 // Define an array of components for componentsToRender2
-const componentsToRender2 = [UserRolesPage];
+const helpComponentsToRender = ["UserRolesPage"];
 
 export default function UserRolesPage() {
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function UserRolesPage() {
             ))}
           </div>
         </div>
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

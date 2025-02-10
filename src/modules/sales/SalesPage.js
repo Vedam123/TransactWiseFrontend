@@ -15,7 +15,7 @@ export default function SalesPage() {
     SalesOrdersPage,
   ];
 
-  const componentsToRender2 = [SalesPage];
+  const helpComponentsToRender = ["SalesPage"];
 
   // Function to render components in rows
   const renderComponentsInRows = (components, componentsPerColumn) => {
@@ -49,7 +49,7 @@ export default function SalesPage() {
             ))}
           </div>
         </div>
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

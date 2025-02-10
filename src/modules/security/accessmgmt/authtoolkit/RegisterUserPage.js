@@ -10,6 +10,8 @@ function RegisterUserPage() {
   // Constants and variables
   const pageTitle = "Add New User";
 
+  const helpComponentsToRender = ["RegisterUserPage"];
+
   // Log the component rendering with constant
   logger.info(`[${new Date().toLocaleTimeString()}] RegisterUser component rendered. Page title: ${pageTitle}`);
 
@@ -19,10 +21,10 @@ function RegisterUserPage() {
 
       <div className="parent-container">
         <RegisterUserForm />
-        <DocumentationContainer />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
-      <BottomContainer /> 
+      <BottomContainer />
     </div>
   );
 }

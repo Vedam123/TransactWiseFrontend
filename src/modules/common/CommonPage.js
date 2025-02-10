@@ -33,7 +33,7 @@ export default function CommonPage() {
     DepartmentsPage
   ];
 
-  const componentsToRender2 = [CommonPage];
+  const helpComponentsToRender = ["CommonPage"];
 
   // Function to render components in rows
   const renderComponentsInRows = (components, componentsPerRow) => {
@@ -67,7 +67,7 @@ export default function CommonPage() {
             ))}
           </div>
         </div>
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

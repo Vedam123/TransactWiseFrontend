@@ -8,18 +8,18 @@ import SearchDefaultTaxCodesForm from "./forms/SearchDefaultTaxCodesForm";
 function SearchDefaultTaxCodesPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search SearchDefaultTaxCodesPage`);
 
-const componentsToRender = [SearchDefaultTaxCodesForm];
-const componentsToRender2 = [SearchDefaultTaxCodesPage];
+  const componentsToRender = [SearchDefaultTaxCodesForm];
+  const helpComponentsToRender = ["SearchDefaultTaxCodesPage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Find Tax Codes</h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

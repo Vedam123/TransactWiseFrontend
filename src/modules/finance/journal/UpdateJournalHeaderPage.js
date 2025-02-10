@@ -12,16 +12,16 @@ export default function UpdateJournalHeaderPage() {
   // Extracting parameters from the URL
   const { JournalParameters } = useParams();
 
-  const componentsToRender2 = [UpdateJournalHeaderPage]; // Store the component directly without enclosing in an array
+  const helpComponentsToRender = ["UpdateJournalHeaderPage"]; // Store the component directly without enclosing in an array
 
   return (
     <div className="page-container">
       <h1 className="title">Modify Journal</h1>
-  
+
       <div className="parent-container">
         {/* Render UpdatePOInvoiceHeaderForm component directly */}
-        <UpdateJournalHeaderForm JournalParameters={JournalParameters} /> 
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <UpdateJournalHeaderForm JournalParameters={JournalParameters} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

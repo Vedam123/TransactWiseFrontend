@@ -12,7 +12,7 @@ function UpdateInspectionPage() {
 
   // Define the list of components to render
   const componentsToRender = [UpdateInspectionForm];
-  const componentsToRender2 = [UpdateInspectionPage];
+  const helpComponentsToRender = ["UpdateInspectionPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function UpdateInspectionPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

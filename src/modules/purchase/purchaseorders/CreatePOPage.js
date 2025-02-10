@@ -14,7 +14,7 @@ function CreatePOPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreatePOForm];
-  const componentsToRender2 = [CreatePOPage];
+  const helpComponentsToRender = ["CreatePOPage"];
 
   return (
     <div className="page-container">
@@ -24,7 +24,7 @@ function CreatePOPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

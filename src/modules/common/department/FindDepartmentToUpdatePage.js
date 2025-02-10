@@ -11,7 +11,7 @@ function FindDepartmentToUpdatePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Department Page`);
 
   const componentsToRender = [FindDepartmentToUpdateForm];
-  const componentsToRender2 = [FindDepartmentToUpdatePage];
+  const helpComponentsToRender = ["FindDepartmentToUpdatePage"];
 
   return (
     <div className="page-container">
@@ -21,7 +21,7 @@ function FindDepartmentToUpdatePage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

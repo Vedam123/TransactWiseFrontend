@@ -12,7 +12,7 @@ export default function UpdatePOInvoiceHeaderPage() {
   // Extracting parameters from the URL
   const { PurchaseParameters } = useParams();
 
-  const componentsToRender2 = [UpdatePOInvoiceHeaderPage]; // Store the component directly without enclosing in an array
+  const helpComponentsToRender = ["UpdatePOInvoiceHeaderPage"]; // Store the component directly without enclosing in an array
 
   return (
     <div className="page-container">
@@ -21,7 +21,7 @@ export default function UpdatePOInvoiceHeaderPage() {
       <div className="parent-container">
         {/* Render UpdatePOInvoiceHeaderForm component directly */}
         <UpdatePOInvoiceHeaderForm PurchaseParameters={PurchaseParameters} />
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

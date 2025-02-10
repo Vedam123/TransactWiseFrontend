@@ -12,16 +12,16 @@ export default function UpdateSalesOrderHeaderPage() {
   // Extracting parameters from the URL
   const { SOParameters } = useParams();
 
-  const componentsToRender2 = [UpdateSalesOrderHeaderPage]; // Store the component directly without enclosing in an array
+  const helpComponentsToRender = ["UpdateSalesOrderHeaderPage"]; // Store the component directly without enclosing in an array
 
   return (
     <div className="page-container">
       <h1 className="title">Modify Sales Orders</h1>
-  
+
       <div className="parent-container">
         {/* Render UpdateSOInvoiceHeaderForm component directly */}
-        <UpdateSOHeaderForm SOParameters={SOParameters} /> 
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <UpdateSOHeaderForm SOParameters={SOParameters} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

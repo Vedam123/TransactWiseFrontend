@@ -14,7 +14,7 @@ function CreateSOPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreateSOForm];
-  const componentsToRender2 = [CreateSOPage];
+  const helpComponentsToRender = ["CreateSOPage"];
 
   return (
     <div className="page-container">
@@ -24,7 +24,7 @@ function CreateSOPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

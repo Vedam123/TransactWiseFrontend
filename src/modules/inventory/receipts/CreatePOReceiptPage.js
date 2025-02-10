@@ -12,7 +12,7 @@ function CreatePOReceiptPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreatePOReceiptForm];
-  const componentsToRender2 = [CreatePOReceiptPage];
+  const helpComponentsToRender = ["CreatePOReceiptPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function CreatePOReceiptPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

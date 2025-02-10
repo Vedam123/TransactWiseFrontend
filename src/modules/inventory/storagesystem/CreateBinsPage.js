@@ -12,7 +12,7 @@ function CreateBinsPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreateBinsForm];
-  const componentsToRender2 = [CreateBinsPage];
+  const helpComponentsToRender = ["CreateBinsPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function CreateBinsPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

@@ -12,7 +12,7 @@ function CreateReceiptPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreateReceiptForm];
-  const componentsToRender2 = [CreateReceiptPage];
+  const helpComponentsToRender = ["CreateReceiptPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function CreateReceiptPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

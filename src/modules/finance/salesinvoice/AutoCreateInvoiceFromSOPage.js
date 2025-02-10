@@ -8,18 +8,18 @@ import AutoCreateInvoiceFromSOForm from "./forms/AutoCreateInvoiceFromSOForm";
 function AutoCreateInvoiceFromSOPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering the Auto Sales Invoice Creation`);
 
-const componentsToRender = [AutoCreateInvoiceFromSOForm];
-const componentsToRender2 = [AutoCreateInvoiceFromSOPage];
+  const componentsToRender = [AutoCreateInvoiceFromSOForm];
+  const helpComponentsToRender = ["AutoCreateInvoiceFromSOPage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Auto Generate Invoices for Sale</h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

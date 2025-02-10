@@ -17,12 +17,13 @@ function ViewBOMExplodePage() {
     <ViewExplodeBOMForm updateExplodedBOM={setExplodedBOM} />,
   ];
 
-  const componentsToRender2 = [ViewBOMExplodePage];
+  const helpComponentsToRender = ["ViewBOMExplodePage"];
+
 
   if (explodedBOM.length > 0) {
     componentsToRender.push(<ViewBOMResultsPage explodedBOM={explodedBOM} />);
   } else {
-    componentsToRender.push(<DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />);
+    componentsToRender.push(<DocumentationContainer componentNames={helpComponentsToRender} />);
   }
 
   return (

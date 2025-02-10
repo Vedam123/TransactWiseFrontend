@@ -12,7 +12,7 @@ function CompanyDefaultAccPage() {
 
   // Define the list of components to render
   const componentsToRender = [CompanyDefaultAccForm];
-  const componentsToRender2 = [CompanyDefaultAccPage];
+  const helpComponentsToRender = ["CompanyDefaultAccPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function CompanyDefaultAccPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

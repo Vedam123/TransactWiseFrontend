@@ -12,7 +12,7 @@ function CreateProdCatPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreateProdCatForm];
-  const componentsToRender2 = [CreateProdCatPage];
+  const helpComponentsToRender = ["CreateProdCatPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function CreateProdCatPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

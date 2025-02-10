@@ -9,18 +9,18 @@ import FindPOToUpdateForm from "./forms/FindPOToUpdateForm";
 function FindPOToUpdatePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Purchase Order Page`);
 
-const componentsToRender = [FindPOToUpdateForm];
-const componentsToRender2 = [FindPOToUpdatePage];
+  const componentsToRender = [FindPOToUpdateForm];
+  const helpComponentsToRender = ["FindPOToUpdatePage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Find and Update Purchase Order</h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

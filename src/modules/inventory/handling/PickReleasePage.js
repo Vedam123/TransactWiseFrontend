@@ -12,7 +12,7 @@ function PickReleasePage() {
 
   // Define the list of components to render
   const componentsToRender = [PickReleaseForm];
-  const componentsToRender2 = [PickReleasePage];
+  const helpComponentsToRender = ["PickReleasePage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function PickReleasePage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

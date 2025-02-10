@@ -15,7 +15,7 @@ export default function PurchasePage() {
     PurchaseOrdersPage,
   ];
 
-  const componentsToRender2 = [PurchasePage];
+  const helpComponentsToRender = ["PurchasePage"];
 
   // Function to render components in rows
   const renderComponentsInRows = (components, componentsPerColumn) => {
@@ -49,7 +49,7 @@ export default function PurchasePage() {
             ))}
           </div>
         </div>
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

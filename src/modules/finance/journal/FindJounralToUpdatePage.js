@@ -9,18 +9,18 @@ import FindJounralToUpdateForm from "./forms/FindJounralToUpdateForm";
 function FindJounralToUpdatePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Purchase Order Page`);
 
-const componentsToRender = [FindJounralToUpdateForm];
-const componentsToRender2 = [FindJounralToUpdatePage];
+  const componentsToRender = [FindJounralToUpdateForm];
+  const helpComponentsToRender = ["FindJounralToUpdatePage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Find Journal Entries to Edit </h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

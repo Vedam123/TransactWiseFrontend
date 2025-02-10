@@ -3,7 +3,7 @@ import RotatingImage from "../../utilities/RotatingImage";
 import { useParams } from "react-router-dom";
 import BottomContainer from "../../utilities/BottomContainer";
 import DocumentationContainer from "../../utilities/DocumentationContainer";
-import logger from "../../utilities/Logs/logger"; 
+import logger from "../../utilities/Logs/logger";
 import UpdateModelBOM from "./forms/UpdateModelBOM";
 
 export default function UpdateBOMPage() {
@@ -12,15 +12,15 @@ export default function UpdateBOMPage() {
   // Extracting parameters from the URL
   const { BOMParameters } = useParams();
 
-  const componentsToRender2 = [UpdateBOMPage]; // Store the component directly without enclosing in an array
+  const helpComponentsToRender = ["UpdateBOMPage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Update Bill of Materials</h1>
-  
+
       <div className="parent-container">
         <UpdateModelBOM BOMParameters={BOMParameters} />
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

@@ -12,7 +12,7 @@ function CreateTaxPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreateTaxForm];
-  const componentsToRender2 = [CreateTaxPage];
+  const helpComponentsToRender = ["CreateTaxPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function CreateTaxPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

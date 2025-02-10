@@ -16,12 +16,12 @@ function SearchItemInventoryPage() {
     <SearchItemInventoryForm updateSearchItemInventory={setSearchItemInventory} />,
   ];
 
-  const componentsToRender2 = [SearchItemInventoryPage];
+  const helpComponentsToRender = ["SearchItemInventoryPage"];
 
   if (SearchItemInventory.length > 0) {
     componentsToRender.push(<ItemInventoryResultsPage SearchItemInventory={SearchItemInventory} />);
   } else {
-    componentsToRender.push(<DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />);
+    componentsToRender.push(<DocumentationContainer componentNames={helpComponentsToRender} />);
   }
 
   return (

@@ -11,7 +11,7 @@ function CreateEmployeePage() {
 
   // Define the list of components to render
   const componentsToRender = [CreateEmployeeForm];
-  const componentsToRender2 = [CreateEmployeePage];
+  const helpComponentsToRender = ["CreateEmployeePage"];
 
   return (
     <div className="page-container">
@@ -21,7 +21,7 @@ function CreateEmployeePage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

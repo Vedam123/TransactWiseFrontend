@@ -12,7 +12,7 @@ function PutAwayPage() {
 
   // Define the list of components to render
   const componentsToRender = [PutAwayForm];
-  const componentsToRender2 = [PutAwayPage];
+  const helpComponentsToRender = ["PutAwayPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function PutAwayPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

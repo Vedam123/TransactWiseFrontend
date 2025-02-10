@@ -21,7 +21,7 @@ export default function InventoryPage() {
     StoragePage,
   ];
 
-  const componentsToRender2 = [InventoryPage];
+  const helpComponentsToRender = ["InventoryPage"];
 
   // Function to render components in rows
   const renderComponentsInRows = (components, componentsPerColumn) => {
@@ -55,7 +55,7 @@ export default function InventoryPage() {
             ))}
           </div>
         </div>
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

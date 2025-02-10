@@ -12,7 +12,7 @@ function CreateAccountPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreateAccountForm];
-  const componentsToRender2 = [CreateAccountPage];
+  const helpComponentsToRender = ["CreateAccountPage"];
 
   return (
     <div className="page-container">
@@ -22,7 +22,7 @@ function CreateAccountPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map((component) => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

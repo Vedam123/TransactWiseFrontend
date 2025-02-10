@@ -9,18 +9,18 @@ import CreateDefaultAccountsForm from "./forms/CreateDefaultAccountsForm";
 function CreateDefaultAccountsPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering CreateDefaultAccountsPage`);
 
-const componentsToRender = [CreateDefaultAccountsForm];
-const componentsToRender2 = [CreateDefaultAccountsPage];
+  const componentsToRender = [CreateDefaultAccountsForm];
+  const helpComponentsToRender = ["CreateDefaultAccountsPage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Create Default Accounts</h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

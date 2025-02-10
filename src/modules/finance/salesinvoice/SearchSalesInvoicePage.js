@@ -9,18 +9,18 @@ import SearchSalesInvoiceForm from "./forms/SearchSalesInvoiceForm";
 function SearchSalesInvoicePage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Sales Page`);
 
-const componentsToRender = [SearchSalesInvoiceForm];
-const componentsToRender2 = [SearchSalesInvoicePage];
+  const componentsToRender = [SearchSalesInvoiceForm];
+  const helpComponentsToRender = ["SearchSalesInvoicePage"];
 
   return (
     <div className="page-container">
       <h1 className="title">Find Sales Invoice </h1>
-  
+
       <div className="parent-container">
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

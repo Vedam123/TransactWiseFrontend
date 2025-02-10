@@ -14,7 +14,7 @@ function SalesOrdersSearchPage() {
 
   // Define the list of components to render
   const componentsToRender = [SalesOrdersSearchForm];
-  const componentsToRender2 = [SalesOrdersSearchPage];
+  const helpComponentsToRender = ["SalesOrdersSearchPage"];
 
   return (
     <div className="page-container">
@@ -24,7 +24,7 @@ function SalesOrdersSearchPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

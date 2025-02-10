@@ -13,7 +13,7 @@ function CreateLegalEntityPage() {
 
   // Define the list of components to render
   const componentsToRender = [CreateLegalEntityForm];
-  const componentsToRender2 = [CreateLegalEntityPage];
+  const helpComponentsToRender = ["CreateLegalEntityPage"];
 
   return (
     <div className="page-container">
@@ -23,9 +23,7 @@ function CreateLegalEntityPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer
-          componentNames={componentsToRender2.map((component) => component.name)}
-        />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

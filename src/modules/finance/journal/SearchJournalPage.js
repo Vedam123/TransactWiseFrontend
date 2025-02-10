@@ -10,7 +10,7 @@ function SearchJournalPage() {
   logger.info(`[${new Date().toLocaleTimeString()}] Rendering Search Journal Page`);
 
   const componentsToRender = [SearchJournalForm];
-  const componentsToRender2 = [SearchJournalPage];
+  const helpComponentsToRender = ["SearchJournalPage"];
 
   return (
     <div className="page-container">
@@ -20,7 +20,7 @@ function SearchJournalPage() {
         {componentsToRender.map((Component, index) => (
           <Component key={index} />
         ))}
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />

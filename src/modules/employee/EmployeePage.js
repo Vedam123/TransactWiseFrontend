@@ -13,7 +13,7 @@ export default function EmployeePage() {
   // Define the list of components to render
   const componentsToRender = [EmployeeMenu];
 
-  const componentsToRender2 = [EmployeePage];
+  const helpComponentsToRender = ["EmployeePage"];
 
   return (
     <div className="page-container">
@@ -30,7 +30,7 @@ export default function EmployeePage() {
             </div>
           </DisplayCard>
         </div>
-        <DocumentationContainer componentNames={componentsToRender2.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <RotatingImage />
       <BottomContainer />
