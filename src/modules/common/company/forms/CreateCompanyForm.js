@@ -86,7 +86,7 @@ export default function CreateCompanyForm() {
     }));
   };
 
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -189,7 +189,7 @@ export default function CreateCompanyForm() {
       }
     };
 
-    
+
     fetchGroupCompanies();
     fetchCurrencies();
     fetchCompanyTaxCodes();
@@ -334,7 +334,7 @@ export default function CreateCompanyForm() {
             <div className="form-group col-md-6 mb-2">
               <div className="form-row">
                 <div className="label-container">
-                  <label htmlFor="tax_code">Tax Code:</label>
+                  <label htmlFor="tax_code">Tax Header Code:</label>
                 </div>
                 <select
                   id="tax_code"
@@ -343,7 +343,7 @@ export default function CreateCompanyForm() {
                   onChange={handleTaxCodeChange}
                   className="form-control input-field"
                 >
-                  <option value="">Select Tax Code</option>
+                  <option value="">Select Default Tax Header</option>
                   {loadingCompanyTaxCodes ? (
                     <option value="" disabled>Loading Tax Codes...</option>
                   ) : (
@@ -356,7 +356,7 @@ export default function CreateCompanyForm() {
                 </select>
               </div>
             </div>
-           
+
 
             {loading && <div className="loading-indicator">Creating...</div>}
             {error && <div className="error-message">{error}</div>}
