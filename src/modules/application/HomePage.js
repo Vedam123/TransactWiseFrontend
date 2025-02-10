@@ -25,8 +25,7 @@ export default function HomePage() {
 
   // Create an array of components to render
   const componentsToRender = [HomePageMenu];
-
-  console.log("Components to render in Help text", componentsToRender);
+  const helpComponentsToRender = ["HomePageMenu"];
 
   return (
     <div className="page-container">
@@ -41,7 +40,7 @@ export default function HomePage() {
             <RotatingImage />
           </DisplayCard>
         </div>
-        <DocumentationContainer componentNames={componentsToRender.map(component => component.name)} />
+        <DocumentationContainer componentNames={helpComponentsToRender} />
       </div>
       <BottomContainer />
     </div>
