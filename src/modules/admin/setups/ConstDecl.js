@@ -63,6 +63,7 @@ export const BACKEND_INVENTORY_MODULE_NAME = "inventory";
 export const BACKEND_PURCHASE_MODULE_NAME = "purchase";
 export const BACKEND_SALES_MODULE_NAME = "sales";
 export const BACKEND_FINANCE_MODULE_NAME = "finance";
+export const BACKEND_UTLITIES_MODULE_NAME = "utilities";
 export const IS_INAPP_HELP_NEEDED = true;
 export const IS_ACCESS_CONTROLLED_BY_REFRESH_TOKEN = false;
 
