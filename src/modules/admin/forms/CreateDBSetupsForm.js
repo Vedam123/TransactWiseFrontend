@@ -4,7 +4,7 @@ import { API_URL, BACKEND_ADMIN_MODULE_NAME, MODULE_LEVEL_CREATE_ACCESS } from "
 import "../../utilities/css/appcss.css"; // Adjust the import path as needed
 import CheckModuleAccess from "../../security/modulepermissions/CheckModuleAccess"; // Import your access checking function
 
-// Import your logger utility here
+// Import your logge test r utility here
 import logger from "../../utilities/Logs/logger";
 
 export default function CreateDBSetupsForm() {
