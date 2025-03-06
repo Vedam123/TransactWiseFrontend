@@ -38,3 +38,4 @@ yarn-error.log*
 
 # Git internal files (this is typically ignored by default)
 # .git/ should not be included as it’s part of the repository structure.
+src/modules/admin/setups/ConstDecl.js
